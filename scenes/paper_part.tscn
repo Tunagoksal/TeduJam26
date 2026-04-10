@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://bw4mb4caiyocg"]
+
+[ext_resource type="Texture2D" uid="uid://jsmhogjxp6gc" path="res://icon.svg" id="1_gwsws"]
+[ext_resource type="Script" uid="uid://d4gqgjfx7oys1" path="res://scripts/paper_part.gd" id="1_n0lmg"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_n0lmg"]
+size = Vector3(1, 1, 0.1)
+
+[node name="PaperPart" type="Area3D" unique_id=144128873 node_paths=PackedStringArray("sprite")]
+script = ExtResource("1_n0lmg")
+sprite = NodePath("Sprite3D")
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=138629744]
+texture = ExtResource("1_gwsws")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1378230063]
+shape = SubResource("BoxShape3D_n0lmg")

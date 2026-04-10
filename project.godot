@@ -11,7 +11,12 @@ config_version=5
 [application]
 
 config/name="New Game Project"
+run/main_scene="uid://xuhg2x2ph7jy"
 config/features=PackedStringArray("4.6", "Forward Plus")
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/ridiculous_coding/plugin.cfg")
 
 [physics]
 

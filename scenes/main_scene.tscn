@@ -1,3 +1,14 @@
 [gd_scene format=3 uid="uid://xuhg2x2ph7jy"]
 
-[node name="MainScene" type="Node3D" unique_id=74666242]
+[ext_resource type="Script" uid="uid://b13jqyj38jhs3" path="res://scripts/main_scene.gd" id="1_w2twt"]
+[ext_resource type="PackedScene" uid="uid://bw4mb4caiyocg" path="res://scenes/paper_part.tscn" id="2_pw63i"]
+
+[node name="MainScene" type="Node3D" unique_id=74666242 node_paths=PackedStringArray("paper_part")]
+script = ExtResource("1_w2twt")
+paper_part = NodePath("PaperPart")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=309900732]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.9922466)
+
+[node name="PaperPart" parent="." unique_id=144128873 instance=ExtResource("2_pw63i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7.187828)
