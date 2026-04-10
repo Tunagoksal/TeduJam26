@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://crev2inf1u6xe"]
+
+[node name="MainMenu" type="Control" unique_id=59457557]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="PlayButton" type="Button" parent="." unique_id=934064532]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4
+anchor_top = 0.433
+anchor_right = 0.6
+anchor_bottom = 0.433
+offset_right = -10.768005
+offset_bottom = 56.416016
+text = "Play"
+
+[node name="QuitButton" type="Button" parent="." unique_id=583951930]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4
+anchor_top = 0.433
+anchor_right = 0.6
+anchor_bottom = 0.433
+offset_left = 0.19998169
+offset_top = 75.416016
+offset_right = -10.568054
+offset_bottom = 131.83203
+text = "Quit"
+
+[node name="Label" type="Label" parent="." unique_id=1484489754]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.1
+anchor_right = 0.5
+anchor_bottom = 0.1
+offset_left = -67.5
+offset_right = 67.5
+offset_bottom = 72.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 48
+text = "PlaceFolder Name"
