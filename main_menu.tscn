@@ -1,10 +1,13 @@
 [gd_scene format=3 uid="uid://crev2inf1u6xe"]
 
+[ext_resource type="Script" uid="uid://dn12u7ocbrg15" path="res://main_menu.gd" id="1_06t4h"]
+
 [node name="MainMenu" type="Control" unique_id=59457557]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
+script = ExtResource("1_06t4h")
 
 [node name="PlayButton" type="Button" parent="." unique_id=934064532]
 layout_mode = 1
@@ -43,3 +46,5 @@ offset_bottom = 72.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 48
 text = "PlaceFolder Name"
+
+[connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]
