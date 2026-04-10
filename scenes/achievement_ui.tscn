@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://cwr2h62cbv6j0"]
+
+[ext_resource type="Script" uid="uid://oa7fmlck26t2" path="res://scripts/achievement_ui.gd" id="1_h7bd7"]
+
+[node name="AchivementUI" type="CanvasLayer" unique_id=18943597]
+script = ExtResource("1_h7bd7")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=68880291]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer" unique_id=943580647]
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="PanelContainer/HBoxContainer" unique_id=421264595]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer" unique_id=1936817885]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="PanelContainer/HBoxContainer/VBoxContainer" unique_id=284916119]
+layout_mode = 2
