@@ -12,7 +12,8 @@ extends Node2D
 var active_folds: Array[FoldDir] = []
 var is_animating: bool = false
 var animation_duration: float = 0.4 
-var locked_directions: Array[FoldDir] = []
+var locked_directions_unfold: Array[FoldDir] = []
+var locked_directions_fold: Array[FoldDir] = []
 
 var drag_begin_pos:Vector2
 var drag_end_pos:Vector2
@@ -78,8 +79,13 @@ func _input(event: InputEvent) -> void:
 		if event.keycode == KEY_LEFT: unfold_side(FoldDir.LEFT)
 		if event.keycode == KEY_RIGHT: unfold_side(FoldDir.RIGHT)
 		
-		if event.keycode == KEY_L: lock_direction(FoldDir.TOP)
-		if event.keycode == KEY_U: unlock_direction(FoldDir.TOP)
+		# Test Fold Locks
+		if event.keycode == KEY_Z: lock_fold_direction(FoldDir.TOP)
+		if event.keycode == KEY_X: unlock_fold_direction(FoldDir.TOP)
+		
+		# Test Unfold Locks
+		if event.keycode == KEY_C: lock_unfold_direction(FoldDir.TOP)
+		if event.keycode == KEY_V: unlock_unfold_direction(FoldDir.TOP)
 
 func unfold_by_mouse(local_begin_pos, direction):
 	unfold_side(direction)
@@ -203,19 +209,31 @@ func get_last_fold_index(target_dir: FoldDir) -> int:
 		if active_folds[i] == target_dir: return i
 	return -1
 
-# Adds a direction to the lock list (prevents duplicates)
-func lock_direction(dir: FoldDir) -> void:
-	if dir not in locked_directions:
-		locked_directions.append(dir)
+# --- MANUAL FOLD LOCKS ---
+func lock_fold_direction(dir: FoldDir) -> void:
+	if dir not in locked_directions_fold:
+		locked_directions_fold.append(dir)
 
-# Removes a direction from the lock list safely
-func unlock_direction(dir: FoldDir) -> void:
-	if dir in locked_directions:
-		locked_directions.erase(dir)
+func unlock_fold_direction(dir: FoldDir) -> void:
+	if dir in locked_directions_fold:
+		locked_directions_fold.erase(dir)
 
-func is_fold_locked(target_dir: FoldDir) -> bool:
-	if target_dir in locked_directions:
+# --- MANUAL UNFOLD LOCKS ---
+func lock_unfold_direction(dir: FoldDir) -> void:
+	if dir not in locked_directions_unfold:
+		locked_directions_unfold.append(dir)
+
+func unlock_unfold_direction(dir: FoldDir) -> void:
+	if dir in locked_directions_unfold:
+		locked_directions_unfold.erase(dir)
+
+# --- PHYSICS UNFOLD LOCK CHECK ---
+func is_unfold_locked(target_dir: FoldDir) -> bool:
+	# 1. Manual Unfold Check
+	if target_dir in locked_directions_unfold:
 		return true
+		
+	# 2. Physics Check
 	var idx = get_last_fold_index(target_dir)
 	if idx == -1: return true
 	var target_vert = (target_dir == FoldDir.TOP or target_dir == FoldDir.BOTTOM)
@@ -224,8 +242,12 @@ func is_fold_locked(target_dir: FoldDir) -> bool:
 		if target_vert != later_vert: return true
 	return false
 
+# --- ACTION LOGIC ---
 func fold_side(dir: FoldDir) -> void:
 	if is_animating: return
+	
+	# NEW: Prevent folding if explicitly locked!
+	if dir in locked_directions_fold: return
 	
 	var b = simulate_paper_state(active_folds).bounds
 	if (dir == FoldDir.TOP or dir == FoldDir.BOTTOM) and b.min_r >= b.max_r: return
@@ -238,7 +260,8 @@ func fold_side(dir: FoldDir) -> void:
 	_animate_chunk_transition(dir, true, pre_state, post_state)
 
 func unfold_side(dir: FoldDir) -> void:
-	if is_animating or is_fold_locked(dir): return
+	# UPDATED: Now uses the explicitly named is_unfold_locked function
+	if is_animating or is_unfold_locked(dir): return
 	is_animating = true
 	var pre_state = simulate_paper_state(active_folds)
 	
@@ -281,6 +304,10 @@ func _animate_chunk_transition(dir: FoldDir, is_folding: bool, pre: Dictionary, 
 	display_layer.add_child(pivot)
 	var temp_layer = TileMapLayer.new()
 	temp_layer.tile_set = display_layer.tile_set
+	
+	#DISABLE PHYSICS WHILE FOLDING
+	temp_layer.collision_enabled = false
+	
 	pivot.add_child(temp_layer)
 	
 	var cell_size = display_layer.tile_set.tile_size
