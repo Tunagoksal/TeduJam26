@@ -34,7 +34,7 @@ func _on_achievement_unlocked(ach:AchievementData):
 	tween.set_ease(Tween.EASE_OUT)
 	tween.tween_property(panel, "position:y", y_appear, 1.5)
 		
-	tween.tween_interval(2.0)
+	tween.tween_interval(1.0)
 	
 	tween.set_trans(Tween.TRANS_BACK)
 	tween.set_ease(Tween.EASE_IN)
