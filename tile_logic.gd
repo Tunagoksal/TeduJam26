@@ -14,12 +14,59 @@ var is_animating: bool = false
 var animation_duration: float = 0.4 
 var locked_directions: Array[FoldDir] = []
 
+var drag_begin_pos:Vector2
+var drag_end_pos:Vector2
+
 enum FoldDir { TOP, BOTTOM, LEFT, RIGHT }
 
 func _ready() -> void:
 	apply_grid_state(simulate_paper_state(active_folds).grid)
 
 func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+
+			if event.pressed:
+				# Mouse pressed
+				drag_begin_pos = get_global_mouse_position()
+			
+			else:
+				# Mouse released
+				drag_end_pos = get_global_mouse_position()
+				
+				# Calculate direction
+				var delta = drag_begin_pos - drag_end_pos
+				var direction: FoldDir
+				
+				if abs(delta.x) > abs(delta.y):
+					direction = FoldDir.RIGHT if delta.x > 0 else FoldDir.LEFT
+				else:
+					direction = FoldDir.BOTTOM if delta.y > 0 else FoldDir.TOP
+				
+				var local_begin = display_layer.to_local(drag_begin_pos)
+				var cell_begin = display_layer.local_to_map(local_begin)
+				var local_end = display_layer.to_local(drag_end_pos)
+				var cell_end = display_layer.local_to_map(local_end)
+				if display_layer.get_used_rect().has_point(cell_begin):
+					if display_layer.get_used_rect().has_point(cell_end):
+						if abs(delta.x) > abs(delta.y):
+							direction = FoldDir.RIGHT if delta.x > 0 else FoldDir.LEFT
+						else:
+							direction = FoldDir.BOTTOM if delta.y > 0 else FoldDir.TOP
+
+						fold_by_mouse(local_begin,direction)
+
+					else:
+						if abs(delta.x) > abs(delta.y):
+							direction = FoldDir.LEFT if delta.x > 0 else FoldDir.RIGHT
+						else:
+							direction = FoldDir.TOP if delta.y > 0 else FoldDir.BOTTOM
+						
+						unfold_by_mouse(local_begin,direction)
+				#print("Start:", drag_begin_pos)
+				#print("End:", drag_end_pos)
+				#print("Direction:", direction)
+
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_W: fold_side(FoldDir.TOP)
 		if event.keycode == KEY_S: fold_side(FoldDir.BOTTOM)
@@ -34,6 +81,12 @@ func _input(event: InputEvent) -> void:
 		if event.keycode == KEY_L: lock_direction(FoldDir.TOP)
 		if event.keycode == KEY_U: unlock_direction(FoldDir.TOP)
 
+func unfold_by_mouse(local_begin_pos, direction):
+	unfold_side(direction)
+	
+func fold_by_mouse(local_begin, direction):
+	fold_side(direction)
+	
 # ==========================================
 # THE LAYER STACK SIMULATOR (CRITICAL FIX)
 # ==========================================
