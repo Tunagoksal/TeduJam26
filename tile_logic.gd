@@ -5,7 +5,7 @@ extends Node2D
 @onready var back_data: TileMapLayer = $BackLayer 
 
 # --- GRID CONFIGURATION ---
-@export var chunk_size: int = 4
+@export var chunk_size: int = 2
 @onready var macro_cols: int = 4
 @onready var macro_rows: int = 4 
 
@@ -138,14 +138,20 @@ func fold_by_mouse(local_begin, direction):
 # ==========================================
 func simulate_paper_state(folds: Array[FoldDir]) -> Dictionary:
 	var grid = {}
-	
+	var total_width = macro_cols * chunk_size
+	var total_height = macro_rows * chunk_size
 	# 1. Initialize the paper. Every grid cell now holds an ARRAY of layers.
 	for x in range(macro_cols * chunk_size):
 		for y in range(macro_rows * chunk_size):
 			var pos = Vector2i(x, y)
+			
+			var mirrored_x = (total_width - 1) - x
+			var back_pos = Vector2i(mirrored_x, y)
+			
 			if front_data.get_cell_source_id(pos) != -1:
 				grid[pos] = [{
-					"orig_pos": pos, 
+					"orig_pos": pos,
+					"back_orig_pos": back_pos, # Store the pre-mirrored position for the back
 					"is_back": false, 
 					"alt": front_data.get_cell_alternative_tile(pos)
 				}]
@@ -220,9 +226,10 @@ func simulate_paper_state(folds: Array[FoldDir]) -> Dictionary:
 # Helper to fetch texture data securely
 func get_tile_render_data(tile: Dictionary) -> Dictionary:
 	if tile.is_back:
+		var b_pos = tile.get("back_orig_pos", tile.orig_pos)
 		return {
-			"id": back_data.get_cell_source_id(tile.orig_pos),
-			"coords": back_data.get_cell_atlas_coords(tile.orig_pos),
+			"id": back_data.get_cell_source_id(b_pos),
+			"coords": back_data.get_cell_atlas_coords(b_pos),
 			"alt": tile.alt
 		}
 	return {
