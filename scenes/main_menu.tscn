@@ -2,46 +2,113 @@
 
 [ext_resource type="Script" uid="uid://dn12u7ocbrg15" path="res://scripts/main_menu.gd" id="1_bqqt6"]
 [ext_resource type="AudioStream" uid="uid://b5jp1h7nwosfl" path="res://assets/talk.wav" id="2_wu84c"]
-[ext_resource type="Texture2D" uid="uid://dr4o2p5illt4i" path="res://scripts/icon.svg" id="3_8ln24"]
+[ext_resource type="Texture2D" uid="uid://60wurv4k12du" path="res://assets/exit_text.webp" id="4_8ln24"]
+[ext_resource type="Shader" uid="uid://cgqgdmyly3xlt" path="res://scenes/main_menu.gdshader" id="4_tbmy8"]
+[ext_resource type="Texture2D" uid="uid://nt58k5gpa7cp" path="res://assets/paper_bg2.webp" id="5_8ln24"]
+[ext_resource type="Script" uid="uid://d86bod3hevdk" path="res://scenes/button.gd" id="5_oa1go"]
+[ext_resource type="Texture2D" uid="uid://doru61xagjhri" path="res://assets/game_logo.webp" id="5_rtw2f"]
+[ext_resource type="Texture2D" uid="uid://dewja7wipapdt" path="res://assets/start_text.webp" id="6_rtw2f"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jk1qb"]
+shader = ExtResource("4_tbmy8")
+shader_parameter/shaking = false
+shader_parameter/amplitude = 2.0
+shader_parameter/noise_scale = 50.0
+shader_parameter/noise_speed = 20.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_oa1go"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oa1go"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tbmy8"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rtw2f"]
 
 [node name="MainMenu" type="Control" unique_id=59457557]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 1152.0
-offset_bottom = 648.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_bqqt6")
 speech_sound = ExtResource("2_wu84c")
 next_level_path = "res://test_level.tscn"
 
-[node name="SettingsSprite" type="Sprite2D" parent="." unique_id=1211510219]
-modulate = Color(0, 1, 0, 1)
-position = Vector2(427, 322)
-scale = Vector2(0.890625, 2)
-texture = ExtResource("3_8ln24")
+[node name="PaperBg2" type="Sprite2D" parent="." unique_id=1223476082]
+position = Vector2(969.00006, 533)
+scale = Vector2(2.5847914, 2.058095)
+texture = ExtResource("5_8ln24")
 
-[node name="OptionsSprite" type="Sprite2D" parent="." unique_id=938725844]
-modulate = Color(0, 0, 1, 1)
-position = Vector2(573, 340)
-texture = ExtResource("3_8ln24")
-
-[node name="GameSprite" type="Sprite2D" parent="." unique_id=507926808]
-position = Vector2(574, 339)
-texture = ExtResource("3_8ln24")
-
-[node name="GameButton" type="Button" parent="GameSprite" unique_id=2074328551]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -64.0
-offset_top = -64.0
-offset_right = -64.0
-offset_bottom = -64.0
+[node name="TextureRect3" type="TextureRect" parent="." unique_id=1575971794]
+material = SubResource("ShaderMaterial_jk1qb")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.6234375
+anchor_top = 0.44444445
+anchor_right = 0.6234375
+anchor_bottom = 0.44444445
+offset_left = -468.0
+offset_top = -409.0
+offset_right = 492.0
+offset_bottom = 551.0
 grow_horizontal = 2
-grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_rtw2f")
 
-[node name="StartSprite" type="Sprite2D" parent="." unique_id=1071747014]
-modulate = Color(1, 0, 0, 1)
-position = Vector2(573, 216)
-texture = ExtResource("3_8ln24")
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1068999086]
+layout_mode = 0
+offset_left = 769.99994
+offset_top = 425.99997
+offset_right = 1616.0
+offset_bottom = 2122.0
+scale = Vector2(0.4, 0.4)
+theme_override_constants/separation = -900
+alignment = 1
 
-[connection signal="pressed" from="GameSprite/GameButton" to="." method="_on_game_button_pressed"]
+[node name="ExitButton" type="Button" parent="VBoxContainer" unique_id=1859549926]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_oa1go")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_oa1go")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tbmy8")
+theme_override_styles/focus = SubResource("StyleBoxFlat_rtw2f")
+script = ExtResource("5_oa1go")
+animation_speed = 0.7
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/ExitButton" unique_id=1508814876]
+layout_mode = 0
+offset_left = 0.00015258788
+offset_top = -232.99986
+offset_right = 846.0001
+offset_bottom = 613.0001
+texture = ExtResource("4_8ln24")
+
+[node name="StartButton" type="Button" parent="VBoxContainer" unique_id=415842531]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_oa1go")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_oa1go")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tbmy8")
+theme_override_styles/focus = SubResource("StyleBoxFlat_rtw2f")
+script = ExtResource("5_oa1go")
+animation_speed = 0.7
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/StartButton" unique_id=392764906]
+layout_mode = 0
+offset_left = 0.00015258788
+offset_top = -232.99986
+offset_right = 846.0001
+offset_bottom = 613.0001
+texture = ExtResource("6_rtw2f")
+
+[connection signal="focus_entered" from="VBoxContainer/ExitButton" to="VBoxContainer/ExitButton" method="_on_focus_entered"]
+[connection signal="mouse_entered" from="VBoxContainer/ExitButton" to="VBoxContainer/ExitButton" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="VBoxContainer/ExitButton" to="VBoxContainer/ExitButton" method="_on_mouse_exited"]
+[connection signal="pressed" from="VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="focus_entered" from="VBoxContainer/StartButton" to="VBoxContainer/StartButton" method="_on_focus_entered"]
+[connection signal="mouse_entered" from="VBoxContainer/StartButton" to="VBoxContainer/StartButton" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="VBoxContainer/StartButton" to="VBoxContainer/StartButton" method="_on_mouse_exited"]
+[connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
