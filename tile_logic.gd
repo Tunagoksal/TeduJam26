@@ -6,8 +6,8 @@ extends Node2D
 
 # --- GRID CONFIGURATION ---
 @export var chunk_size: int = 2
-@onready var macro_cols: int = 4
-@onready var macro_rows: int = 4 
+@export var macro_cols: int = 4
+@export var macro_rows: int = 4 
 
 var active_folds: Array[FoldDir] = []
 var is_animating: bool = false
