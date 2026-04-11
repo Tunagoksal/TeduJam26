@@ -15,7 +15,6 @@ class_name Character
 @onready var anim_timer: Timer = $AnimationTimer
 @onready var sprite: AnimatedSprite2D = $Sprite
 
-
 signal inventory_changed(items: Array[CollectibleItem])
 var inventory: Array[CollectibleItem] = []
 
@@ -47,8 +46,12 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 func set_smashed_state(smashed: bool) -> void:
-	is_smashed = smashed
-	visible = !smashed 
+	if smashed:
+		is_smashed = true
+		play_smashed_effect()
+	else:
+		is_smashed = false
+		visible = true
 
 func handle_movement(delta: float):
 	var input_dir = Input.get_vector("left", "right", "up", "down")
@@ -118,3 +121,7 @@ func consume_item(item: CollectibleItem) -> void:
 		inventory.erase(item)
 		print_debug("item used")
 		inventory_changed.emit(inventory)
+		
+func play_smashed_effect():
+	
+	pass
