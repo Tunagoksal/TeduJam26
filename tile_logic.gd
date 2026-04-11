@@ -327,6 +327,44 @@ func fold_side(dir: FoldDir) -> void:
 	if (dir == FoldDir.TOP or dir == FoldDir.BOTTOM) and b.min_r >= b.max_r: return
 	if (dir == FoldDir.LEFT or dir == FoldDir.RIGHT) and b.min_c >= b.max_c: return
 	
+	# === NEW: PLAYER FLAP-PREVENTION SYSTEM ===
+	var player = get_tree().get_first_node_in_group("player") as Character
+	if is_instance_valid(player):
+		var p_local = display_layer.to_local(player.global_position)
+		var p_cell = display_layer.local_to_map(p_local)
+		
+		# Determine the exact bounds of the chunk that is about to swing over
+		var is_vert = false
+		var c_line = 0
+		
+		if dir == FoldDir.TOP:
+			is_vert = true; c_line = b.min_r
+		elif dir == FoldDir.BOTTOM:
+			is_vert = true; c_line = b.max_r
+		elif dir == FoldDir.LEFT:
+			is_vert = false; c_line = b.min_c
+		elif dir == FoldDir.RIGHT:
+			is_vert = false; c_line = b.max_c
+
+		var src_min_x = b.min_c * chunk_size
+		var src_max_x = (b.max_c + 1) * chunk_size - 1
+		var src_min_y = b.min_r * chunk_size
+		var src_max_y = (b.max_r + 1) * chunk_size - 1
+
+		# Constrain the bounds strictly to the flap being folded
+		if is_vert:
+			src_min_y = c_line * chunk_size
+			src_max_y = (c_line + 1) * chunk_size - 1
+		else:
+			src_min_x = c_line * chunk_size
+			src_max_x = (c_line + 1) * chunk_size - 1
+			
+		# If the player's current cell falls inside the source flap, cancel the fold!
+		if p_cell.x >= src_min_x and p_cell.x <= src_max_x and p_cell.y >= src_min_y and p_cell.y <= src_max_y:
+			print("Fold Prevented: Player is standing on the flap!")
+			return
+	# ==========================================
+	
 	is_animating = true
 	var pre_state = simulate_paper_state(active_folds)
 	active_folds.append(dir)
