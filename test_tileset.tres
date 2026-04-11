@@ -16,6 +16,7 @@ texture_region_size = Vector2i(144, 144)
 0:2/0 = 0
 1:2/0 = 0
 2:2/0 = 0
+3:1/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jggtk"]
 texture = ExtResource("2_uujt4")
@@ -28,6 +29,7 @@ texture_region_size = Vector2i(144, 144)
 1:1/0 = 0
 2:1/0 = 0
 0:2/0 = 0
+0:2/0/custom_data_0 = "/home/tuna/Projects/TeduJam26/flag.tscn"
 1:2/0 = 0
 2:2/0 = 0
 3:2/0 = 0
@@ -45,6 +47,8 @@ texture_region_size = Vector2i(144, 144)
 [resource]
 tile_size = Vector2i(144, 144)
 physics_layer_0/collision_layer = 1
+custom_data_layer_0/name = "item"
+custom_data_layer_0/type = 4
 sources/0 = SubResource("TileSetAtlasSource_ftt8w")
 sources/2 = SubResource("TileSetAtlasSource_jggtk")
 sources/3 = SubResource("TileSetAtlasSource_q0eu3")

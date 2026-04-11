@@ -29,6 +29,7 @@ enum FoldDir { TOP, BOTTOM, LEFT, RIGHT }
 func _ready() -> void:
 	Input.set_custom_mouse_cursor(point_cursor_texture)
 	apply_grid_state(simulate_paper_state(active_folds).grid)
+	generate_items()
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and !dragging:
@@ -379,13 +380,16 @@ func generate_items() -> void:
 		var tile_data = display_layer.get_cell_tile_data(cell)
 		if tile_data:
 			var item_path = tile_data.get_custom_data("item")
-			if item_path != null:
+			
+			if item_path is String and item_path.strip_edges() != "":
 				var scene = load(item_path)
 				if scene:
 					var instance = scene.instantiate()
 					var world_pos = display_layer.map_to_local(cell)
 					instance.position = world_pos
 					add_child(instance)
+				else:
+					print("ERROR: Could not load scene at path: ", item_path)
 
 func destroy_items() -> void:
 	for child in get_children():
