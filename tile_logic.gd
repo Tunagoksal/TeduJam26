@@ -23,12 +23,15 @@ var drag_begin_pos:Vector2
 var drag_end_pos:Vector2
 
 var dragging:bool
+var is_player_trapped: bool = false
+var rescue_direction: FoldDir
 
 enum FoldDir { TOP, BOTTOM, LEFT, RIGHT }
 
 func _ready() -> void:
 	Input.set_custom_mouse_cursor(point_cursor_texture)
 	apply_grid_state(simulate_paper_state(active_folds).grid)
+	generate_items()
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and !dragging:
@@ -319,21 +322,36 @@ func is_unfold_locked(target_dir: FoldDir) -> bool:
 # --- ACTION LOGIC ---
 func fold_side(dir: FoldDir) -> void:
 	if is_animating: return
-	
-	# NEW: Prevent folding if explicitly locked!
 	if dir in locked_directions_fold: return
 	
-	var b = simulate_paper_state(active_folds).bounds
+	if is_player_trapped:
+		print("Action Blocked: Player is trapped. You must unfold!")
+		return
+	
+	var pre_state = simulate_paper_state(active_folds)
+	var b = pre_state.bounds
 	if (dir == FoldDir.TOP or dir == FoldDir.BOTTOM) and b.min_r >= b.max_r: return
 	if (dir == FoldDir.LEFT or dir == FoldDir.RIGHT) and b.min_c >= b.max_c: return
 	
+	# Preview the fold to check player collisions
+	var temp_folds = active_folds.duplicate()
+	temp_folds.append(dir)
+	var post_state = simulate_paper_state(temp_folds)
+	
+	var player = get_tree().get_first_node_in_group("player") as Character
+	if is_instance_valid(player):
+		var p_cell = display_layer.local_to_map(display_layer.to_local(player.global_position))
+		var pre_size = pre_state.grid.get(p_cell, []).size()
+		var post_size = post_state.grid.get(p_cell, []).size()
+		
+		# If stack size goes down, the paper they are standing on is moving away!
+		if pre_size > post_size:
+			print("Fold Cancelled: You cannot fold the flap the player is standing on!")
+			return
+
 	is_animating = true
-	var pre_state = simulate_paper_state(active_folds)
 	active_folds.append(dir)
-	var post_state = simulate_paper_state(active_folds)
 	_animate_chunk_transition(dir, true, pre_state, post_state)
-	destroy_items()
-	generate_items()
 
 
 func generate_items() -> void:
@@ -341,13 +359,16 @@ func generate_items() -> void:
 		var tile_data = display_layer.get_cell_tile_data(cell)
 		if tile_data:
 			var item_path = tile_data.get_custom_data("item")
-			if item_path != null:
+			
+			if item_path is String and item_path.strip_edges() != "":
 				var scene = load(item_path)
 				if scene:
 					var instance = scene.instantiate()
 					var world_pos = display_layer.map_to_local(cell)
 					instance.position = world_pos
 					add_child(instance)
+				else:
+					print("ERROR: Could not load scene at path: ", item_path)
 
 func destroy_items() -> void:
 	for child in get_children():
@@ -355,15 +376,32 @@ func destroy_items() -> void:
 			child.queue_free()
 
 func unfold_side(dir: FoldDir) -> void:
-	# UPDATED: Now uses the explicitly named is_unfold_locked function
 	if is_animating or is_unfold_locked(dir): return
-	is_animating = true
+	
+	if is_player_trapped:
+		if active_folds.is_empty() or dir != active_folds.back():
+			print("Action Blocked: You can only unfold the flap that crushed the player!")
+			return
+
 	var pre_state = simulate_paper_state(active_folds)
-	
+	var temp_folds = active_folds.duplicate()
 	var idx = get_last_fold_index(dir)
-	active_folds.remove_at(idx)
+	temp_folds.remove_at(idx)
+	var post_state = simulate_paper_state(temp_folds)
 	
-	var post_state = simulate_paper_state(active_folds)
+	var player = get_tree().get_first_node_in_group("player") as Character
+	# Check if standing on unfolding flap (Ignore this rule if they are trapped under it!)
+	if is_instance_valid(player) and not is_player_trapped:
+		var p_cell = display_layer.local_to_map(display_layer.to_local(player.global_position))
+		var pre_size = pre_state.grid.get(p_cell, []).size()
+		var post_size = post_state.grid.get(p_cell, []).size()
+		
+		if pre_size > post_size:
+			print("Unfold Cancelled: You cannot unfold the flap the player is standing on!")
+			return
+
+	is_animating = true
+	active_folds.remove_at(idx)
 	_animate_chunk_transition(dir, false, pre_state, post_state)
 
 func _animate_chunk_transition(dir: FoldDir, is_folding: bool, pre: Dictionary, post: Dictionary) -> void:
@@ -457,24 +495,23 @@ func _animate_chunk_transition(dir: FoldDir, is_folding: bool, pre: Dictionary, 
 		apply_grid_state(post.grid) 
 		
 		if is_instance_valid(player):
-			# We DO NOT unfreeze the player immediately here anymore. 
-			# The Character script handles unfreezing based on whether they are trapped or animating.
-			
 			var p_local = display_layer.to_local(player.global_position)
 			var p_cell = display_layer.local_to_map(p_local)
 			
-			# Look at the new grid state at that cell
-			var stack = post.grid.get(p_cell, [])
-			if stack.size() > 0:
-				var top_tile = stack.back()
-				
-				# If the top tile is a BACK face, the paper folded over them!
-				if top_tile.is_back:
-					player.trap_under_paper()
-				else:
-					player.reveal_from_paper()
-			else:
+			var pre_size = pre.grid.get(p_cell, []).size()
+			var post_size = post.grid.get(p_cell, []).size()
+			
+			# If stack size increased, paper was dropped ON the player
+			if post_size > pre_size:
+				player.trap_under_paper()
+				is_player_trapped = true
+			# If stack size decreased, the paper trapping them was pulled back
+			elif post_size < pre_size:
 				player.reveal_from_paper()
+				is_player_trapped = false
+			# THE FIX: If the paper didn't touch them at all, just unfreeze them!
+			else:
+				player.is_frozen = false 
 		
 		is_animating = false
 	)
