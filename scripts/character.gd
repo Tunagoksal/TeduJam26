@@ -10,35 +10,63 @@ class_name Character
 @export var roll_force: float = 500.0
 @export var roll_cooldown: float = 1000.0
 
+
 @onready var timer: Timer = $Timer
 @onready var anim_timer: Timer = $AnimationTimer
-@onready var sprite: Sprite2D = $Sprite
+@onready var sprite: AnimatedSprite2D = $Sprite
+@onready var smushed: Sprite2D = $Smushed
 
 signal inventory_changed(items: Array[CollectibleItem])
 var inventory: Array[CollectibleItem] = []
 
 var _can_roll = true
 var facing_direction: Vector2 = Vector2.DOWN
+var roll_spin_dir: float = 1.0
 
-var rotation_val: float = PI/8
+var rotation_val: float = PI/16
 var rotation_moment: int = 0
 
 var idle := true
 var moving := false
 var rolling := false
 
+var is_frozen: bool = false
+var is_smashed: bool = false
+
+func _ready() -> void:
+	add_to_group("player")
+
 func _physics_process(delta: float) -> void:
+	
+	if is_frozen or is_smashed:
+		return
 
 	handle_movement(delta)
 	
 	handle_roll()
 	
 	move_and_slide()
+	
+func set_smashed_state(smashed: bool) -> void:
+	if smashed:
+		is_smashed = true
+		play_smashed_effect()
+	else:
+		is_smashed = false
+		visible = true
 
 func handle_movement(delta: float):
 	var input_dir = Input.get_vector("left", "right", "up", "down")
 	
 	if input_dir != Vector2.ZERO and !rolling:
+		
+		if input_dir.x < 0:
+			sprite.flip_h = true
+			smushed.flip_h = true
+		elif input_dir.x > 0:
+			sprite.flip_h = false
+			smushed.flip_h = false
+		
 		set_to_moving()
 		facing_direction = input_dir
 		velocity = velocity.move_toward(input_dir * max_speed, acceleration * delta)
@@ -49,7 +77,7 @@ func handle_movement(delta: float):
 		sprite.rotation = 0
 	
 	if rolling:
-		sprite.rotation += PI/18 * delta * 100
+		sprite.rotation += PI/18 * delta * 100 * roll_spin_dir
 
 
 func handle_roll():
@@ -58,6 +86,11 @@ func handle_roll():
 		velocity = facing_direction * roll_force + velocity
 		AchievementManager.unlock_achivement("test")
 		AchievementManager.unlock_achivement("test2")
+		
+		if facing_direction.x < 0:
+			roll_spin_dir = -1.0   
+		elif facing_direction.x > 0:
+			roll_spin_dir = 1.0    
 
 		_can_roll = false
 		timer.start()
@@ -71,6 +104,7 @@ func _on_animation_timer_timeout() -> void:
 	if idle or rolling:
 		return
 	sprite.rotation = rotation_val*(1.0-2.0*rotation_moment)
+	sprite.frame = rotation_moment
 	rotation_moment = (rotation_moment + 1) % 2
 
 
@@ -102,3 +136,8 @@ func consume_item(item: CollectibleItem) -> void:
 		inventory.erase(item)
 		print_debug("item used")
 		inventory_changed.emit(inventory)
+		
+func play_smashed_effect():
+	sprite.visible = false
+	smushed.visible = true
+	pass
