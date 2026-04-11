@@ -26,10 +26,6 @@ window/size/mode=3
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/ridiculous_coding/plugin.cfg")
-
 [input]
 
 left={

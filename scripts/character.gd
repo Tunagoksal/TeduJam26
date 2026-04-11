@@ -14,12 +14,14 @@ class_name Character
 @onready var timer: Timer = $Timer
 @onready var anim_timer: Timer = $AnimationTimer
 @onready var sprite: AnimatedSprite2D = $Sprite
+@onready var smushed: Sprite2D = $Smushed
 
 signal inventory_changed(items: Array[CollectibleItem])
 var inventory: Array[CollectibleItem] = []
 
 var _can_roll = true
 var facing_direction: Vector2 = Vector2.DOWN
+var roll_spin_dir: float = 1.0
 
 var rotation_val: float = PI/16
 var rotation_moment: int = 0
@@ -57,6 +59,14 @@ func handle_movement(delta: float):
 	var input_dir = Input.get_vector("left", "right", "up", "down")
 	
 	if input_dir != Vector2.ZERO and !rolling:
+		
+		if input_dir.x < 0:
+			sprite.flip_h = true
+			smushed.flip_h = true
+		elif input_dir.x > 0:
+			sprite.flip_h = false
+			smushed.flip_h = false
+		
 		set_to_moving()
 		facing_direction = input_dir
 		velocity = velocity.move_toward(input_dir * max_speed, acceleration * delta)
@@ -67,7 +77,7 @@ func handle_movement(delta: float):
 		sprite.rotation = 0
 	
 	if rolling:
-		sprite.rotation += PI/18 * delta * 100
+		sprite.rotation += PI/18 * delta * 100 * roll_spin_dir
 
 
 func handle_roll():
@@ -76,6 +86,11 @@ func handle_roll():
 		velocity = facing_direction * roll_force + velocity
 		AchievementManager.unlock_achivement("test")
 		AchievementManager.unlock_achivement("test2")
+		
+		if facing_direction.x < 0:
+			roll_spin_dir = -1.0   
+		elif facing_direction.x > 0:
+			roll_spin_dir = 1.0    
 
 		_can_roll = false
 		timer.start()
@@ -123,5 +138,6 @@ func consume_item(item: CollectibleItem) -> void:
 		inventory_changed.emit(inventory)
 		
 func play_smashed_effect():
-	
+	sprite.visible = false
+	smushed.visible = true
 	pass
