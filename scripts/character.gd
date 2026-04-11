@@ -53,6 +53,8 @@ func handle_roll():
 		set_to_rolling()
 		velocity = facing_direction * roll_force + velocity
 		AchievementManager.unlock_achivement("test")
+		AchievementManager.unlock_achivement("test2")
+
 		_can_roll = false
 		timer.start()
 		

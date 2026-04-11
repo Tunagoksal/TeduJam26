@@ -8,6 +8,9 @@ var y_thing
 var x_thing
 var y_appear
 
+var popup_queue: Array[AchievementData] = []
+var is_showing: bool = false
+
 func _ready() -> void:
 	AchievementManager.achivement_unlocked.connect(_on_achievement_unlocked)
 	
@@ -20,6 +23,22 @@ func _ready() -> void:
 	panel.global_position = Vector2(x_thing,y_thing)
 
 func _on_achievement_unlocked(ach:AchievementData):
+	
+	popup_queue.append(ach)
+	
+	if not is_showing:
+		_show_next()
+		
+func _show_next():
+	
+	if popup_queue.is_empty():
+		is_showing = false
+		return
+		
+	is_showing = true
+	
+	var ach = popup_queue.pop_front()
+	
 	var tween  = create_tween()
 	
 	title_label.text = ach.title
@@ -39,4 +58,6 @@ func _on_achievement_unlocked(ach:AchievementData):
 	tween.set_trans(Tween.TRANS_BACK)
 	tween.set_ease(Tween.EASE_IN)
 	tween.tween_property(panel, "global_position:y", y_thing, 0.5)
+	
+	tween.finished.connect(_show_next)
 	
