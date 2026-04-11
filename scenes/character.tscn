@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dnoi8sf8ixw0s"]
 
-[ext_resource type="Script" uid="uid://d21jfe6m1gb0m" path="res://scenes/character.gd" id="1_rkhd4"]
+[ext_resource type="Script" uid="uid://d21jfe6m1gb0m" path="res://scripts/character.gd" id="1_rkhd4"]
 [ext_resource type="Texture2D" uid="uid://efvme1qdhdxi" path="res://assets/icon.svg" id="2_lrhn5"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xty33"]
