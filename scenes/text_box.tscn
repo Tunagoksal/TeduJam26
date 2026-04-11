@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://dd1tcxn5o6ojm"]
+
+[ext_resource type="Script" uid="uid://p7dbs7hby7a0" path="res://scripts/text_box.gd" id="1_dyarx"]
+[ext_resource type="Texture2D" uid="uid://dr4o2p5illt4i" path="res://scripts/icon.svg" id="2_qdwih"]
+
+[node name="TextBox" type="MarginContainer" unique_id=706830163]
+script = ExtResource("1_dyarx")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=37001766]
+visible = false
+layout_mode = 2
+texture = ExtResource("2_qdwih")
+patch_margin_left = 64
+patch_margin_top = 64
+patch_margin_right = 64
+patch_margin_bottom = 64
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1189732450]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Label" type="RichTextLabel" parent="MarginContainer" unique_id=666794410]
+layout_mode = 2
+fit_content = true
+autowrap_mode = 0
+
+[node name="LetterDisplayTimer" type="Timer" parent="." unique_id=1979759567]
+one_shot = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=872464801]
+
+[connection signal="timeout" from="LetterDisplayTimer" to="." method="_on_letter_display_timer_timeout"]
