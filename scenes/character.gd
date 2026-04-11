@@ -3,7 +3,7 @@ extends CharacterBody2D
 @export_group("Movement")
 @export var max_speed: float = 400.0
 @export var acceleration: float = 1500.0
-@export var friction: float = 1000.0
+@export var friction: float = 1500.0
 
 @export_group("Roll")
 @export var roll_force: float = 1000.0
