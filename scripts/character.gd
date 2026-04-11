@@ -1,4 +1,5 @@
 extends CharacterBody2D
+class_name Character
 
 @export_group("Movement")
 @export var max_speed: float = 400.0
