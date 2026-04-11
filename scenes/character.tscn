@@ -13,7 +13,16 @@ script = ExtResource("1_rkhd4")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1731430528]
 shape = SubResource("CapsuleShape2D_xty33")
 
-[node name="Icon" type="Sprite2D" parent="." unique_id=2105408339]
-position = Vector2(0, 0.99999976)
-scale = Vector2(0.3046875, 0.40625)
+[node name="Sprite" type="Sprite2D" parent="." unique_id=2105408339]
 texture = ExtResource("2_lrhn5")
+
+[node name="Timer" type="Timer" parent="." unique_id=234181893]
+wait_time = 0.5
+one_shot = true
+
+[node name="AnimationTimer" type="Timer" parent="." unique_id=2132030530]
+wait_time = 0.3
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="AnimationTimer" to="." method="_on_animation_timer_timeout"]
