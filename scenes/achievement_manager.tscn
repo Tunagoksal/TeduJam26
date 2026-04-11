@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://c82s7bxx032vb"]
+[gd_scene format=3 uid="uid://b2k5kb2rb6esa"]
 
 [ext_resource type="Script" uid="uid://dg5w44qqvou1p" path="res://scripts/achievement_manager.gd" id="1_fihl3"]
 [ext_resource type="Script" uid="uid://8k0biy7tnl45" path="res://scripts/achievement_data.gd" id="2_8m4y4"]

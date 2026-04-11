@@ -16,7 +16,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-AchievementManager="*uid://c82s7bxx032vb"
+AchievementManager="*uid://b2k5kb2rb6esa"
 
 [input]
 
