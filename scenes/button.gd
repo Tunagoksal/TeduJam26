@@ -55,7 +55,7 @@ func _on_mouse_entered() -> void:
 	hover_tween.set_trans(Tween.TRANS_BACK)
 	hover_tween.set_ease(Tween.EASE_OUT)
 	
-	hover_tween.tween_property(self, "scale", Vector2(1.2, 1.2), 0.2)
+	hover_tween.tween_property(self, "scale", Vector2(1.1, 1.1), 0.2)
 
 
 func _on_mouse_exited() -> void:

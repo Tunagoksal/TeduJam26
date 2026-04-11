@@ -35,7 +35,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_bqqt6")
 speech_sound = ExtResource("2_wu84c")
-next_level_path = "res://test_level.tscn"
+next_level_path = "res://scenes/level2.tscn"
 
 [node name="PaperBg2" type="Sprite2D" parent="." unique_id=1223476082]
 position = Vector2(969.00006, 533)

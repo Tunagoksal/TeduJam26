@@ -1,8 +1,8 @@
-[gd_scene format=4 uid="uid://bs7m31nucachl"]
+[gd_scene format=4 uid="uid://k4bo0q8sah1n"]
 
 [ext_resource type="Script" uid="uid://dvdei14ffpg1" path="res://tile_logic.gd" id="1_alqfr"]
 [ext_resource type="TileSet" uid="uid://b2h2crx1fhmdu" path="res://test_tileset.tres" id="2_yqkch"]
-[ext_resource type="PackedScene" uid="uid://duekrr7tjcmep" path="res://scenes/item.tscn" id="3_6ep0u"]
+[ext_resource type="PackedScene" uid="uid://bm6s73jtr2ban" path="res://scenes/item.tscn" id="3_6ep0u"]
 [ext_resource type="Resource" uid="uid://by63gqomk2y3p" path="res://resources/test_item.tres" id="4_hrcei"]
 [ext_resource type="PackedScene" uid="uid://dnoi8sf8ixw0s" path="res://scenes/character.tscn" id="5_xa7n4"]
 
@@ -23,6 +23,7 @@ tile_map_data = PackedByteArray("AAAHAAAAAgACAAIAAAAHAAEAAgACAAIAAAAHAAIAAgACAAI
 tile_set = ExtResource("2_yqkch")
 
 [node name="DisplayLayer" type="TileMapLayer" parent="Node2D" unique_id=1091396286]
+position = Vector2(485.55557, 146.66667)
 tile_set = ExtResource("2_yqkch")
 
 [node name="Item" parent="." unique_id=2141756766 instance=ExtResource("3_6ep0u")]

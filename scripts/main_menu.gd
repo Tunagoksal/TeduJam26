@@ -8,7 +8,6 @@ var tween: Tween
 
 func _ready() -> void:
 	await get_tree().create_timer(0.5).timeout 
-	DialogManager.start_dialog(Vector2(200,200),["Hello my name is jeff", "Fuck you"],speech_sound)
 
 
 
@@ -22,7 +21,7 @@ func _on_button_focus_entered() -> void:
 
 func idle_title():
 	var t = create_tween()
-	t.set_loops()  # sonsuz loop
+	t.set_loops()
 	
 	t.tween_property(title, "scale", Vector2(1.03, 1.03), 1.2)
 	t.tween_property(title, "scale", Vector2(1.0, 1.0), 1.2)
