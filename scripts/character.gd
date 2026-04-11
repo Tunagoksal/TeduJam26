@@ -27,13 +27,26 @@ var idle := true
 var moving := false
 var rolling := false
 
+var is_frozen: bool = false
+var is_smashed: bool = false
+
+func _ready() -> void:
+	add_to_group("player")
+
 func _physics_process(delta: float) -> void:
+	
+	if is_frozen or is_smashed:
+		return
 
 	handle_movement(delta)
 	
 	handle_roll()
 	
 	move_and_slide()
+	
+func set_smashed_state(smashed: bool) -> void:
+	is_smashed = smashed
+	visible = !smashed 
 
 func handle_movement(delta: float):
 	var input_dir = Input.get_vector("left", "right", "up", "down")
