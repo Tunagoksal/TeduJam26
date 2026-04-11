@@ -23,6 +23,8 @@ var drag_begin_pos:Vector2
 var drag_end_pos:Vector2
 
 var dragging:bool
+var is_player_trapped: bool = false
+var rescue_direction: FoldDir
 
 enum FoldDir { TOP, BOTTOM, LEFT, RIGHT }
 
@@ -323,6 +325,10 @@ func fold_side(dir: FoldDir) -> void:
 	# NEW: Prevent folding if explicitly locked!
 	if dir in locked_directions_fold: return
 	
+	if is_player_trapped:
+		print("Cannot fold: Player is trapped!")
+		return
+	
 	var b = simulate_paper_state(active_folds).bounds
 	if (dir == FoldDir.TOP or dir == FoldDir.BOTTOM) and b.min_r >= b.max_r: return
 	if (dir == FoldDir.LEFT or dir == FoldDir.RIGHT) and b.min_c >= b.max_c: return
@@ -395,6 +401,10 @@ func destroy_items() -> void:
 func unfold_side(dir: FoldDir) -> void:
 	# UPDATED: Now uses the explicitly named is_unfold_locked function
 	if is_animating or is_unfold_locked(dir): return
+	
+	if(is_player_trapped and dir != rescue_direction):
+		return
+	
 	is_animating = true
 	var pre_state = simulate_paper_state(active_folds)
 	
@@ -509,10 +519,14 @@ func _animate_chunk_transition(dir: FoldDir, is_folding: bool, pre: Dictionary, 
 				# If the top tile is a BACK face, the paper folded over them!
 				if top_tile.is_back:
 					player.trap_under_paper()
+					is_player_trapped = true
+					rescue_direction = dir
 				else:
 					player.reveal_from_paper()
+					is_player_trapped = false
 			else:
 				player.reveal_from_paper()
+				is_player_trapped = false
 		
 		is_animating = false
 	)
