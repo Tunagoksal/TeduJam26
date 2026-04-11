@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://e0knnc7cu0fm"]
+
+[ext_resource type="Script" uid="uid://bfebn1uyoltd8" path="res://scripts/inventory_ui.gd" id="1_tahbm"]
+
+[node name="InventoryUI" type="CanvasLayer" unique_id=1902873453]
+script = ExtResource("1_tahbm")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1031093107]
+offset_right = 40.0
+offset_bottom = 40.0
