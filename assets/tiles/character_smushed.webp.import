@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ije4ck3viq8t"
-path="res://.godot/imported/grass_2.webp-24dc6c53a9ffd596dd47d41011dfe8af.ctex"
+uid="uid://crj25ylu2hcji"
+path="res://.godot/imported/character_smushed.webp-41ac6fc88eba8f72ffe2a66f31a0c5de.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tiles/grass_2.webp"
-dest_files=["res://.godot/imported/grass_2.webp-24dc6c53a9ffd596dd47d41011dfe8af.ctex"]
+source_file="res://assets/tiles/character_smushed.webp"
+dest_files=["res://.godot/imported/character_smushed.webp-41ac6fc88eba8f72ffe2a66f31a0c5de.ctex"]
 
 [params]
 

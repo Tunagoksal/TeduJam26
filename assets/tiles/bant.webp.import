@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c2jhylviiuo3t"
-path="res://.godot/imported/bush.webp-f0773ba10cc029600455dea50202dfa8.ctex"
+uid="uid://dh860e3mhx5sn"
+path="res://.godot/imported/bant.webp-9f939fac598a03db037b4fc033acaa6b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tiles/bush.webp"
-dest_files=["res://.godot/imported/bush.webp-f0773ba10cc029600455dea50202dfa8.ctex"]
+source_file="res://assets/tiles/bant.webp"
+dest_files=["res://.godot/imported/bant.webp-9f939fac598a03db037b4fc033acaa6b.ctex"]
 
 [params]
 
