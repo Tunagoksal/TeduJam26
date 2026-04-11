@@ -335,6 +335,7 @@ func fold_side(dir: FoldDir) -> void:
 	destroy_items()
 	generate_items()
 
+
 func generate_items() -> void:
 	for cell in display_layer.get_used_cells():
 		var tile_data = display_layer.get_cell_tile_data(cell)

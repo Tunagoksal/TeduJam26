@@ -153,15 +153,12 @@ func play_smashed_effect():
 	pass
 	
 func restore_from_smash():
-	# Create a tween to pop the character back to normal
 	var tween = create_tween()
 	
-	# Animate the smushed sprite scaling back up
-	tween.tween_property(smushed, "scale", Vector2(1, 1), 0.5)\
+	tween.tween_property(smushed, "scale", Vector2(1.5, 1.5), 0.5)\
 		.set_trans(Tween.TRANS_ELASTIC)\
-		.set_ease(Tween.EASE_OUT)
+		.set_ease(Tween.EASE_IN)
 	
-	# Once the animation finishes, restore the normal sprite and unfreeze
 	tween.tween_callback(func():
 		is_smashed = false
 		is_frozen = false
