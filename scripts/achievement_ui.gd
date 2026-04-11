@@ -1,8 +1,8 @@
 extends CanvasLayer
 
 @onready var panel = $PanelContainer
-@onready var icon_visual = $PanelContainer/Icon
-@onready var title_label = $PanelContainer/VBoxContainer/Title
+@onready var icon_visual = $PanelContainer/HBoxContainer/Icon
+@onready var title_label = $PanelContainer/HBoxContainer/Title
 
 var y_thing
 var x_thing
@@ -14,8 +14,8 @@ func _ready() -> void:
 	var screen_size = get_window().size
 	
 	y_thing = screen_size.y + 50
-	x_thing = screen_size.x/2
-	y_appear = screen_size.y - panel.size.y * 2
+	x_thing = screen_size.x/2 - panel.size.y/2
+	y_appear = screen_size.y - panel.size.y * 1.5
 	
 	panel.global_position = Vector2(x_thing,y_thing)
 
