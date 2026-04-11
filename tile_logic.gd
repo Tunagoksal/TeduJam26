@@ -354,7 +354,6 @@ func _animate_chunk_transition(dir: FoldDir, is_folding: bool, pre: Dictionary, 
 	
 	#DISABLE PHYSICS WHILE FOLDING
 	temp_layer.collision_enabled = false
-	
 	pivot.add_child(temp_layer)
 	
 	var cell_size = display_layer.tile_set.tile_size
@@ -371,7 +370,6 @@ func _animate_chunk_transition(dir: FoldDir, is_folding: bool, pre: Dictionary, 
 			
 			var pre_stack = pre.grid.get(src_pos, [])
 			if not is_folding:
-				# Instantly reveal the tiles that were underneath the flap!
 				var post_stack = post.grid.get(src_pos, [])
 				if post_stack.size() > 0:
 					var r = get_tile_render_data(post_stack.back())
@@ -384,6 +382,10 @@ func _animate_chunk_transition(dir: FoldDir, is_folding: bool, pre: Dictionary, 
 			if pre_stack.size() > 0:
 				var r = get_tile_render_data(pre_stack.back())
 				temp_layer.set_cell(src_pos, r.id, r.coords, r.alt)
+
+	var player = get_tree().get_first_node_in_group("player") as Character
+	if is_instance_valid(player):
+		player.is_frozen = true
 
 	var tween = get_tree().create_tween()
 	tween.tween_property(pivot, scale_prop, 0.0, animation_duration / 2.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
@@ -405,5 +407,25 @@ func _animate_chunk_transition(dir: FoldDir, is_folding: bool, pre: Dictionary, 
 	tween.tween_callback(func():
 		pivot.queue_free()
 		apply_grid_state(post.grid) 
+		
+		if is_instance_valid(player):
+			player.is_frozen = false # Unfreeze inputs
+			
+			var p_local = display_layer.to_local(player.global_position)
+			var p_cell = display_layer.local_to_map(p_local)
+			
+			# Look at the new grid state at that cell
+			var stack = post.grid.get(p_cell, [])
+			if stack.size() > 0:
+				var top_tile = stack.back()
+				
+				# If the top tile is a BACK face, the paper folded over them!
+				if top_tile.is_back:
+					player.set_smashed_state(true)
+				else:
+					player.set_smashed_state(false)
+			else:
+				player.set_smashed_state(false)
+		
 		is_animating = false
 	)

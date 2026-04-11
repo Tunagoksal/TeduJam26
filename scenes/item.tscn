@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://jsmhogjxp6gc" path="res://icon.svg" id="2_s8enn"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_s8enn"]
-radius = 63.03174
+radius = 4.0
 
 [node name="Item" type="Area2D" unique_id=2141756766]
 script = ExtResource("1_4gq7n")
@@ -13,7 +13,7 @@ script = ExtResource("1_4gq7n")
 shape = SubResource("CircleShape2D_s8enn")
 
 [node name="Icon" type="Sprite2D" parent="." unique_id=557910343]
-position = Vector2(1, -1)
+scale = Vector2(0.046874996, 0.05078125)
 texture = ExtResource("2_s8enn")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

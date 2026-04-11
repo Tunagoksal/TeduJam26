@@ -1,9 +1,10 @@
 [gd_scene format=4 uid="uid://dxon0mk8dgivo"]
 
 [ext_resource type="Script" uid="uid://dvdei14ffpg1" path="res://tile_logic.gd" id="1_w7c3h"]
-[ext_resource type="TileSet" uid="uid://reohe3cj286m" path="res://test_tileset.tres" id="2_mx8sn"]
+[ext_resource type="TileSet" uid="uid://bj4n0rdo1s63p" path="res://test_tileset.tres" id="2_mx8sn"]
 [ext_resource type="Script" uid="uid://d21jfe6m1gb0m" path="res://scripts/character.gd" id="3_mx8sn"]
 [ext_resource type="Texture2D" uid="uid://efvme1qdhdxi" path="res://assets/icon.svg" id="4_ppgk2"]
+[ext_resource type="PackedScene" uid="uid://duekrr7tjcmep" path="res://scenes/item.tscn" id="5_ppgk2"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xty33"]
 radius = 3.0
@@ -32,7 +33,7 @@ tile_map_data = PackedByteArray("AAAHAAAAAAAAAAIAAAAHAAEAAAAAAAIAAAAHAAIAAAAAAAI
 tile_set = ExtResource("2_mx8sn")
 
 [node name="Character" type="CharacterBody2D" parent="." unique_id=1749950208]
-position = Vector2(232, 374)
+position = Vector2(284, 316)
 script = ExtResource("3_mx8sn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Character" unique_id=1731430528]
@@ -50,6 +51,10 @@ one_shot = true
 [node name="AnimationTimer" type="Timer" parent="Character" unique_id=2132030530]
 wait_time = 0.3
 autostart = true
+
+[node name="Item" parent="." unique_id=2141756766 instance=ExtResource("5_ppgk2")]
+visible = false
+position = Vector2(501, 197)
 
 [connection signal="timeout" from="Character/Timer" to="Character" method="_on_timer_timeout"]
 [connection signal="timeout" from="Character/AnimationTimer" to="Character" method="_on_animation_timer_timeout"]
