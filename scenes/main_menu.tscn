@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://crev2inf1u6xe"]
+
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_bqqt6"]
+[ext_resource type="AudioStream" uid="uid://b5jp1h7nwosfl" path="res://assets/talk.wav" id="2_wu84c"]
+[ext_resource type="Texture2D" uid="uid://dr4o2p5illt4i" path="res://scripts/icon.svg" id="3_8ln24"]
+
+[node name="MainMenu" type="Control" unique_id=59457557]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+script = ExtResource("1_bqqt6")
+speech_sound = ExtResource("2_wu84c")
+
+[node name="SettingsSprite" type="Sprite2D" parent="." unique_id=1211510219]
+modulate = Color(0, 1, 0, 1)
+position = Vector2(427, 322)
+scale = Vector2(0.890625, 2)
+texture = ExtResource("3_8ln24")
+
+[node name="OptionsSprite" type="Sprite2D" parent="." unique_id=938725844]
+modulate = Color(0, 0, 1, 1)
+position = Vector2(573, 340)
+texture = ExtResource("3_8ln24")
+
+[node name="GameSprite" type="Sprite2D" parent="." unique_id=507926808]
+position = Vector2(574, 339)
+texture = ExtResource("3_8ln24")
+
+[node name="GameButton" type="Button" parent="GameSprite" unique_id=2074328551]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -64.0
+offset_right = -64.0
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StartSprite" type="Sprite2D" parent="." unique_id=1071747014]
+modulate = Color(1, 0, 0, 1)
+position = Vector2(573, 216)
+texture = ExtResource("3_8ln24")
+
+[connection signal="pressed" from="GameSprite/GameButton" to="." method="_on_game_button_pressed"]

@@ -14,6 +14,9 @@ class_name Character
 @onready var anim_timer: Timer = $AnimationTimer
 @onready var sprite: Sprite2D = $Sprite
 
+signal inventory_changed(items: Array[CollectibleItem])
+var inventory: Array[CollectibleItem] = []
+
 var _can_roll = true
 var facing_direction: Vector2 = Vector2.DOWN
 
@@ -85,3 +88,17 @@ func set_to_rolling() -> void:
 	idle = false
 	moving = false
 	rolling = true
+	
+func collect_item(item: CollectibleItem) -> void:
+	inventory.append(item)
+	print_debug("item collected")
+	inventory_changed.emit(inventory)
+
+func has_item(item: CollectibleItem) -> bool:
+	return inventory.has(item)
+
+func consume_item(item: CollectibleItem) -> void:
+	if inventory.has(item):
+		inventory.erase(item)
+		print_debug("item used")
+		inventory_changed.emit(inventory)

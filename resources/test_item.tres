@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CollectibleItem" format=3 uid="uid://by63gqomk2y3p"]
+
+[ext_resource type="Script" path="res://scripts/collectible_item.gd" id="1_pdhpq"]
+[ext_resource type="Texture2D" uid="uid://efvme1qdhdxi" path="res://assets/icon.svg" id="1_ro8yb"]
+
+[resource]
+script = ExtResource("1_pdhpq")
+title = "item1"
+icon = ExtResource("1_ro8yb")
+metadata/_custom_type_script = "uid://seo2lqc2vrpq"
