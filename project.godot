@@ -20,6 +20,11 @@ config/icon="res://icon.svg"
 AchievementManager="*uid://b2k5kb2rb6esa"
 DialogManager="*uid://byalvv5jg0yey"
 
+[display]
+
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/ridiculous_coding/plugin.cfg")

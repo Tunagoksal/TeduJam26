@@ -5,8 +5,8 @@ extends Node2D
 @onready var back_data: TileMapLayer = $BackLayer 
 
 # --- GRID CONFIGURATION ---
-@export var chunk_size: int = 2
-@onready var macro_cols: int = 4 
+@export var chunk_size: int = 4
+@onready var macro_cols: int = 4
 @onready var macro_rows: int = 4 
 
 var active_folds: Array[FoldDir] = []
@@ -17,6 +17,8 @@ var locked_directions_fold: Array[FoldDir] = []
 
 var drag_begin_pos:Vector2
 var drag_end_pos:Vector2
+
+var dragging:bool
 
 enum FoldDir { TOP, BOTTOM, LEFT, RIGHT }
 
@@ -36,7 +38,6 @@ func _input(event: InputEvent) -> void:
 				drag_end_pos = get_global_mouse_position()
 				
 				# Calculate direction
-				var delta = drag_begin_pos - drag_end_pos
 				var direction: FoldDir
 				
 				var local_begin = display_layer.to_local(drag_begin_pos)
@@ -47,16 +48,17 @@ func _input(event: InputEvent) -> void:
 				if display_layer.get_used_rect().has_point(cell_begin):
 					direction = get_fold_from_drag(local_begin,local_end,display_layer)
 	
-	
+
+
 				#print("Start:", drag_begin_pos)
 				#print("End:", drag_end_pos)
 				#print("Direction:", direction)
 
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_W: fold_side(FoldDir.TOP)
-		if event.keycode == KEY_S: fold_side(FoldDir.BOTTOM)
-		if event.keycode == KEY_A: fold_side(FoldDir.LEFT)
-		if event.keycode == KEY_D: fold_side(FoldDir.RIGHT)
+		#if event.keycode == KEY_W: fold_side(FoldDir.TOP)
+		#if event.keycode == KEY_S: fold_side(FoldDir.BOTTOM)
+		#if event.keycode == KEY_A: fold_side(FoldDir.LEFT)
+		#if event.keycode == KEY_D: fold_side(FoldDir.RIGHT)
 		
 		if event.keycode == KEY_UP: unfold_side(FoldDir.TOP)
 		if event.keycode == KEY_DOWN: unfold_side(FoldDir.BOTTOM)
