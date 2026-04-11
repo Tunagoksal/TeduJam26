@@ -3,348 +3,264 @@ extends Node2D
 @onready var display_layer: TileMapLayer = $DisplayLayer
 @onready var front_data: TileMapLayer = $FrontLayer
 @onready var back_data: TileMapLayer = $BackLayer 
-@onready var tilemap_cols: int = 4
-@onready var tilemap_rows: int = 4
 
-# Replaced curr_rows and curr_cols with Boundary Tracking
-var min_x: int = 0
-var max_x: int = 3 # (4 columns total: 0, 1, 2, 3)
-var min_y: int = 0
-var max_y: int = 3 # (4 rows total: 0, 1, 2, 3)
-var fold_history: Array = []
+# --- GRID CONFIGURATION ---
+@export var chunk_size: int = 2
+@onready var macro_cols: int = 4 
+@onready var macro_rows: int = 4 
 
+var active_folds: Array[FoldDir] = []
 var is_animating: bool = false
 var animation_duration: float = 0.4 
 
-# Create an Enum so we can easily tell our function which way to fold
 enum FoldDir { TOP, BOTTOM, LEFT, RIGHT }
 
 func _ready() -> void:
-	pass
+	apply_grid_state(simulate_paper_state(active_folds).grid)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
-		
-		# --- FOLD INWARD (WASD) ---
 		if event.keycode == KEY_W: fold_side(FoldDir.TOP)
 		if event.keycode == KEY_S: fold_side(FoldDir.BOTTOM)
 		if event.keycode == KEY_A: fold_side(FoldDir.LEFT)
 		if event.keycode == KEY_D: fold_side(FoldDir.RIGHT)
 		
-		# --- UNDO LAST FOLD ---
-		if event.keycode == KEY_SPACE: undo_last_fold()
-		
+		if event.keycode == KEY_UP: unfold_side(FoldDir.TOP)
+		if event.keycode == KEY_DOWN: unfold_side(FoldDir.BOTTOM)
+		if event.keycode == KEY_LEFT: unfold_side(FoldDir.LEFT)
+		if event.keycode == KEY_RIGHT: unfold_side(FoldDir.RIGHT)
 
-func get_grid_snapshot() -> Dictionary:
-	var snap = {}
-	for x in range(tilemap_cols):
-		for y in range(tilemap_rows):
+# ==========================================
+# THE LAYER STACK SIMULATOR (CRITICAL FIX)
+# ==========================================
+func simulate_paper_state(folds: Array[FoldDir]) -> Dictionary:
+	var grid = {}
+	
+	# 1. Initialize the paper. Every grid cell now holds an ARRAY of layers.
+	for x in range(macro_cols * chunk_size):
+		for y in range(macro_rows * chunk_size):
 			var pos = Vector2i(x, y)
-			snap[pos] = {
-				"id": display_layer.get_cell_source_id(pos),
-				"coords": display_layer.get_cell_atlas_coords(pos),
-				"alt": display_layer.get_cell_alternative_tile(pos)
-			}
-	return snap
+			if front_data.get_cell_source_id(pos) != -1:
+				grid[pos] = [{
+					"orig_pos": pos, 
+					"is_back": false, 
+					"alt": front_data.get_cell_alternative_tile(pos)
+				}]
+			else:
+				grid[pos] = []
+
+	var bounds = { "min_c": 0, "max_c": macro_cols - 1, "min_r": 0, "max_r": macro_rows - 1 }
+
+	# 2. Mathematically stack the layers for each fold
+	for fold in folds:
+		var c_line = 0; var t_line = 0; var is_vert = false; var hinge_idx = 0; var flip = 0
+		
+		if fold == FoldDir.TOP:
+			is_vert = true; c_line = bounds.min_r; t_line = bounds.min_r + 1
+			hinge_idx = max(c_line, t_line) * chunk_size; bounds.min_r += 1
+			
+			# THE FIX: Change this to TRANSFORM_FLIP_H if your texture is mirroring wrong.
+			# (Or use: TileSetAtlasSource.TRANSFORM_FLIP_V | TileSetAtlasSource.TRANSFORM_FLIP_H for a 180-degree rotation)
+			flip = TileSetAtlasSource.TRANSFORM_FLIP_H 
+			
+		elif fold == FoldDir.BOTTOM:
+			is_vert = true; c_line = bounds.max_r; t_line = bounds.max_r - 1
+			hinge_idx = (min(c_line, t_line) + 1) * chunk_size; bounds.max_r -= 1
+			
+			flip = TileSetAtlasSource.TRANSFORM_FLIP_H # Match your Top fold here
+			
+		elif fold == FoldDir.LEFT:
+			is_vert = false; c_line = bounds.min_c; t_line = bounds.min_c + 1
+			hinge_idx = max(c_line, t_line) * chunk_size; bounds.min_c += 1
+			
+			flip = TileSetAtlasSource.TRANSFORM_FLIP_V # Swap this too if needed!
+			
+		elif fold == FoldDir.RIGHT:
+			is_vert = false; c_line = bounds.max_c; t_line = bounds.max_c - 1
+			hinge_idx = (min(c_line, t_line) + 1) * chunk_size; bounds.max_c -= 1
+			
+			flip = TileSetAtlasSource.TRANSFORM_FLIP_V
+
+		var src_min_x = bounds.min_c * chunk_size; var src_max_x = (bounds.max_c + 1) * chunk_size - 1
+		var src_min_y = bounds.min_r * chunk_size; var src_max_y = (bounds.max_r + 1) * chunk_size - 1
+		if is_vert:
+			src_min_y = c_line * chunk_size; src_max_y = (c_line + 1) * chunk_size - 1
+		else:
+			src_min_x = c_line * chunk_size; src_max_x = (c_line + 1) * chunk_size - 1
+
+		# Gather all moving tile stacks
+		var moving_stacks = []
+		for x in range(src_min_x, src_max_x + 1):
+			for y in range(src_min_y, src_max_y + 1):
+				var src_pos = Vector2i(x, y)
+				if grid.has(src_pos) and grid[src_pos].size() > 0:
+					var dst_pos = Vector2i(x, 2 * hinge_idx - 1 - y) if is_vert else Vector2i(2 * hinge_idx - 1 - x, y)
+					moving_stacks.append({"src": src_pos, "dst": dst_pos, "layers": grid[src_pos]})
+					grid[src_pos] = [] # Clear the original location
+
+		# Drop the stacks onto their new destination
+		for move in moving_stacks:
+			var layers = move.layers
+			if not grid.has(move.dst): grid[move.dst] = []
+			
+			# Physical Rule of Paper: When a stack of layers folds over, its order reverses!
+			# (The top flap hits the table first, becoming the bottom layer)
+			layers.reverse()
+			
+			for tile in layers:
+				tile.is_back = not tile.is_back
+				tile.alt = tile.alt ^ flip
+				grid[move.dst].append(tile)
+
+	return {"grid": grid, "bounds": bounds}
+
+# Helper to fetch texture data securely
+func get_tile_render_data(tile: Dictionary) -> Dictionary:
+	if tile.is_back:
+		return {
+			"id": back_data.get_cell_source_id(tile.orig_pos),
+			"coords": back_data.get_cell_atlas_coords(tile.orig_pos),
+			"alt": tile.alt
+		}
+	return {
+		"id": front_data.get_cell_source_id(tile.orig_pos),
+		"coords": front_data.get_cell_atlas_coords(tile.orig_pos),
+		"alt": tile.alt
+	}
+
+func apply_grid_state(grid_state: Dictionary) -> void:
+	display_layer.clear()
+	for pos in grid_state:
+		var stack = grid_state[pos]
+		if stack.size() > 0:
+			# Only draw the tile at the very top of the stack
+			var top_tile = stack.back() 
+			var render = get_tile_render_data(top_tile)
+			display_layer.set_cell(pos, render.id, render.coords, render.alt)
+
+# ==========================================
+# ANIMATION & LOCKING LOGIC
+# ==========================================
+func get_last_fold_index(target_dir: FoldDir) -> int:
+	for i in range(active_folds.size() - 1, -1, -1):
+		if active_folds[i] == target_dir: return i
+	return -1
+
+func is_fold_locked(target_dir: FoldDir) -> bool:
+	var idx = get_last_fold_index(target_dir)
+	if idx == -1: return true
+	var target_vert = (target_dir == FoldDir.TOP or target_dir == FoldDir.BOTTOM)
+	for i in range(idx + 1, active_folds.size()):
+		var later_vert = (active_folds[i] == FoldDir.TOP or active_folds[i] == FoldDir.BOTTOM)
+		if target_vert != later_vert: return true
+	return false
 
 func fold_side(dir: FoldDir) -> void:
 	if is_animating: return
 	
-	var is_vertical = (dir == FoldDir.TOP or dir == FoldDir.BOTTOM)
-	
-	# Prevent folding if there's no paper left to fold!
-	if is_vertical and min_y >= max_y: return
-	if not is_vertical and min_x >= max_x: return
+	var b = simulate_paper_state(active_folds).bounds
+	if (dir == FoldDir.TOP or dir == FoldDir.BOTTOM) and b.min_r >= b.max_r: return
+	if (dir == FoldDir.LEFT or dir == FoldDir.RIGHT) and b.min_c >= b.max_c: return
 	
 	is_animating = true
-	
-	# TAKE A SNAPSHOT AND SAVE IT TO HISTORY
-	var current_snapshot = get_grid_snapshot()
-	fold_history.append({
-		"dir": dir,
-		"snapshot": current_snapshot
-	})
-	
-	# --- 1. DYNAMIC SETUP BASED ON DIRECTION ---
-	var current_line: int
-	var target_line: int
-	var loop_start: int
-	var loop_end: int
-	var flip_flag: int
-	var scale_prop: String
-	
-	var hinge_shift: Vector2
-	var initial_offset: Vector2
-	var target_offset: Vector2
-	
-	var cell_size = display_layer.tile_set.tile_size
-	
-	if dir == FoldDir.TOP:
-		current_line = min_y
-		target_line = min_y + 1
-		loop_start = min_x; loop_end = max_x
-		flip_flag = TileSetAtlasSource.TRANSFORM_FLIP_V
-		scale_prop = "scale:y"
-		hinge_shift = Vector2(0, cell_size.y / 2.0)
-		initial_offset = Vector2(0, -cell_size.y / 2.0)
-		target_offset = Vector2(0, cell_size.y / 2.0)
-		min_y += 1 # Shrink our active paper bounds
-		
-	elif dir == FoldDir.BOTTOM:
-		current_line = max_y
-		target_line = max_y - 1
-		loop_start = min_x; loop_end = max_x
-		flip_flag = TileSetAtlasSource.TRANSFORM_FLIP_V
-		scale_prop = "scale:y"
-		hinge_shift = Vector2(0, -cell_size.y / 2.0)
-		initial_offset = Vector2(0, cell_size.y / 2.0)
-		target_offset = Vector2(0, -cell_size.y / 2.0)
-		max_y -= 1
-		
-	elif dir == FoldDir.LEFT:
-		current_line = min_x
-		target_line = min_x + 1
-		loop_start = min_y; loop_end = max_y
-		flip_flag = TileSetAtlasSource.TRANSFORM_FLIP_H
-		scale_prop = "scale:x" # Side folds squish horizontally!
-		hinge_shift = Vector2(cell_size.x / 2.0, 0)
-		initial_offset = Vector2(-cell_size.x / 2.0, 0)
-		target_offset = Vector2(cell_size.x / 2.0, 0)
-		min_x += 1
-		
-	elif dir == FoldDir.RIGHT:
-		current_line = max_x
-		target_line = max_x - 1
-		loop_start = min_y; loop_end = max_y
-		flip_flag = TileSetAtlasSource.TRANSFORM_FLIP_H
-		scale_prop = "scale:x"
-		hinge_shift = Vector2(-cell_size.x / 2.0, 0)
-		initial_offset = Vector2(cell_size.x / 2.0, 0)
-		target_offset = Vector2(-cell_size.x / 2.0, 0)
-		max_x -= 1
+	var pre_state = simulate_paper_state(active_folds)
+	active_folds.append(dir)
+	var post_state = simulate_paper_state(active_folds)
+	_animate_chunk_transition(dir, true, pre_state, post_state)
 
-	# --- 2. GATHER SPRITES FOR THE LINE ---
-	var row_data = [] 
-	
-	for i in range(loop_start, loop_end + 1):
-		var cell_pos = Vector2i(i, current_line) if is_vertical else Vector2i(current_line, i)
-		var target_pos = Vector2i(i, target_line) if is_vertical else Vector2i(target_line, i)
-		
-		var front_id = display_layer.get_cell_source_id(cell_pos)
-		var front_coords = display_layer.get_cell_atlas_coords(cell_pos)
-		var front_alt = display_layer.get_cell_alternative_tile(cell_pos)
-		
-		var back_id = back_data.get_cell_source_id(cell_pos)
-		var back_coords = back_data.get_cell_atlas_coords(cell_pos)
-		var back_alt = back_data.get_cell_alternative_tile(cell_pos)
-		
-		# Mathematical XOR operator (^): It perfectly toggles the flip state! 
-		# If it's already flipped, it unflips it. If normal, it flips it.
-		back_alt = back_alt ^ flip_flag 
-		
-		display_layer.set_cell(cell_pos, -1)
-		
-		if front_id != -1 and back_id != -1:
-			var temp_sprite = Sprite2D.new()
-			display_layer.add_child(temp_sprite)
-			
-			var front_source: TileSetAtlasSource = display_layer.tile_set.get_source(front_id) as TileSetAtlasSource
-			temp_sprite.texture = front_source.texture
-			temp_sprite.region_enabled = true
-			temp_sprite.region_rect = front_source.get_tile_texture_region(front_coords)
-			
-			# Accurately restore any existing flips on both axes
-			temp_sprite.flip_v = (front_alt & TileSetAtlasSource.TRANSFORM_FLIP_V) != 0
-			temp_sprite.flip_h = (front_alt & TileSetAtlasSource.TRANSFORM_FLIP_H) != 0
-			
-			temp_sprite.position = display_layer.map_to_local(cell_pos) + hinge_shift
-			temp_sprite.offset = initial_offset
-			
-			row_data.append({
-				"target_pos": target_pos,
-				"id": back_id,
-				"coords": back_coords,
-				"alt": back_alt,
-				"sprite": temp_sprite
-			})
-
-	# --- 3. THE UNIVERSAL ANIMATION TWEEN ---
-	var tween = get_tree().create_tween()
-	
-	# Phase 1: Squish
-	for data in row_data:
-		tween.parallel().tween_property(data.sprite, scale_prop, 0.0, animation_duration / 2.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-	
-	# Phase 2: Swap Textures & Adjust Offsets
-	tween.tween_callback(func():
-		var tileset = display_layer.tile_set
-		for data in row_data:
-			var back_source: TileSetAtlasSource = tileset.get_source(data.id) as TileSetAtlasSource
-			data.sprite.texture = back_source.texture
-			data.sprite.region_rect = back_source.get_tile_texture_region(data.coords)
-			data.sprite.offset = target_offset
-			
-			# Apply our perfectly toggled flip state to the new texture
-			data.sprite.flip_v = (data.alt & TileSetAtlasSource.TRANSFORM_FLIP_V) != 0
-			data.sprite.flip_h = (data.alt & TileSetAtlasSource.TRANSFORM_FLIP_H) != 0
-	)
-	
-	# Phase 3: Expand
-	for data in row_data:
-		tween.parallel().tween_property(data.sprite, scale_prop, 1.0, animation_duration / 2.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	
-	# Phase 4: Snap and Cleanup
-	tween.tween_callback(func():
-		for data in row_data:
-			display_layer.set_cell(data.target_pos, data.id, data.coords, data.alt)
-			data.sprite.queue_free()
-		is_animating = false
-	)
-
-func undo_last_fold() -> void:
-	if is_animating or fold_history.is_empty(): return
+func unfold_side(dir: FoldDir) -> void:
+	if is_animating or is_fold_locked(dir): return
 	is_animating = true
+	var pre_state = simulate_paper_state(active_folds)
 	
-	# Pop the last action from our history stack
-	var last_action = fold_history.pop_back()
-	var dir = last_action.dir
-	var target_state = last_action.snapshot
+	var idx = get_last_fold_index(dir)
+	active_folds.remove_at(idx)
 	
-	var is_vertical = (dir == FoldDir.TOP or dir == FoldDir.BOTTOM)
+	var post_state = simulate_paper_state(active_folds)
+	_animate_chunk_transition(dir, false, pre_state, post_state)
+
+func _animate_chunk_transition(dir: FoldDir, is_folding: bool, pre: Dictionary, post: Dictionary) -> void:
+	var b = pre.bounds
+	var is_vert = false; var scale_prop = ""; var hinge_idx = 0; 
+	var c_line = 0; var t_line = 0;
 	
-	var current_line: int
-	var target_line: int
-	var loop_start: int
-	var loop_end: int
-	
-	var scale_prop: String
-	var hinge_shift: Vector2
-	var initial_offset: Vector2
-	var target_offset: Vector2
+	if dir == FoldDir.TOP:
+		is_vert = true; scale_prop = "scale:y"; c_line = b.min_r
+		t_line = b.min_r + 1 if is_folding else b.min_r - 1
+		hinge_idx = max(c_line, t_line) * chunk_size
+	elif dir == FoldDir.BOTTOM:
+		is_vert = true; scale_prop = "scale:y"; c_line = b.max_r
+		t_line = b.max_r - 1 if is_folding else b.max_r + 1
+		hinge_idx = (min(c_line, t_line) + 1) * chunk_size
+	elif dir == FoldDir.LEFT:
+		is_vert = false; scale_prop = "scale:x"; c_line = b.min_c
+		t_line = b.min_c + 1 if is_folding else b.min_c - 1
+		hinge_idx = max(c_line, t_line) * chunk_size
+	elif dir == FoldDir.RIGHT:
+		is_vert = false; scale_prop = "scale:x"; c_line = b.max_c
+		t_line = b.max_c - 1 if is_folding else b.max_c + 1
+		hinge_idx = (min(c_line, t_line) + 1) * chunk_size
+
+	var src_min_x = b.min_c * chunk_size; var src_max_x = (b.max_c + 1) * chunk_size - 1
+	var src_min_y = b.min_r * chunk_size; var src_max_y = (b.max_r + 1) * chunk_size - 1
+	if is_vert:
+		src_min_y = c_line * chunk_size; src_max_y = (c_line + 1) * chunk_size - 1
+	else:
+		src_min_x = c_line * chunk_size; src_max_x = (c_line + 1) * chunk_size - 1
+
+	var pivot = Node2D.new()
+	display_layer.add_child(pivot)
+	var temp_layer = TileMapLayer.new()
+	temp_layer.tile_set = display_layer.tile_set
+	pivot.add_child(temp_layer)
 	
 	var cell_size = display_layer.tile_set.tile_size
+	var hinge_px = Vector2(hinge_idx * cell_size.x, hinge_idx * cell_size.y) if not is_vert else Vector2(0, hinge_idx * cell_size.y)
+	if is_vert: hinge_px.x = 0
+	else: hinge_px.y = 0
 	
-	# Setup the reverse geometry based on the direction we originally folded
-	if dir == FoldDir.TOP:
-		current_line = min_y
-		target_line = min_y - 1
-		loop_start = min_x; loop_end = max_x
-		scale_prop = "scale:y"
-		hinge_shift = Vector2(0, -cell_size.y / 2.0)
-		initial_offset = Vector2(0, cell_size.y / 2.0)
-		target_offset = Vector2(0, -cell_size.y / 2.0)
-		
-	elif dir == FoldDir.BOTTOM:
-		current_line = max_y
-		target_line = max_y + 1
-		loop_start = min_x; loop_end = max_x
-		scale_prop = "scale:y"
-		hinge_shift = Vector2(0, cell_size.y / 2.0)
-		initial_offset = Vector2(0, -cell_size.y / 2.0)
-		target_offset = Vector2(0, cell_size.y / 2.0)
-		
-	elif dir == FoldDir.LEFT:
-		current_line = min_x
-		target_line = min_x - 1
-		loop_start = min_y; loop_end = max_y
-		scale_prop = "scale:x"
-		hinge_shift = Vector2(-cell_size.x / 2.0, 0)
-		initial_offset = Vector2(cell_size.x / 2.0, 0)
-		target_offset = Vector2(-cell_size.x / 2.0, 0)
-		
-	elif dir == FoldDir.RIGHT:
-		current_line = max_x
-		target_line = max_x + 1
-		loop_start = min_y; loop_end = max_y
-		scale_prop = "scale:x"
-		hinge_shift = Vector2(cell_size.x / 2.0, 0)
-		initial_offset = Vector2(-cell_size.x / 2.0, 0)
-		target_offset = Vector2(cell_size.x / 2.0, 0)
+	pivot.position = hinge_px
+	temp_layer.position = -hinge_px
 
-	var row_data = [] 
-	
-	for i in range(loop_start, loop_end + 1):
-		var current_pos = Vector2i(i, current_line) if is_vertical else Vector2i(current_line, i)
-		var target_pos = Vector2i(i, target_line) if is_vertical else Vector2i(target_line, i)
-		
-		# 1. Grab the flap currently sitting on the display
-		var flap_id = display_layer.get_cell_source_id(current_pos)
-		var flap_coords = display_layer.get_cell_atlas_coords(current_pos)
-		var flap_alt = display_layer.get_cell_alternative_tile(current_pos)
-		
-		# 2. Grab what the destination flap SHOULD be from our history snapshot!
-		var dest_data = target_state[target_pos]
-		
-		# 3. Restore the tiles underneath instantly from our history snapshot!
-		var underneath_data = target_state[current_pos]
-		display_layer.set_cell(current_pos, underneath_data.id, underneath_data.coords, underneath_data.alt)
-		
-		if flap_id != -1:
-			var temp_sprite = Sprite2D.new()
-			display_layer.add_child(temp_sprite)
+	for x in range(src_min_x, src_max_x + 1):
+		for y in range(src_min_y, src_max_y + 1):
+			var src_pos = Vector2i(x, y)
 			
-			var flap_source: TileSetAtlasSource = display_layer.tile_set.get_source(flap_id) as TileSetAtlasSource
-			temp_sprite.texture = flap_source.texture
-			temp_sprite.region_enabled = true
-			temp_sprite.region_rect = flap_source.get_tile_texture_region(flap_coords)
-			
-			temp_sprite.flip_v = (flap_alt & TileSetAtlasSource.TRANSFORM_FLIP_V) != 0
-			temp_sprite.flip_h = (flap_alt & TileSetAtlasSource.TRANSFORM_FLIP_H) != 0
-			
-			temp_sprite.position = display_layer.map_to_local(current_pos) + hinge_shift
-			temp_sprite.offset = initial_offset
-			
-			row_data.append({
-				"sprite": temp_sprite,
-				"dest_id": dest_data.id,
-				"dest_coords": dest_data.coords,
-				"dest_alt": dest_data.alt,
-			})
-
-	var tween = get_tree().create_tween()
-	
-	# Squish
-	for data in row_data:
-		tween.parallel().tween_property(data.sprite, scale_prop, 0.0, animation_duration / 2.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-	
-	# Swap to the historical texture
-	tween.tween_callback(func():
-		var tileset = display_layer.tile_set
-		for data in row_data:
-			# If the tile was blank in history, hide the sprite so it doesn't error out
-			if data.dest_id == -1:
-				data.sprite.visible = false
-				continue
+			var pre_stack = pre.grid.get(src_pos, [])
+			if not is_folding:
+				# Instantly reveal the tiles that were underneath the flap!
+				var post_stack = post.grid.get(src_pos, [])
+				if post_stack.size() > 0:
+					var r = get_tile_render_data(post_stack.back())
+					display_layer.set_cell(src_pos, r.id, r.coords, r.alt)
+				else:
+					display_layer.set_cell(src_pos, -1)
+			else:
+				display_layer.set_cell(src_pos, -1)
 				
-			var dest_source: TileSetAtlasSource = tileset.get_source(data.dest_id) as TileSetAtlasSource
-			data.sprite.texture = dest_source.texture
-			data.sprite.region_rect = dest_source.get_tile_texture_region(data.dest_coords)
-			data.sprite.offset = target_offset
-			
-			data.sprite.flip_v = (data.dest_alt & TileSetAtlasSource.TRANSFORM_FLIP_V) != 0
-			data.sprite.flip_h = (data.dest_alt & TileSetAtlasSource.TRANSFORM_FLIP_H) != 0
+			if pre_stack.size() > 0:
+				var r = get_tile_render_data(pre_stack.back())
+				temp_layer.set_cell(src_pos, r.id, r.coords, r.alt)
+
+	var tween = get_tree().create_tween()
+	tween.tween_property(pivot, scale_prop, 0.0, animation_duration / 2.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	
+	tween.tween_callback(func():
+		temp_layer.clear()
+		for x in range(src_min_x, src_max_x + 1):
+			for y in range(src_min_y, src_max_y + 1):
+				var src_pos = Vector2i(x, y)
+				var dst_pos = Vector2i(x, 2 * hinge_idx - 1 - y) if is_vert else Vector2i(2 * hinge_idx - 1 - x, y)
+				var post_stack = post.grid.get(dst_pos, [])
+				if post_stack.size() > 0:
+					var r = get_tile_render_data(post_stack.back())
+					temp_layer.set_cell(dst_pos, r.id, r.coords, r.alt)
 	)
 	
-	# Expand
-	for data in row_data:
-		tween.parallel().tween_property(data.sprite, scale_prop, 1.0, animation_duration / 2.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.tween_property(pivot, scale_prop, 1.0, animation_duration / 2.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	
-	# Absolute Sync Cleanup
 	tween.tween_callback(func():
-		for data in row_data:
-			data.sprite.queue_free()
-			
-		# FORCES the entire grid to snap perfectly to the history state. 
-		# This eliminates 100% of spatial overlapping bugs!
-		for pos in target_state:
-			var d = target_state[pos]
-			display_layer.set_cell(pos, d.id, d.coords, d.alt)
-			
-		# Restore our active paper bounds
-		if dir == FoldDir.TOP: min_y -= 1
-		elif dir == FoldDir.BOTTOM: max_y += 1
-		elif dir == FoldDir.LEFT: min_x -= 1
-		elif dir == FoldDir.RIGHT: max_x += 1
-		
+		pivot.queue_free()
+		apply_grid_state(post.grid) 
 		is_animating = false
 	)
