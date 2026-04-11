@@ -39,31 +39,15 @@ func _input(event: InputEvent) -> void:
 				var delta = drag_begin_pos - drag_end_pos
 				var direction: FoldDir
 				
-				if abs(delta.x) > abs(delta.y):
-					direction = FoldDir.RIGHT if delta.x > 0 else FoldDir.LEFT
-				else:
-					direction = FoldDir.BOTTOM if delta.y > 0 else FoldDir.TOP
-				
 				var local_begin = display_layer.to_local(drag_begin_pos)
 				var cell_begin = display_layer.local_to_map(local_begin)
 				var local_end = display_layer.to_local(drag_end_pos)
 				var cell_end = display_layer.local_to_map(local_end)
+				
 				if display_layer.get_used_rect().has_point(cell_begin):
-					if display_layer.get_used_rect().has_point(cell_end):
-						if abs(delta.x) > abs(delta.y):
-							direction = FoldDir.RIGHT if delta.x > 0 else FoldDir.LEFT
-						else:
-							direction = FoldDir.BOTTOM if delta.y > 0 else FoldDir.TOP
-
-						fold_by_mouse(local_begin,direction)
-
-					else:
-						if abs(delta.x) > abs(delta.y):
-							direction = FoldDir.LEFT if delta.x > 0 else FoldDir.RIGHT
-						else:
-							direction = FoldDir.TOP if delta.y > 0 else FoldDir.BOTTOM
-						
-						unfold_by_mouse(local_begin,direction)
+					direction = get_fold_from_drag(local_begin,local_end,display_layer)
+	
+	
 				#print("Start:", drag_begin_pos)
 				#print("End:", drag_end_pos)
 				#print("Direction:", direction)
@@ -86,6 +70,60 @@ func _input(event: InputEvent) -> void:
 		# Test Unfold Locks
 		if event.keycode == KEY_C: lock_unfold_direction(FoldDir.TOP)
 		if event.keycode == KEY_V: unlock_unfold_direction(FoldDir.TOP)
+
+
+func get_fold_from_drag(begin: Vector2, end: Vector2, tilemap: TileMapLayer) -> FoldDir:
+	var delta = end - begin
+	
+	var dir: FoldDir
+	if abs(delta.x) > abs(delta.y):
+		dir = FoldDir.RIGHT if delta.x > 0 else FoldDir.LEFT
+	else:
+		dir = FoldDir.BOTTOM if delta.y > 0 else FoldDir.TOP
+	
+	var used = tilemap.get_used_rect()
+	var center = used.get_center()
+	
+	var cell_begin = tilemap.local_to_map(begin)
+	
+	match dir:
+		FoldDir.RIGHT:
+			if cell_begin.x < center.x:
+				dir = FoldDir.LEFT   # left side → fold inward
+				fold_by_mouse(begin,dir)
+				return FoldDir.LEFT
+			else:
+				unfold_by_mouse(begin,dir)
+				return FoldDir.RIGHT  # right side → unfold outward
+		
+		FoldDir.LEFT:
+			if cell_begin.x < center.x:
+				unfold_by_mouse(begin,dir)
+				return FoldDir.LEFT
+			else:
+				dir = FoldDir.RIGHT
+				fold_by_mouse(begin,dir)
+				return FoldDir.RIGHT
+		FoldDir.TOP:
+			if cell_begin.y < center.y:
+				unfold_by_mouse(begin,dir)
+				return FoldDir.TOP
+			else:
+				dir = FoldDir.BOTTOM
+				fold_by_mouse(begin,dir)
+				return FoldDir.BOTTOM
+		
+		FoldDir.BOTTOM:
+			if cell_begin.y < center.y:
+				dir = FoldDir.TOP
+				fold_by_mouse(begin,dir)
+				return FoldDir.TOP
+			else:
+				unfold_by_mouse(begin,dir)
+				return FoldDir.BOTTOM
+	
+	return dir
+
 
 func unfold_by_mouse(local_begin_pos, direction):
 	unfold_side(direction)
