@@ -10,9 +10,11 @@ class_name Character
 @export var roll_force: float = 500.0
 @export var roll_cooldown: float = 1000.0
 
+
 @onready var timer: Timer = $Timer
 @onready var anim_timer: Timer = $AnimationTimer
-@onready var sprite: Sprite2D = $Sprite
+@onready var sprite: AnimatedSprite2D = $Sprite
+
 
 signal inventory_changed(items: Array[CollectibleItem])
 var inventory: Array[CollectibleItem] = []
@@ -20,7 +22,7 @@ var inventory: Array[CollectibleItem] = []
 var _can_roll = true
 var facing_direction: Vector2 = Vector2.DOWN
 
-var rotation_val: float = PI/8
+var rotation_val: float = PI/16
 var rotation_moment: int = 0
 
 var idle := true
@@ -84,6 +86,7 @@ func _on_animation_timer_timeout() -> void:
 	if idle or rolling:
 		return
 	sprite.rotation = rotation_val*(1.0-2.0*rotation_moment)
+	sprite.frame = rotation_moment
 	rotation_moment = (rotation_moment + 1) % 2
 
 

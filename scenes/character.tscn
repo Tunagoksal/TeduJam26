@@ -1,11 +1,26 @@
 [gd_scene format=3 uid="uid://dnoi8sf8ixw0s"]
 
 [ext_resource type="Script" uid="uid://d21jfe6m1gb0m" path="res://scripts/character.gd" id="1_rkhd4"]
-[ext_resource type="Texture2D" uid="uid://efvme1qdhdxi" path="res://assets/icon.svg" id="2_lrhn5"]
+[ext_resource type="Texture2D" uid="uid://bs2u1o1q5na7w" path="res://assets/character2.webp" id="2_lrhn5"]
+[ext_resource type="Texture2D" uid="uid://nbnxgva0iffm" path="res://assets/character.webp" id="2_rkhd4"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xty33"]
 radius = 3.0
 height = 6.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_my7n2"]
+animations = [{
+"frames": [{
+"duration": 3.0,
+"texture": ExtResource("2_lrhn5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_rkhd4")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Character" type="CharacterBody2D" unique_id=1749950208]
 script = ExtResource("1_rkhd4")
@@ -13,8 +28,8 @@ script = ExtResource("1_rkhd4")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1731430528]
 shape = SubResource("CapsuleShape2D_xty33")
 
-[node name="Sprite" type="Sprite2D" parent="." unique_id=2105408339]
-texture = ExtResource("2_lrhn5")
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=1692323104]
+sprite_frames = SubResource("SpriteFrames_my7n2")
 
 [node name="Timer" type="Timer" parent="." unique_id=234181893]
 wait_time = 0.5
