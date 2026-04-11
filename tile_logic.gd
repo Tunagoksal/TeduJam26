@@ -12,6 +12,7 @@ extends Node2D
 var active_folds: Array[FoldDir] = []
 var is_animating: bool = false
 var animation_duration: float = 0.4 
+var locked_directions: Array[FoldDir] = []
 
 enum FoldDir { TOP, BOTTOM, LEFT, RIGHT }
 
@@ -29,6 +30,9 @@ func _input(event: InputEvent) -> void:
 		if event.keycode == KEY_DOWN: unfold_side(FoldDir.BOTTOM)
 		if event.keycode == KEY_LEFT: unfold_side(FoldDir.LEFT)
 		if event.keycode == KEY_RIGHT: unfold_side(FoldDir.RIGHT)
+		
+		if event.keycode == KEY_L: lock_direction(FoldDir.TOP)
+		if event.keycode == KEY_U: unlock_direction(FoldDir.TOP)
 
 # ==========================================
 # THE LAYER STACK SIMULATOR (CRITICAL FIX)
@@ -146,7 +150,19 @@ func get_last_fold_index(target_dir: FoldDir) -> int:
 		if active_folds[i] == target_dir: return i
 	return -1
 
+# Adds a direction to the lock list (prevents duplicates)
+func lock_direction(dir: FoldDir) -> void:
+	if dir not in locked_directions:
+		locked_directions.append(dir)
+
+# Removes a direction from the lock list safely
+func unlock_direction(dir: FoldDir) -> void:
+	if dir in locked_directions:
+		locked_directions.erase(dir)
+
 func is_fold_locked(target_dir: FoldDir) -> bool:
+	if target_dir in locked_directions:
+		return true
 	var idx = get_last_fold_index(target_dir)
 	if idx == -1: return true
 	var target_vert = (target_dir == FoldDir.TOP or target_dir == FoldDir.BOTTOM)
