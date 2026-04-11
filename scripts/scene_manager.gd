@@ -3,6 +3,7 @@ extends Node
 signal content_invalid
 signal content_finished_loading(content)
 
+
 var loading_screen:LoadingScreen
 var _transition: String
 var _loading_screen_scene: PackedScene = preload("res://scenes/loading_screen.tscn")
