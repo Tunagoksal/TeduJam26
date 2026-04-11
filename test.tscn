@@ -1,11 +1,14 @@
 [gd_scene format=3 uid="uid://b6vf1aji6dy38"]
 
 [ext_resource type="PackedScene" uid="uid://e0knnc7cu0fm" path="res://scenes/inventory_ui.tscn" id="1_6uqi0"]
+[ext_resource type="Script" uid="uid://b8vffe7fik1nm" path="res://scripts/level.gd" id="1_ykrsh"]
 [ext_resource type="PackedScene" uid="uid://dnoi8sf8ixw0s" path="res://scenes/character.tscn" id="2_ppyta"]
 [ext_resource type="PackedScene" uid="uid://duekrr7tjcmep" path="res://scenes/item.tscn" id="3_ykrsh"]
 [ext_resource type="Resource" uid="uid://by63gqomk2y3p" path="res://resources/test_item.tres" id="4_ppyta"]
+[ext_resource type="Script" uid="uid://fvvajo36t8ay" path="res://scripts/scissor.gd" id="5_g14j6"]
 
 [node name="test" type="Node2D" unique_id=643083536]
+script = ExtResource("1_ykrsh")
 
 [node name="InventoryUI" parent="." unique_id=1902873453 node_paths=PackedStringArray("player") instance=ExtResource("1_6uqi0")]
 player = NodePath("../Character")
@@ -14,9 +17,18 @@ player = NodePath("../Character")
 position = Vector2(105, 153)
 
 [node name="Item" parent="." unique_id=2141756766 instance=ExtResource("3_ykrsh")]
-position = Vector2(433, 156)
+position = Vector2(760, 119)
+script = ExtResource("5_g14j6")
 item_data = ExtResource("4_ppyta")
 
 [node name="Item2" parent="." unique_id=893500379 instance=ExtResource("3_ykrsh")]
-position = Vector2(428, 399)
+position = Vector2(990, 403)
+item_data = ExtResource("4_ppyta")
+
+[node name="Item3" parent="." unique_id=1315254649 instance=ExtResource("3_ykrsh")]
+position = Vector2(982, 145)
+item_data = ExtResource("4_ppyta")
+
+[node name="Item4" parent="." unique_id=1147736303 instance=ExtResource("3_ykrsh")]
+position = Vector2(792, 329)
 item_data = ExtResource("4_ppyta")

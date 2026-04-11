@@ -6,5 +6,11 @@
 script = ExtResource("1_tahbm")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1031093107]
-offset_right = 40.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
 offset_bottom = 40.0
+grow_horizontal = 2
+alignment = 1

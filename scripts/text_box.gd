@@ -17,7 +17,6 @@ var space_time = 0.06
 var punctuation_time = 0.2
 
 
-
 func display_text(text_to_display:String,letter_sfx:AudioStreamWAV):
 	print("Display text")
 	text = text_to_display
