@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ch4mkp5x2w71q"
-path="res://.godot/imported/Tree_48_x_48_px.png-99d8a59a76176a4b9e0c26fc1d755507.ctex"
+uid="uid://bc1sisv3g3woh"
+path="res://.godot/imported/real_character.webp-c02fb867e334199d78b28986dccef0dc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tiles/Tree_48_x_48_px.png"
-dest_files=["res://.godot/imported/Tree_48_x_48_px.png-99d8a59a76176a4b9e0c26fc1d755507.ctex"]
+source_file="res://assets/tiles/real_character.webp"
+dest_files=["res://.godot/imported/real_character.webp-c02fb867e334199d78b28986dccef0dc.ctex"]
 
 [params]
 

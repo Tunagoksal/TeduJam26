@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c2jhylviiuo3t"
-path="res://.godot/imported/bush.webp-f0773ba10cc029600455dea50202dfa8.ctex"
+uid="uid://b7stk774087bo"
+path="res://.godot/imported/character_smushed.webp-63c747ae9b55d4f27c72aa6411712033.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tiles/bush.webp"
-dest_files=["res://.godot/imported/bush.webp-f0773ba10cc029600455dea50202dfa8.ctex"]
+source_file="res://assets/character_smushed.webp"
+dest_files=["res://.godot/imported/character_smushed.webp-63c747ae9b55d4f27c72aa6411712033.ctex"]
 
 [params]
 

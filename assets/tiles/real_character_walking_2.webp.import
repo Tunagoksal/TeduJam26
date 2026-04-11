@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dj0tjtgxrdhmm"
-path="res://.godot/imported/castle_with_flag.webp-d2f364d7d236bcdc297217eaa21fd3b8.ctex"
+uid="uid://dh17n4bhmx8l8"
+path="res://.godot/imported/real_character_walking_2.webp-c2503b65cf9c2998c9b975ce8c1dc72b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tiles/castle_with_flag.webp"
-dest_files=["res://.godot/imported/castle_with_flag.webp-d2f364d7d236bcdc297217eaa21fd3b8.ctex"]
+source_file="res://assets/tiles/real_character_walking_2.webp"
+dest_files=["res://.godot/imported/real_character_walking_2.webp-c2503b65cf9c2998c9b975ce8c1dc72b.ctex"]
 
 [params]
 

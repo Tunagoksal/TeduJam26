@@ -6,8 +6,8 @@ extends Node2D
 
 # --- GRID CONFIGURATION ---
 @export var chunk_size: int = 2
-@onready var macro_cols: int = 4
-@onready var macro_rows: int = 4 
+@export var macro_cols: int = 4
+@export var macro_rows: int = 4 
 
 var arrow_cursor_texture = load("res://assets/Light/Arrows/Arrow2.png")
 var point_cursor_texture = load("res://assets/Light/Hands/Hand2.png")

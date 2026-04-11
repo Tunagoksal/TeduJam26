@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://lrej723tcf57"
-path="res://.godot/imported/castledragon.webp-e22bf556b4eed837e3461ab307ab3854.ctex"
+uid="uid://botw7b2lcrmky"
+path="res://.godot/imported/map_items_transparent.png-9592a6bbe0ae69f239dbd155c4513e61.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tiles/castledragon.webp"
-dest_files=["res://.godot/imported/castledragon.webp-e22bf556b4eed837e3461ab307ab3854.ctex"]
+source_file="res://assets/tiles/map_items_transparent.png"
+dest_files=["res://.godot/imported/map_items_transparent.png-9592a6bbe0ae69f239dbd155c4513e61.ctex"]
 
 [params]
 

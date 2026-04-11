@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b35x1rqgy4sbl"
-path="res://.godot/imported/horizontal.webp-8704d41d5396ffc1ab2d360b385f308c.ctex"
+uid="uid://bukacx18x2khk"
+path="res://.godot/imported/real_character.webp-71087a2cdf6c189315cf7157725d6f20.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tiles/horizontal.webp"
-dest_files=["res://.godot/imported/horizontal.webp-8704d41d5396ffc1ab2d360b385f308c.ctex"]
+source_file="res://assets/real_character.webp"
+dest_files=["res://.godot/imported/real_character.webp-71087a2cdf6c189315cf7157725d6f20.ctex"]
 
 [params]
 
