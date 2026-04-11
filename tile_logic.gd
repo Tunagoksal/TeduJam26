@@ -9,6 +9,10 @@ extends Node2D
 @onready var macro_cols: int = 4
 @onready var macro_rows: int = 4 
 
+var arrow_cursor_texture = load("res://assets/Light/Arrows/Arrow2.png")
+var point_cursor_texture = load("res://assets/Light/Hands/Hand2.png")
+var drag_cursor_texture = load("res://assets/Light/Hands/Hand_Drag2.png")
+
 var active_folds: Array[FoldDir] = []
 var is_animating: bool = false
 var animation_duration: float = 0.4 
@@ -23,19 +27,42 @@ var dragging:bool
 enum FoldDir { TOP, BOTTOM, LEFT, RIGHT }
 
 func _ready() -> void:
+	Input.set_custom_mouse_cursor(point_cursor_texture)
 	apply_grid_state(simulate_paper_state(active_folds).grid)
 
 func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion and !dragging:
+		var mouse_pos = get_global_mouse_position()
+		var local_pos = display_layer.to_local(mouse_pos)
+		var cell = display_layer.local_to_map(local_pos)
+		if display_layer.get_used_rect().has_point(cell):
+			Input.set_custom_mouse_cursor(point_cursor_texture)
+		else:
+			Input.set_custom_mouse_cursor(arrow_cursor_texture)
+	
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 
 			if event.pressed:
 				# Mouse pressed
 				drag_begin_pos = get_global_mouse_position()
+				dragging = true
+				var local_drag_begin = display_layer.to_local(drag_begin_pos)
+				var cell = display_layer.local_to_map(local_drag_begin)
+				if display_layer.get_used_rect().has_point(cell):
+					Input.set_custom_mouse_cursor(drag_cursor_texture)
+
 			
 			else:
-				# Mouse released
+				dragging = false
 				drag_end_pos = get_global_mouse_position()
+				
+				var local_drag_end = display_layer.to_local(drag_end_pos)
+				var cell = display_layer.local_to_map(local_drag_end)
+				if display_layer.get_used_rect().has_point(cell):
+					Input.set_custom_mouse_cursor(point_cursor_texture)
+				
+				
 				
 				# Calculate direction
 				var direction: FoldDir
@@ -305,6 +332,26 @@ func fold_side(dir: FoldDir) -> void:
 	active_folds.append(dir)
 	var post_state = simulate_paper_state(active_folds)
 	_animate_chunk_transition(dir, true, pre_state, post_state)
+	destroy_items()
+	generate_items()
+
+func generate_items() -> void:
+	for cell in display_layer.get_used_cells():
+		var tile_data = display_layer.get_cell_tile_data(cell)
+		if tile_data:
+			var item_path = tile_data.get_custom_data("item")
+			if item_path != null:
+				var scene = load(item_path)
+				if scene:
+					var instance = scene.instantiate()
+					var world_pos = display_layer.map_to_local(cell)
+					instance.position = world_pos
+					add_child(instance)
+
+func destroy_items() -> void:
+	for child in get_children():
+		if child is not TileMapLayer:
+			child.queue_free()
 
 func unfold_side(dir: FoldDir) -> void:
 	# UPDATED: Now uses the explicitly named is_unfold_locked function
