@@ -17,14 +17,12 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+AchievementManager="*uid://b2k5kb2rb6esa"
 DialogManager="*uid://byalvv5jg0yey"
 
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/ridiculous_coding/plugin.cfg")
-[autoload]
-
-AchievementManager="*uid://b2k5kb2rb6esa"
 
 [input]
 

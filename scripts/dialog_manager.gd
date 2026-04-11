@@ -2,6 +2,7 @@ extends Node
 
 @onready var text_box_scene = preload("res://scenes/text_box.tscn")
 
+
 var dialog_lines: Array[String] = []
 var current_line_index = 0
 
