@@ -18,10 +18,6 @@ config/icon="res://icon.svg"
 
 AchievementManager="*uid://c82s7bxx032vb"
 
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/ridiculous_coding/plugin.cfg")
-
 [input]
 
 left={
