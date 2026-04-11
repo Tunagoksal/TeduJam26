@@ -51,6 +51,7 @@ func handle_movement(delta: float):
 func handle_roll():
 	if Input.is_action_just_pressed("roll"):
 		AchievementManager.unlock_achivement("test")
+		AchievementManager.unlock_achivement("test2")
 		velocity = facing_direction * roll_force
 		_can_roll = false
 		timer.start()
