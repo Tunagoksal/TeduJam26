@@ -409,7 +409,8 @@ func _animate_chunk_transition(dir: FoldDir, is_folding: bool, pre: Dictionary, 
 		apply_grid_state(post.grid) 
 		
 		if is_instance_valid(player):
-			player.is_frozen = false # Unfreeze inputs
+			# We DO NOT unfreeze the player immediately here anymore. 
+			# The Character script handles unfreezing based on whether they are trapped or animating.
 			
 			var p_local = display_layer.to_local(player.global_position)
 			var p_cell = display_layer.local_to_map(p_local)
@@ -421,11 +422,11 @@ func _animate_chunk_transition(dir: FoldDir, is_folding: bool, pre: Dictionary, 
 				
 				# If the top tile is a BACK face, the paper folded over them!
 				if top_tile.is_back:
-					player.set_smashed_state(true)
+					player.trap_under_paper()
 				else:
-					player.set_smashed_state(false)
+					player.reveal_from_paper()
 			else:
-				player.set_smashed_state(false)
+				player.reveal_from_paper()
 		
 		is_animating = false
 	)

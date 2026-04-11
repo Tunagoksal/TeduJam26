@@ -47,13 +47,23 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 	
-func set_smashed_state(smashed: bool) -> void:
-	if smashed:
-		is_smashed = true
-		play_smashed_effect()
+func trap_under_paper() -> void:
+	is_smashed = true
+	is_frozen = true
+	visible = false # Hide entirely because paper is on top!
+	
+	# Prep the smushed state for when they are revealed
+	sprite.visible = false
+	smushed.visible = true
+	smushed.scale = Vector2(1, 0.2) # Start them completely flat
+
+func reveal_from_paper() -> void:
+	visible = true # The paper is gone, make them visible again
+	
+	if is_smashed:
+		restore_from_smash()
 	else:
-		is_smashed = false
-		visible = true
+		is_frozen = false # If they weren't smashed, just unfreeze them normally
 
 func handle_movement(delta: float):
 	var input_dir = Input.get_vector("left", "right", "up", "down")
@@ -141,3 +151,22 @@ func play_smashed_effect():
 	sprite.visible = false
 	smushed.visible = true
 	pass
+	
+func restore_from_smash():
+	# Create a tween to pop the character back to normal
+	var tween = create_tween()
+	
+	# Animate the smushed sprite scaling back up
+	tween.tween_property(smushed, "scale", Vector2(1, 1), 0.5)\
+		.set_trans(Tween.TRANS_ELASTIC)\
+		.set_ease(Tween.EASE_OUT)
+	
+	# Once the animation finishes, restore the normal sprite and unfreeze
+	tween.tween_callback(func():
+		is_smashed = false
+		is_frozen = false
+		smushed.visible = false
+		sprite.visible = true
+	)
+	
+	
