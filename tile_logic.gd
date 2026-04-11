@@ -5,9 +5,9 @@ extends Node2D
 @onready var back_data: TileMapLayer = $BackLayer 
 
 # --- GRID CONFIGURATION ---
-@export var chunk_size: int = 4
-@onready var macro_cols: int = 7
-@onready var macro_rows: int = 7 
+@export var chunk_size: int = 2
+@onready var macro_cols: int = 4
+@onready var macro_rows: int = 4 
 
 var active_folds: Array[FoldDir] = []
 var is_animating: bool = false
@@ -138,14 +138,20 @@ func fold_by_mouse(local_begin, direction):
 # ==========================================
 func simulate_paper_state(folds: Array[FoldDir]) -> Dictionary:
 	var grid = {}
-	
+	var total_width = macro_cols * chunk_size
+	var total_height = macro_rows * chunk_size
 	# 1. Initialize the paper. Every grid cell now holds an ARRAY of layers.
 	for x in range(macro_cols * chunk_size):
 		for y in range(macro_rows * chunk_size):
 			var pos = Vector2i(x, y)
+			
+			var mirrored_x = (total_width - 1) - x
+			var back_pos = Vector2i(mirrored_x, y)
+			
 			if front_data.get_cell_source_id(pos) != -1:
 				grid[pos] = [{
-					"orig_pos": pos, 
+					"orig_pos": pos,
+					"back_orig_pos": back_pos, # Store the pre-mirrored position for the back
 					"is_back": false, 
 					"alt": front_data.get_cell_alternative_tile(pos)
 				}]
@@ -220,9 +226,10 @@ func simulate_paper_state(folds: Array[FoldDir]) -> Dictionary:
 # Helper to fetch texture data securely
 func get_tile_render_data(tile: Dictionary) -> Dictionary:
 	if tile.is_back:
+		var b_pos = tile.get("back_orig_pos", tile.orig_pos)
 		return {
-			"id": back_data.get_cell_source_id(tile.orig_pos),
-			"coords": back_data.get_cell_atlas_coords(tile.orig_pos),
+			"id": back_data.get_cell_source_id(b_pos),
+			"coords": back_data.get_cell_atlas_coords(b_pos),
 			"alt": tile.alt
 		}
 	return {
@@ -347,7 +354,6 @@ func _animate_chunk_transition(dir: FoldDir, is_folding: bool, pre: Dictionary, 
 	
 	#DISABLE PHYSICS WHILE FOLDING
 	temp_layer.collision_enabled = false
-	
 	pivot.add_child(temp_layer)
 	
 	var cell_size = display_layer.tile_set.tile_size
@@ -364,7 +370,6 @@ func _animate_chunk_transition(dir: FoldDir, is_folding: bool, pre: Dictionary, 
 			
 			var pre_stack = pre.grid.get(src_pos, [])
 			if not is_folding:
-				# Instantly reveal the tiles that were underneath the flap!
 				var post_stack = post.grid.get(src_pos, [])
 				if post_stack.size() > 0:
 					var r = get_tile_render_data(post_stack.back())
@@ -377,6 +382,10 @@ func _animate_chunk_transition(dir: FoldDir, is_folding: bool, pre: Dictionary, 
 			if pre_stack.size() > 0:
 				var r = get_tile_render_data(pre_stack.back())
 				temp_layer.set_cell(src_pos, r.id, r.coords, r.alt)
+
+	var player = get_tree().get_first_node_in_group("player") as Character
+	if is_instance_valid(player):
+		player.is_frozen = true
 
 	var tween = get_tree().create_tween()
 	tween.tween_property(pivot, scale_prop, 0.0, animation_duration / 2.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
@@ -398,5 +407,25 @@ func _animate_chunk_transition(dir: FoldDir, is_folding: bool, pre: Dictionary, 
 	tween.tween_callback(func():
 		pivot.queue_free()
 		apply_grid_state(post.grid) 
+		
+		if is_instance_valid(player):
+			player.is_frozen = false # Unfreeze inputs
+			
+			var p_local = display_layer.to_local(player.global_position)
+			var p_cell = display_layer.local_to_map(p_local)
+			
+			# Look at the new grid state at that cell
+			var stack = post.grid.get(p_cell, [])
+			if stack.size() > 0:
+				var top_tile = stack.back()
+				
+				# If the top tile is a BACK face, the paper folded over them!
+				if top_tile.is_back:
+					player.set_smashed_state(true)
+				else:
+					player.set_smashed_state(false)
+			else:
+				player.set_smashed_state(false)
+		
 		is_animating = false
 	)
