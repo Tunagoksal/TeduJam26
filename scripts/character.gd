@@ -10,9 +10,11 @@ class_name Character
 @export var roll_force: float = 500.0
 @export var roll_cooldown: float = 1000.0
 
+
 @onready var timer: Timer = $Timer
 @onready var anim_timer: Timer = $AnimationTimer
 @onready var sprite: Sprite2D = $Sprite
+
 
 signal inventory_changed(items: Array[CollectibleItem])
 var inventory: Array[CollectibleItem] = []
