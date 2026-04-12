@@ -1,9 +1,9 @@
-[gd_scene format=4 uid="uid://cu1qnpen08mn3"]
+[gd_scene format=4 uid="uid://dho0u20gbdxqi"]
 
 [ext_resource type="Script" uid="uid://dvdei14ffpg1" path="res://tile_logic.gd" id="1_3eydx"]
 [ext_resource type="Script" uid="uid://b8vffe7fik1nm" path="res://scripts/level.gd" id="1_u2472"]
 [ext_resource type="TileSet" uid="uid://b2h2crx1fhmdu" path="res://test_tileset.tres" id="2_u2472"]
-[ext_resource type="Material" path="res://assets/character.tres" id="3_u2472"]
+[ext_resource type="Material" uid="uid://chmbw0x1pckee" path="res://assets/character.tres" id="3_u2472"]
 [ext_resource type="PackedScene" uid="uid://dnoi8sf8ixw0s" path="res://scenes/character.tscn" id="5_le33n"]
 
 [node name="Level2" type="Node2D" unique_id=620947927]
