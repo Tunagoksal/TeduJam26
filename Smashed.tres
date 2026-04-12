@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AchievementData" format=3 uid="uid://bdkfcpyowxfks"]
+
+[ext_resource type="Script" uid="uid://8k0biy7tnl45" path="res://scripts/achievement_data.gd" id="1_767br"]
+[ext_resource type="Texture2D" uid="uid://ds07rb3vc18fk" path="res://trophy.png" id="1_vwmdj"]
+
+[resource]
+script = ExtResource("1_767br")
+title = "Wrecked"
+icon = ExtResource("1_vwmdj")
+metadata/_custom_type_script = "uid://8k0biy7tnl45"

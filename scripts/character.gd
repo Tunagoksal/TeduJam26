@@ -211,6 +211,7 @@ func consume_item(item: CollectibleItem) -> void:
 # =========================================================
 
 func trap_under_paper() -> void:
+	AchievementManager.unlock_achivement("Wrecked")
 	is_smashed = true
 	is_frozen = true
 	visible = false

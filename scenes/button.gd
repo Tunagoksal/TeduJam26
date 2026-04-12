@@ -20,7 +20,6 @@ func _ready():
 
 	await get_tree().process_frame
 	pivot_offset = size / 2
-	
 	_start_shake_animation()
 
 func _start_shake_animation():
@@ -49,7 +48,6 @@ func _stop_shake_animation():
 	t.set_trans(Tween.TRANS_SINE)
 	t.set_ease(Tween.EASE_OUT)
 	t.tween_property(self, "rotation_degrees", 0, 0.15)
-
 
 func _on_mouse_entered() -> void:
 	Input.set_custom_mouse_cursor(point_cursor_texture) 
