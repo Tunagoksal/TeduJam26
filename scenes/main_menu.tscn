@@ -30,6 +30,12 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rtw2f"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lgwnu"]
+size = Vector2(1966, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_flqon"]
+size = Vector2(182, 1218)
+
 [node name="MainMenu" type="Control" unique_id=59457557]
 layout_mode = 3
 anchors_preset = 15
@@ -126,7 +132,24 @@ position = Vector2(1561, 386)
 [node name="Marker" type="Node2D" parent="." unique_id=34382543]
 position = Vector2(1119, 386)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=719425142]
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1592770415]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=719425142]
+position = Vector2(973, 0)
+shape = SubResource("RectangleShape2D_lgwnu")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D" unique_id=402657268]
+position = Vector2(972.99994, 1080)
+scale = Vector2(0.99999994, 0.99999994)
+shape = SubResource("RectangleShape2D_lgwnu")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D" unique_id=656648185]
+position = Vector2(-78, 573)
+shape = SubResource("RectangleShape2D_flqon")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D" unique_id=29315144]
+position = Vector2(2018, 532)
+shape = SubResource("RectangleShape2D_flqon")
 
 [connection signal="focus_entered" from="VBoxContainer/StartButton" to="VBoxContainer/StartButton" method="_on_focus_entered"]
 [connection signal="mouse_entered" from="VBoxContainer/StartButton" to="VBoxContainer/StartButton" method="_on_mouse_entered"]
