@@ -353,11 +353,11 @@ func generate_items() -> void:
 				var scene = load(item_scenes[item_path_id])
 				if scene:
 					var instance = scene.instantiate()
-					var world_pos = display_layer.map_to_local(cell)
+					var world_pos = display_layer.position + display_layer.map_to_local(cell)
 					if instance is Flag:
 						instance.path = next_level_path
 					add_child(instance)
-					instance.position = world_pos
+					instance.position = world_pos 
 				else:
 					print("ERROR: Could not load scene at path: ", item_path_id)
 
