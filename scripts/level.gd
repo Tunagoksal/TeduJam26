@@ -1,11 +1,12 @@
 extends Node2D
+class_name Level
+
+@export var star_count = 0
 
 @onready var inventory_ui = $InventoryUI
-
 @onready var layers = $Node2D
 
 var total_length := 144*8
-
 
 func _ready() -> void:
 	var view_size := get_viewport_rect().size

@@ -248,3 +248,14 @@ func restore_from_smash():
 		smushed.visible = false
 		sprite.visible = true
 	)
+	
+func star_count_check():
+	var parent = get_parent()
+	
+	print_debug(star_count)
+	
+	if parent is Level:
+		var level: Level = parent
+		return star_count == level.star_count
+	
+	return false
