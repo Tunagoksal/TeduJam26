@@ -6,8 +6,6 @@ class_name Flag
 
 @onready var sprite: Sprite2D = $Bayrak
 
-var player
-
 func _ready():
 	var player = get_tree().get_first_node_in_group("player")
 	if player:
@@ -15,21 +13,33 @@ func _ready():
 
 	update_flag_visual()
 
-
+func _process(_delta):
+	update_flag_visual()
+	
 func _on_inventory_changed(_inv):
+	print("asdasdasdasdasdasd")
 	update_flag_visual()
 	
 func _on_body_entered(body: Node2D) -> void:
 	if body is Character:
-		player = body
 		if body.star_count_check():
 			audio_stream_player.play()
 			SceneManager.load_new_scene(path)
 			
+func get_player():
+	var player = get_tree().get_first_node_in_group("player")
+	
+	return player
+
 func update_flag_visual():
-	if player:
-		if player.star_count_check():
-			sprite.modulate = Color(1, 1, 1) 
-		else:
-			sprite.modulate = Color(0, 0, 0)
+	var player = get_player()
+	
+	if player == null:
+		sprite.modulate = Color(0, 0, 0) # still locked at start
+		return
+	
+	if player.star_count_check():
+		sprite.modulate = Color(1, 1, 1)
+	else:
+		sprite.modulate = Color(0, 0, 0)
 	
