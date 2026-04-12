@@ -19,7 +19,6 @@ var footstep_sounds := [
 var item_scenes = {
 	1: "res://flag.tscn",
 	2: "res://scenes/star.tscn",
-	
 }
 
 var all_items: Dictionary = {}
