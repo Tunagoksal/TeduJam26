@@ -9,6 +9,11 @@ var _shake_tween: Tween = null
 var _is_shaking := false
 var hover_tween: Tween
 
+var arrow_cursor_texture = load("res://assets/Light/Arrows/Arrow2.png")
+var point_cursor_texture = load("res://assets/Light/Hands/Hand2.png")
+var drag_cursor_texture = load("res://assets/Light/Hands/Hand_Drag2.png")
+
+
 func _ready():
 	scale = Vector2(0, 0)
 	rotation_degrees = 0
@@ -47,8 +52,9 @@ func _stop_shake_animation():
 
 
 func _on_mouse_entered() -> void:
+	Input.set_custom_mouse_cursor(point_cursor_texture) 
 	audio_stream_player.play()
-	_stop_shake_animation()  # 🔴 önemli
+	_stop_shake_animation()  
 	
 	if hover_tween:
 		hover_tween.kill()
@@ -61,6 +67,7 @@ func _on_mouse_entered() -> void:
 
 
 func _on_mouse_exited() -> void:
+	Input.set_custom_mouse_cursor(arrow_cursor_texture) 
 	_start_shake_animation()
 	
 	if hover_tween:
