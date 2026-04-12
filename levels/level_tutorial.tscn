@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dnoi8sf8ixw0s" path="res://scenes/character.tscn" id="5_le33n"]
 [ext_resource type="AudioStream" uid="uid://b6uxdeex7r6ft" path="res://assets/audio/freesound_community-turnpage-99756.mp3" id="5_u2472"]
 [ext_resource type="AudioStream" uid="uid://7k2f75avmpfc" path="res://assets/audio/freesound_community-pageturn-102978.mp3" id="6_wt7er"]
+[ext_resource type="PackedScene" uid="uid://e0knnc7cu0fm" path="res://scenes/inventory_ui.tscn" id="8_v5f2i"]
 
 [node name="Level2" type="Node2D" unique_id=620947927]
 script = ExtResource("1_u2472")
@@ -38,3 +39,6 @@ stream = ExtResource("6_wt7er")
 
 [node name="Character" parent="." unique_id=1749950208 instance=ExtResource("5_le33n")]
 position = Vector2(587, 370)
+
+[node name="InventoryUI" parent="." unique_id=1902873453 node_paths=PackedStringArray("player") instance=ExtResource("8_v5f2i")]
+player = NodePath("../Character")
