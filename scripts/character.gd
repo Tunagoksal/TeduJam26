@@ -5,6 +5,7 @@ class_name Character
 @export var max_speed: float = 400.0
 @export var acceleration: float = 15000.0
 @export var friction: float = 5000.0
+@onready var star_remaining_ui: StarRemainingUI = $"../StarRemainingUI"
 
 @export_group("Roll")
 @export var roll_force: float = 500.0
@@ -191,6 +192,7 @@ func set_to_rolling() -> void:
 func collect_item(item: CollectibleItem) -> void:
 	inventory.append(item)
 	star_count += 1
+	star_remaining_ui.update_star_count(star_count)
 	print_debug("item collected")
 	inventory_changed.emit(inventory)
 
@@ -252,8 +254,6 @@ func restore_from_smash():
 	
 func star_count_check():
 	var parent = get_parent()
-	
-	print_debug(star_count)
 	
 	if parent is Level:
 		var level: Level = parent

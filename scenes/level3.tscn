@@ -1,4 +1,4 @@
-[gd_scene format=4 uid="uid://ckhm330nvna8v"]
+[gd_scene format=4 uid="uid://dsj87hbuagfdm"]
 
 [ext_resource type="Script" uid="uid://b8vffe7fik1nm" path="res://scripts/level.gd" id="1_6lxtr"]
 [ext_resource type="Script" uid="uid://dvdei14ffpg1" path="res://tile_logic.gd" id="2_b72m1"]
@@ -7,6 +7,8 @@
 [ext_resource type="AudioStream" uid="uid://7k2f75avmpfc" path="res://assets/audio/freesound_community-pageturn-102978.mp3" id="5_6qt4k"]
 [ext_resource type="PackedScene" uid="uid://dnoi8sf8ixw0s" path="res://scenes/character.tscn" id="6_fh4ka"]
 [ext_resource type="Texture2D" uid="uid://dywqxx58ht0ek" path="res://assets/Untitled_design14.webp" id="7_b72m1"]
+[ext_resource type="Script" uid="uid://bfebn1uyoltd8" path="res://scripts/inventory_ui.gd" id="8_5mhml"]
+[ext_resource type="PackedScene" uid="uid://bbm2vf5ketetx" path="res://star_remaining_ui.tscn" id="9_rupth"]
 
 [node name="Level" type="Node2D" unique_id=620947927]
 script = ExtResource("1_6lxtr")
@@ -47,3 +49,28 @@ stream = ExtResource("5_6qt4k")
 [node name="Character" parent="." unique_id=1749950208 instance=ExtResource("6_fh4ka")]
 position = Vector2(835, 426)
 scale = Vector2(0.8, 0.8)
+
+[node name="InventoryUI" type="CanvasLayer" parent="." unique_id=1902873453 node_paths=PackedStringArray("player")]
+script = ExtResource("8_5mhml")
+player = NodePath("../Character")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="InventoryUI" unique_id=2053208774]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -134.0
+offset_top = -163.0
+offset_right = -134.0
+offset_bottom = -163.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_constants/separation = -170
+alignment = 1
+
+[node name="StarRemainingUI" parent="." unique_id=982088802 instance=ExtResource("9_rupth")]
+offset_left = 1538.0
+offset_top = 167.0
+offset_right = 1538.0
+offset_bottom = 167.0
