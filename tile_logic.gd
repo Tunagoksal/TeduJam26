@@ -3,11 +3,13 @@ extends Node2D
 @onready var display_layer: TileMapLayer = $DisplayLayer
 @onready var front_data: TileMapLayer = $FrontLayer
 @onready var back_data: TileMapLayer = $BackLayer 
-
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
+@onready var audio_stream_player_2: AudioStreamPlayer = $AudioStreamPlayer2
 # --- GRID CONFIGURATION ---
 @export var chunk_size: int = 2
 @export var macro_cols: int = 4
 @export var macro_rows: int = 4
+
 
 var item_scenes = {
 	1: "res://flag.tscn",
@@ -158,10 +160,14 @@ func get_fold_from_drag(begin: Vector2, end: Vector2, tilemap: TileMapLayer) -> 
 
 func unfold_by_mouse(local_begin_pos, direction):
 	unfold_side(direction)
+	var audio_players = [audio_stream_player, audio_stream_player_2]
+	audio_players.pick_random().play()
 	AchievementManager.unlock_achivement("Ctrl + Z")
 	
 func fold_by_mouse(local_begin, direction):
 	fold_side(direction)
+	var audio_players = [audio_stream_player, audio_stream_player_2]
+	audio_players.pick_random().play()
 	AchievementManager.unlock_achivement("Reality Bender")
 	
 # ==========================================
@@ -363,7 +369,7 @@ func generate_items() -> void:
 
 func destroy_items() -> void:
 	for child in get_children():
-		if child is not TileMapLayer:
+		if child is not TileMapLayer and child is not AudioStreamPlayer:
 			child.queue_free()
 
 func unfold_side(dir: FoldDir) -> void:

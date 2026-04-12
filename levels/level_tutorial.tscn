@@ -3,8 +3,10 @@
 [ext_resource type="Script" uid="uid://dvdei14ffpg1" path="res://tile_logic.gd" id="1_3eydx"]
 [ext_resource type="Script" uid="uid://b8vffe7fik1nm" path="res://scripts/level.gd" id="1_u2472"]
 [ext_resource type="TileSet" uid="uid://b2h2crx1fhmdu" path="res://test_tileset.tres" id="2_u2472"]
-[ext_resource type="Material" uid="uid://chmbw0x1pckee" path="res://assets/character.tres" id="3_u2472"]
+[ext_resource type="Material" path="res://assets/character.tres" id="3_u2472"]
 [ext_resource type="PackedScene" uid="uid://dnoi8sf8ixw0s" path="res://scenes/character.tscn" id="5_le33n"]
+[ext_resource type="AudioStream" uid="uid://b6uxdeex7r6ft" path="res://assets/audio/freesound_community-turnpage-99756.mp3" id="5_u2472"]
+[ext_resource type="AudioStream" uid="uid://7k2f75avmpfc" path="res://assets/audio/freesound_community-pageturn-102978.mp3" id="6_wt7er"]
 
 [node name="Level2" type="Node2D" unique_id=620947927]
 script = ExtResource("1_u2472")
@@ -12,10 +14,6 @@ script = ExtResource("1_u2472")
 [node name="Node2D" type="Node2D" parent="." unique_id=1918003504]
 scale = Vector2(0.8, 0.8)
 script = ExtResource("1_3eydx")
-chunk_size = null
-macro_cols = null
-macro_rows = null
-next_level_path = null
 
 [node name="BackLayer" type="TileMapLayer" parent="Node2D" unique_id=34805368]
 position = Vector2(5997.5, 0)
@@ -30,6 +28,12 @@ tile_set = ExtResource("2_u2472")
 [node name="DisplayLayer" type="TileMapLayer" parent="Node2D" unique_id=1091396286]
 material = ExtResource("3_u2472")
 tile_set = ExtResource("2_u2472")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Node2D" unique_id=1005268385]
+stream = ExtResource("5_u2472")
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="Node2D" unique_id=552652965]
+stream = ExtResource("6_wt7er")
 
 [node name="Character" parent="." unique_id=1749950208 instance=ExtResource("5_le33n")]
 position = Vector2(283, 299)
