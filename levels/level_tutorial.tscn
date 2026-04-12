@@ -2,16 +2,22 @@
 
 [ext_resource type="Script" uid="uid://dvdei14ffpg1" path="res://tile_logic.gd" id="1_3eydx"]
 [ext_resource type="Script" uid="uid://b8vffe7fik1nm" path="res://scripts/level.gd" id="1_u2472"]
+[ext_resource type="Texture2D" uid="uid://dywqxx58ht0ek" path="res://assets/Untitled_design14.webp" id="2_le33n"]
 [ext_resource type="TileSet" uid="uid://b2h2crx1fhmdu" path="res://test_tileset.tres" id="2_u2472"]
 [ext_resource type="Material" uid="uid://chmbw0x1pckee" path="res://assets/character.tres" id="3_u2472"]
 [ext_resource type="PackedScene" uid="uid://dnoi8sf8ixw0s" path="res://scenes/character.tscn" id="5_le33n"]
 [ext_resource type="AudioStream" uid="uid://b6uxdeex7r6ft" path="res://assets/audio/freesound_community-turnpage-99756.mp3" id="5_u2472"]
 [ext_resource type="AudioStream" uid="uid://7k2f75avmpfc" path="res://assets/audio/freesound_community-pageturn-102978.mp3" id="6_wt7er"]
-[ext_resource type="PackedScene" uid="uid://e0knnc7cu0fm" path="res://scenes/inventory_ui.tscn" id="8_v5f2i"]
+[ext_resource type="PackedScene" path="res://scenes/inventory_ui.tscn" id="8_v5f2i"]
 
 [node name="Level2" type="Node2D" unique_id=620947927]
 script = ExtResource("1_u2472")
 star_count = 4
+
+[node name="UntitledDesign14" type="Sprite2D" parent="." unique_id=604570503]
+position = Vector2(960, 539.8)
+scale = Vector2(1.2757477, 1.2770686)
+texture = ExtResource("2_le33n")
 
 [node name="Node2D" type="Node2D" parent="." unique_id=1918003504]
 scale = Vector2(0.8, 0.8)
