@@ -13,8 +13,11 @@ extends Node2D
 
 var item_scenes = {
 	1: "res://flag.tscn",
+	2: "res://scenes/star.tscn",
 	
 }
+
+var all_items: Dictionary = {}
 
 @export var next_level_path:String
 
@@ -44,8 +47,12 @@ func _ready() -> void:
 	total_width = macro_cols * chunk_size
 	total_height = macro_rows * chunk_size
 	Input.set_custom_mouse_cursor(point_cursor_texture)
+	
+	spawn_initial_items()
+	
+	var initial_grid = simulate_paper_state(active_folds).grid
 	apply_grid_state(simulate_paper_state(active_folds).grid)
-	generate_items()
+	refresh_items_visibility(initial_grid)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and !dragging:
@@ -349,28 +356,59 @@ func fold_side(dir: FoldDir) -> void:
 	_animate_chunk_transition(dir, true, pre_state, post_state)
 
 
-func generate_items() -> void:
-	for cell in display_layer.get_used_cells():
-		var tile_data = display_layer.get_cell_tile_data(cell)
-		if tile_data:
-			var item_path_id = tile_data.get_custom_data("item")
-			print(item_path_id)
-			if item_path_id:
-				var scene = load(item_scenes[item_path_id])
-				if scene:
-					var instance = scene.instantiate()
-					var world_pos = display_layer.position + display_layer.map_to_local(cell)
-					if instance is Flag:
-						instance.path = next_level_path
-					add_child(instance)
-					instance.position = world_pos 
-				else:
-					print("ERROR: Could not load scene at path: ", item_path_id)
+func spawn_initial_items() -> void:
+	# 1. Spawn front items
+	for cell in front_data.get_used_cells():
+		var data = front_data.get_cell_tile_data(cell)
+		if data and data.get_custom_data("item"):
+			_create_and_store_item(cell, false, data.get_custom_data("item"))
+			
+	# 2. Spawn back items (reversing their coordinates to match the logical grid)
+	for cell in back_data.get_used_cells():
+		var data = back_data.get_cell_tile_data(cell)
+		if data and data.get_custom_data("item"):
+			var orig_pos = Vector2i((total_width - 1) - cell.x, (total_height - 1) - cell.y)
+			_create_and_store_item(orig_pos, true, data.get_custom_data("item"))
 
-func destroy_items() -> void:
-	for child in get_children():
-		if child is not TileMapLayer and child is not AudioStreamPlayer:
-			child.queue_free()
+func _create_and_store_item(orig_pos: Vector2i, is_back: bool, item_id: int) -> void:
+	if not item_scenes.has(item_id): return
+	var scene = load(item_scenes[item_id])
+	var inst = scene.instantiate()
+	
+	if inst.get("path") != null: # Check for the flag's next_level_path
+		inst.path = next_level_path
+		
+	add_child(inst)
+	inst.hide() # Start invisible
+	inst.set_deferred("monitoring", false) # Start without collision
+	
+	# Store in dictionary using a Vector3i as the key: (X, Y, Z=1 if back else 0)
+	var dict_key = Vector3i(orig_pos.x, orig_pos.y, 1 if is_back else 0)
+	all_items[dict_key] = inst
+
+func refresh_items_visibility(grid_state: Dictionary) -> void:
+	# 1. Hide everything first
+	for key in all_items:
+		var item = all_items[key]
+		# is_instance_valid automatically ignores items the player has collected!
+		if is_instance_valid(item):
+			item.hide()
+			item.set_deferred("monitoring", false)
+			
+	# 2. Look at only what is on TOP of the current folded paper
+	for pos in grid_state:
+		var stack = grid_state[pos]
+		if stack.size() > 0:
+			var top_tile = stack.back()
+			var dict_key = Vector3i(top_tile.orig_pos.x, top_tile.orig_pos.y, 1 if top_tile.is_back else 0)
+			
+			# If an item belongs to this top piece of paper, show it and move it to the right spot!
+			if all_items.has(dict_key):
+				var item = all_items[dict_key]
+				if is_instance_valid(item):
+					item.position = display_layer.position + display_layer.map_to_local(pos)
+					item.show()
+					item.set_deferred("monitoring", true)
 
 func unfold_side(dir: FoldDir) -> void:
 	if is_animating or is_unfold_locked(dir): return
@@ -490,8 +528,9 @@ func _animate_chunk_transition(dir: FoldDir, is_folding: bool, pre: Dictionary, 
 	tween.tween_callback(func():
 		pivot.queue_free()
 		apply_grid_state(post.grid) 
-		destroy_items()
-		generate_items()
+		
+		refresh_items_visibility(post.grid)
+		
 		if is_instance_valid(player):
 			var p_local = display_layer.to_local(player.global_position)
 			var p_cell = display_layer.local_to_map(p_local)
