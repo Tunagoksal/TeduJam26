@@ -23,7 +23,7 @@ texture = ExtResource("7_b72m1")
 scale = Vector2(0.6, 0.6)
 script = ExtResource("2_b72m1")
 chunk_size = 3
-next_level_path = "res://scenes/main_menu.tscn"
+next_level_path = "res://levels/level_tutorial.tscn"
 
 [node name="FrontLayer" type="TileMapLayer" parent="Node2D" unique_id=1894160799]
 position = Vector2(5000, 2000)
