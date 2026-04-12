@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cwjjjwycbuh0s" path="res://flag.gd" id="1_l1sgl"]
 [ext_resource type="AudioStream" uid="uid://bd4h8p85stjt3" path="res://assets/audio/updatepelgo-success-221935.mp3" id="2_amn8n"]
+[ext_resource type="Texture2D" uid="uid://d3pu8m8c2dns2" path="res://assets/bayrak.webp" id="3_ukulb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1gre2"]
 size = Vector2(31, 35)
@@ -14,5 +15,10 @@ shape = SubResource("RectangleShape2D_1gre2")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=508268311]
 stream = ExtResource("2_amn8n")
+
+[node name="Bayrak" type="Sprite2D" parent="." unique_id=2135200992]
+position = Vector2(1, -1)
+scale = Vector2(0.18253969, 0.18253969)
+texture = ExtResource("3_ukulb")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
