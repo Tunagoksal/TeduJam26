@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://chmbw0x1pckee"]
+
+[ext_resource type="Shader" uid="uid://5pikl0t1nkop" path="res://assets/character.gdshader" id="1_gdj4s"]
+
+[resource]
+shader = ExtResource("1_gdj4s")
+shader_parameter/shake_power = 0.003
+shader_parameter/shake_speed = 5.0
