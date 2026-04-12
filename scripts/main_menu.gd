@@ -3,6 +3,7 @@ extends Control
 
 @export var next_level_path: String
 @onready var title: TextureRect = $TextureRect3
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 
 var tween: Tween
 
@@ -27,8 +28,11 @@ func idle_title():
 	t.tween_property(title, "scale", Vector2(1.0, 1.0), 1.2)
 	
 func _on_start_button_pressed() -> void:
+	audio_stream_player.play()
+	audio_stream_player.finished
 	SceneManager.load_new_scene(next_level_path)
 
-
 func _on_exit_button_pressed() -> void:
+	audio_stream_player.play()
+	audio_stream_player.finished
 	get_tree().quit()

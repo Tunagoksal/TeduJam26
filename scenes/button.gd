@@ -3,6 +3,7 @@ extends Button
 @export var animation_speed := 0.3  
 @export var shake_angle := 5.0      
 @export var shake_duration := 0.5   
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 
 var _shake_tween: Tween = null
 var _is_shaking := false
@@ -46,6 +47,7 @@ func _stop_shake_animation():
 
 
 func _on_mouse_entered() -> void:
+	audio_stream_player.play()
 	_stop_shake_animation()  # 🔴 önemli
 	
 	if hover_tween:
@@ -59,7 +61,6 @@ func _on_mouse_entered() -> void:
 
 
 func _on_mouse_exited() -> void:
-	# shake geri başlasın
 	_start_shake_animation()
 	
 	if hover_tween:

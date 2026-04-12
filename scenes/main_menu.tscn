@@ -8,6 +8,8 @@
 [ext_resource type="Script" uid="uid://d86bod3hevdk" path="res://scenes/button.gd" id="5_oa1go"]
 [ext_resource type="Texture2D" uid="uid://doru61xagjhri" path="res://assets/game_logo.webp" id="5_rtw2f"]
 [ext_resource type="Texture2D" uid="uid://dewja7wipapdt" path="res://assets/start_text.webp" id="6_rtw2f"]
+[ext_resource type="AudioStream" uid="uid://dnehr7s65knxr" path="res://assets/audio/ui_pop.mp3" id="8_5dd4i"]
+[ext_resource type="AudioStream" uid="uid://b6uxdeex7r6ft" path="res://assets/audio/freesound_community-turnpage-99756.mp3" id="9_jk1qb"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jk1qb"]
 shader = ExtResource("4_tbmy8")
@@ -69,7 +71,7 @@ theme_override_constants/separation = -900
 alignment = 1
 
 [node name="ExitButton" type="Button" parent="VBoxContainer" unique_id=1859549926]
-custom_minimum_size = Vector2(0, 300)
+custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_oa1go")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_oa1go")
@@ -86,8 +88,11 @@ offset_right = 846.0001
 offset_bottom = 613.0001
 texture = ExtResource("4_8ln24")
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="VBoxContainer/ExitButton" unique_id=482576859]
+stream = ExtResource("8_5dd4i")
+
 [node name="StartButton" type="Button" parent="VBoxContainer" unique_id=415842531]
-custom_minimum_size = Vector2(0, 300)
+custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_oa1go")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_oa1go")
@@ -103,6 +108,12 @@ offset_top = -232.99986
 offset_right = 846.0001
 offset_bottom = 613.0001
 texture = ExtResource("6_rtw2f")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="VBoxContainer/StartButton" unique_id=2054571227]
+stream = ExtResource("8_5dd4i")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1912627124]
+stream = ExtResource("9_jk1qb")
 
 [connection signal="focus_entered" from="VBoxContainer/ExitButton" to="VBoxContainer/ExitButton" method="_on_focus_entered"]
 [connection signal="mouse_entered" from="VBoxContainer/ExitButton" to="VBoxContainer/ExitButton" method="_on_mouse_entered"]
