@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://p7dbs7hby7a0" path="res://scripts/text_box.gd" id="1_dyarx"]
 [ext_resource type="Texture2D" uid="uid://dr4o2p5illt4i" path="res://scripts/icon.svg" id="2_qdwih"]
+[ext_resource type="FontFile" uid="uid://cve5trq2v7jt4" path="res://assets/ChildWriting-Regular.ttf" id="3_qdwih"]
 
 [node name="TextBox" type="MarginContainer" unique_id=706830163]
 script = ExtResource("1_dyarx")
@@ -24,6 +25,9 @@ theme_override_constants/margin_bottom = 16
 
 [node name="Label" type="RichTextLabel" parent="MarginContainer" unique_id=666794410]
 layout_mode = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("3_qdwih")
+theme_override_font_sizes/normal_font_size = 64
 fit_content = true
 autowrap_mode = 0
 
@@ -31,5 +35,6 @@ autowrap_mode = 0
 one_shot = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=872464801]
+volume_db = -4.0
 
 [connection signal="timeout" from="LetterDisplayTimer" to="." method="_on_letter_display_timer_timeout"]
