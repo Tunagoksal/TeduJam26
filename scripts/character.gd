@@ -190,6 +190,7 @@ func set_to_rolling() -> void:
 
 func collect_item(item: CollectibleItem) -> void:
 	inventory.append(item)
+	star_count += 1
 	print_debug("item collected")
 	inventory_changed.emit(inventory)
 

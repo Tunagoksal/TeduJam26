@@ -8,6 +8,7 @@ class_name Flag
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is Character:
+		print_debug(body.star_count)
 		if star_count == body.star_count:
 			SceneManager.load_new_scene(path)
 			audio_stream_player.play()
