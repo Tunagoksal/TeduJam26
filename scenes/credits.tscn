@@ -1,5 +1,10 @@
 [gd_scene format=3 uid="uid://c4xwr4jquqqv1"]
 
+[ext_resource type="FontFile" uid="uid://cve5trq2v7jt4" path="res://assets/ChildWriting-Regular.ttf" id="1_2fbfq"]
+[ext_resource type="Texture2D" uid="uid://ceetpru65msd1" path="res://assets/Untitled_design13.webp" id="2_8gwij"]
+[ext_resource type="Texture2D" uid="uid://tb3o5q3it3i5" path="res://assets/castledragon.webp" id="3_mah5v"]
+[ext_resource type="Texture2D" uid="uid://byvycr08jnl84" path="res://map_items_transparent.webp" id="4_kyhnv"]
+
 [node name="Credits" type="Control" unique_id=533818504]
 layout_mode = 3
 anchors_preset = 15
@@ -10,13 +15,43 @@ grow_vertical = 2
 
 [node name="Label" type="Label" parent="." unique_id=1103018714]
 layout_mode = 0
-offset_right = 1925.0
-offset_bottom = 1065.0
-theme_override_font_sizes/font_size = 128
+offset_left = 9.0
+offset_top = 85.0
+offset_right = 1934.0
+offset_bottom = 1150.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_2fbfq")
+theme_override_font_sizes/font_size = 115
 text = "CREDITS
-Ali Deniz Sözer
-Orhun Güder
-Tuna Göksal
-Nazlı İrem Birinci
+
+Ali Deniz Sozer
+Orhun Guder
+Tuna Goksal
+Nazli Irem Birinci
 Ekin Saydam"
 horizontal_alignment = 1
+
+[node name="UntitledDesign13" type="Sprite2D" parent="." unique_id=1599536032]
+z_index = -100
+position = Vector2(968.62933, 540)
+scale = Vector2(2.3275862, 2.3275862)
+texture = ExtResource("2_8gwij")
+
+[node name="Castledragon" type="Sprite2D" parent="." unique_id=682406280]
+position = Vector2(1680, 808.99994)
+scale = Vector2(0.89316237, 0.92948717)
+texture = ExtResource("3_mah5v")
+
+[node name="Trees" type="Sprite2D" parent="." unique_id=1449340663]
+position = Vector2(269.00003, 802)
+scale = Vector2(2.455, 2.4550002)
+texture = ExtResource("4_kyhnv")
+region_enabled = true
+region_rect = Rect2(328, 296, 200, 216)
+
+[node name="Trees2" type="Sprite2D" parent="." unique_id=1665374361]
+position = Vector2(956.00006, 995)
+scale = Vector2(1.1948912, 1.2275007)
+texture = ExtResource("4_kyhnv")
+region_enabled = true
+region_rect = Rect2(672, 712, 184, 136)
