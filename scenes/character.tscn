@@ -5,9 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://c5kctwwlvq4gb" path="res://assets/real_character_walking_2.webp" id="2_my7n2"]
 [ext_resource type="Texture2D" uid="uid://b7stk774087bo" path="res://assets/character_smushed.webp" id="4_my7n2"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xty33"]
-radius = 3.0
-height = 6.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_my7n2"]
+radius = 48.0
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_my7n2"]
 animations = [{
@@ -27,7 +26,7 @@ animations = [{
 script = ExtResource("1_rkhd4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1731430528]
-shape = SubResource("CapsuleShape2D_xty33")
+shape = SubResource("CircleShape2D_my7n2")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=1692323104]
 scale = Vector2(0.8773333, 0.85729164)

@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="AchievementData" format=3 uid="uid://d0ranbkopuhw4"]
+[gd_resource type="Resource" script_class="AchievementData" format=3 uid="uid://oevo3v8tgo58"]
 
 [ext_resource type="Script" uid="uid://8k0biy7tnl45" path="res://scripts/achievement_data.gd" id="1_kgjw7"]
-[ext_resource type="Texture2D" uid="uid://efvme1qdhdxi" path="res://assets/icon.svg" id="1_ma7t6"]
+[ext_resource type="Texture2D" uid="uid://ds07rb3vc18fk" path="res://trophy.png" id="1_ma7t6"]
 
 [resource]
 script = ExtResource("1_kgjw7")
-title = "test2"
+title = "I <3 Rolling"
 icon = ExtResource("1_ma7t6")
 metadata/_custom_type_script = "uid://8k0biy7tnl45"

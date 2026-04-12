@@ -78,6 +78,7 @@ func handle_movement(delta: float):
 			smushed.flip_h = false
 		
 		set_to_moving()
+		AchievementManager.unlock_achivement("Rise and Shine")
 		facing_direction = input_dir
 		velocity = velocity.move_toward(input_dir * max_speed, acceleration * delta)
 		
@@ -94,8 +95,7 @@ func handle_roll():
 	if Input.is_action_just_pressed("roll") and _can_roll:
 		set_to_rolling()
 		velocity = facing_direction * roll_force + velocity
-		AchievementManager.unlock_achivement("test")
-		AchievementManager.unlock_achivement("test2")
+		AchievementManager.unlock_achivement("I <3 Rolling")
 		
 		if facing_direction.x < 0:
 			roll_spin_dir = -1.0   

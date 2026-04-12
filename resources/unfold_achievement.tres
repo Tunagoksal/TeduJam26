@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AchievementData" format=3 uid="uid://cvefv3v0ao38i"]
+
+[ext_resource type="Script" uid="uid://8k0biy7tnl45" path="res://scripts/achievement_data.gd" id="1_3wo7b"]
+[ext_resource type="Texture2D" uid="uid://ds07rb3vc18fk" path="res://trophy.png" id="1_qcwbf"]
+
+[resource]
+script = ExtResource("1_3wo7b")
+title = "Ctrl + Z"
+icon = ExtResource("1_qcwbf")
+metadata/_custom_type_script = "uid://8k0biy7tnl45"

@@ -1,6 +1,6 @@
-[gd_scene format=3 uid="uid://b0aly4ak01qy3"]
+[gd_scene format=3 uid="uid://bkhy23t7p1if3"]
 
-[ext_resource type="Script" uid="uid://cwjjjwycbuh0s" path="res://flag.gd" id="1_l1sgl"]
+[ext_resource type="Script" path="res://flag.gd" id="1_l1sgl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1gre2"]
 size = Vector2(31, 35)
@@ -9,7 +9,6 @@ size = Vector2(31, 35)
 script = ExtResource("1_l1sgl")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=259074908]
-position = Vector2(5.5, 7.5)
 shape = SubResource("RectangleShape2D_1gre2")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

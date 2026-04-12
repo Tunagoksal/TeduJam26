@@ -26,9 +26,14 @@ var dragging:bool
 var is_player_trapped: bool = false
 var rescue_direction: FoldDir
 
+var total_width: int
+var total_height: int
+
 enum FoldDir { TOP, BOTTOM, LEFT, RIGHT }
 
 func _ready() -> void:
+	total_width = macro_cols * chunk_size
+	total_height = macro_rows * chunk_size
 	Input.set_custom_mouse_cursor(point_cursor_texture)
 	apply_grid_state(simulate_paper_state(active_folds).grid)
 	generate_items()
@@ -65,8 +70,6 @@ func _input(event: InputEvent) -> void:
 				if display_layer.get_used_rect().has_point(cell):
 					Input.set_custom_mouse_cursor(point_cursor_texture)
 				
-				
-				
 				# Calculate direction
 				var direction: FoldDir
 				
@@ -77,19 +80,8 @@ func _input(event: InputEvent) -> void:
 				
 				if display_layer.get_used_rect().has_point(cell_begin):
 					direction = get_fold_from_drag(local_begin,local_end,display_layer)
-	
-
-
-				#print("Start:", drag_begin_pos)
-				#print("End:", drag_end_pos)
-				#print("Direction:", direction)
 
 	if event is InputEventKey and event.pressed and not event.echo:
-		#if event.keycode == KEY_W: fold_side(FoldDir.TOP)
-		#if event.keycode == KEY_S: fold_side(FoldDir.BOTTOM)
-		#if event.keycode == KEY_A: fold_side(FoldDir.LEFT)
-		#if event.keycode == KEY_D: fold_side(FoldDir.RIGHT)
-		
 		if event.keycode == KEY_UP: unfold_side(FoldDir.TOP)
 		if event.keycode == KEY_DOWN: unfold_side(FoldDir.BOTTOM)
 		if event.keycode == KEY_LEFT: unfold_side(FoldDir.LEFT)
@@ -159,30 +151,26 @@ func get_fold_from_drag(begin: Vector2, end: Vector2, tilemap: TileMapLayer) -> 
 
 func unfold_by_mouse(local_begin_pos, direction):
 	unfold_side(direction)
+	AchievementManager.unlock_achivement("Ctrl + Z")
 	
 func fold_by_mouse(local_begin, direction):
 	fold_side(direction)
+	AchievementManager.unlock_achivement("Reality Bender")
 	
 # ==========================================
-# THE LAYER STACK SIMULATOR (CRITICAL FIX)
+# THE LAYER STACK SIMULATOR
 # ==========================================
 func simulate_paper_state(folds: Array[FoldDir]) -> Dictionary:
 	var grid = {}
-	var total_width = macro_cols * chunk_size
-	var total_height = macro_rows * chunk_size
-	# 1. Initialize the paper. Every grid cell now holds an ARRAY of layers.
-	for x in range(macro_cols * chunk_size):
-		for y in range(macro_rows * chunk_size):
+
+	# 1. Initialize the paper — no pre-mirroring, back position is computed dynamically
+	for x in range(total_width):
+		for y in range(total_height):
 			var pos = Vector2i(x, y)
-			
-			var mirrored_x = (total_width - 1) - x
-			var back_pos = Vector2i(mirrored_x, y)
-			
 			if front_data.get_cell_source_id(pos) != -1:
 				grid[pos] = [{
 					"orig_pos": pos,
-					"back_orig_pos": back_pos, # Store the pre-mirrored position for the back
-					"is_back": false, 
+					"is_back": false,
 					"alt": front_data.get_cell_alternative_tile(pos)
 				}]
 			else:
@@ -197,27 +185,21 @@ func simulate_paper_state(folds: Array[FoldDir]) -> Dictionary:
 		if fold == FoldDir.TOP:
 			is_vert = true; c_line = bounds.min_r; t_line = bounds.min_r + 1
 			hinge_idx = max(c_line, t_line) * chunk_size; bounds.min_r += 1
-			
-			# THE FIX: Change this to TRANSFORM_FLIP_H if your texture is mirroring wrong.
-			# (Or use: TileSetAtlasSource.TRANSFORM_FLIP_V | TileSetAtlasSource.TRANSFORM_FLIP_H for a 180-degree rotation)
-			flip = TileSetAtlasSource.TRANSFORM_FLIP_H 
+			flip = TileSetAtlasSource.TRANSFORM_FLIP_H
 			
 		elif fold == FoldDir.BOTTOM:
 			is_vert = true; c_line = bounds.max_r; t_line = bounds.max_r - 1
 			hinge_idx = (min(c_line, t_line) + 1) * chunk_size; bounds.max_r -= 1
-			
-			flip = TileSetAtlasSource.TRANSFORM_FLIP_H # Match your Top fold here
+			flip = TileSetAtlasSource.TRANSFORM_FLIP_H
 			
 		elif fold == FoldDir.LEFT:
 			is_vert = false; c_line = bounds.min_c; t_line = bounds.min_c + 1
 			hinge_idx = max(c_line, t_line) * chunk_size; bounds.min_c += 1
-			
-			flip = TileSetAtlasSource.TRANSFORM_FLIP_V # Swap this too if needed!
+			flip = TileSetAtlasSource.TRANSFORM_FLIP_V
 			
 		elif fold == FoldDir.RIGHT:
 			is_vert = false; c_line = bounds.max_c; t_line = bounds.max_c - 1
 			hinge_idx = (min(c_line, t_line) + 1) * chunk_size; bounds.max_c -= 1
-			
 			flip = TileSetAtlasSource.TRANSFORM_FLIP_V
 
 		var src_min_x = bounds.min_c * chunk_size; var src_max_x = (bounds.max_c + 1) * chunk_size - 1
@@ -243,7 +225,6 @@ func simulate_paper_state(folds: Array[FoldDir]) -> Dictionary:
 			if not grid.has(move.dst): grid[move.dst] = []
 			
 			# Physical Rule of Paper: When a stack of layers folds over, its order reverses!
-			# (The top flap hits the table first, becoming the bottom layer)
 			layers.reverse()
 			
 			for tile in layers:
@@ -253,10 +234,11 @@ func simulate_paper_state(folds: Array[FoldDir]) -> Dictionary:
 
 	return {"grid": grid, "bounds": bounds}
 
-# Helper to fetch texture data securely
+# Helper to fetch texture data — back tile always mirrors on both axes
 func get_tile_render_data(tile: Dictionary) -> Dictionary:
 	if tile.is_back:
-		var b_pos = tile.get("back_orig_pos", tile.orig_pos)
+		var orig = tile.orig_pos
+		var b_pos = Vector2i((total_width - 1) - orig.x, (total_height - 1) - orig.y)
 		return {
 			"id": back_data.get_cell_source_id(b_pos),
 			"coords": back_data.get_cell_atlas_coords(b_pos),
@@ -509,7 +491,7 @@ func _animate_chunk_transition(dir: FoldDir, is_folding: bool, pre: Dictionary, 
 			elif post_size < pre_size:
 				player.reveal_from_paper()
 				is_player_trapped = false
-			# THE FIX: If the paper didn't touch them at all, just unfreeze them!
+			# If the paper didn't touch them at all, just unfreeze them
 			else:
 				player.is_frozen = false 
 		
