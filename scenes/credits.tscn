@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://c4xwr4jquqqv1"]
+
+[node name="Credits" type="Control" unique_id=533818504]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="." unique_id=1103018714]
+layout_mode = 0
+offset_right = 1925.0
+offset_bottom = 1065.0
+theme_override_font_sizes/font_size = 128
+text = "CREDITS
+Ali Deniz Sözer
+Orhun Güder
+Tuna Göksal
+Nazlı İrem Birinci
+Ekin Saydam"
+horizontal_alignment = 1

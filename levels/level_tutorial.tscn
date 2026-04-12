@@ -14,10 +14,15 @@
 script = ExtResource("1_u2472")
 star_count = 4
 
+[node name="UntitledDesign14" type="Sprite2D" parent="." unique_id=604570503]
+position = Vector2(960, 539.8)
+scale = Vector2(1.2757477, 1.2770686)
+texture = ExtResource("8_le33n")
+
 [node name="Node2D" type="Node2D" parent="." unique_id=1918003504]
 scale = Vector2(0.8, 0.8)
 script = ExtResource("1_3eydx")
-next_level_path = "res://scenes/level3.tscn"
+next_level_path = "res://scenes/credits.tscn"
 
 [node name="BackLayer" type="TileMapLayer" parent="Node2D" unique_id=34805368]
 position = Vector2(5997.5, 0)
@@ -61,7 +66,7 @@ alignment = 1
 [node name="Character" parent="." unique_id=1749950208 instance=ExtResource("5_le33n")]
 position = Vector2(587, 370)
 
-[node name="UntitledDesign14" type="Sprite2D" parent="." unique_id=422490908]
+[node name="UntitledDesign15" type="Sprite2D" parent="." unique_id=422490908]
 z_index = -100
 position = Vector2(972.99994, 557.3)
 scale = Vector2(1.2837209, 1.2924349)
