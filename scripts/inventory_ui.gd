@@ -9,7 +9,6 @@ func _ready() -> void:
 	if player:
 		player.inventory_changed.connect(update_ui)
 
-
 func update_ui(inventory: Array[CollectibleItem]):
 	for child in container.get_children():
 		child.queue_free()
@@ -18,7 +17,8 @@ func update_ui(inventory: Array[CollectibleItem]):
 		if item.icon:
 			var icon_rect = TextureRect.new()
 			icon_rect.texture = item.icon
-			icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-			icon_rect.custom_minimum_size = Vector2(64, 64) 
+			icon_rect.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+			icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			icon_rect.custom_minimum_size = Vector2(256, 256)
 			container.add_child(icon_rect)
 	

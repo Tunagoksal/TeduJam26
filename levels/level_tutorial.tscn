@@ -7,7 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://dnoi8sf8ixw0s" path="res://scenes/character.tscn" id="5_le33n"]
 [ext_resource type="AudioStream" uid="uid://b6uxdeex7r6ft" path="res://assets/audio/freesound_community-turnpage-99756.mp3" id="5_u2472"]
 [ext_resource type="AudioStream" uid="uid://7k2f75avmpfc" path="res://assets/audio/freesound_community-pageturn-102978.mp3" id="6_wt7er"]
-[ext_resource type="PackedScene" uid="uid://e0knnc7cu0fm" path="res://scenes/inventory_ui.tscn" id="8_v5f2i"]
+[ext_resource type="Script" uid="uid://bfebn1uyoltd8" path="res://scripts/inventory_ui.gd" id="7_v5f2i"]
+[ext_resource type="Texture2D" uid="uid://dywqxx58ht0ek" path="res://assets/Untitled_design14.webp" id="8_le33n"]
 
 [node name="Level2" type="Node2D" unique_id=620947927]
 script = ExtResource("1_u2472")
@@ -16,6 +17,7 @@ star_count = 4
 [node name="Node2D" type="Node2D" parent="." unique_id=1918003504]
 scale = Vector2(0.8, 0.8)
 script = ExtResource("1_3eydx")
+next_level_path = "res://scenes/level3.tscn"
 
 [node name="BackLayer" type="TileMapLayer" parent="Node2D" unique_id=34805368]
 position = Vector2(5997.5, 0)
@@ -37,8 +39,30 @@ stream = ExtResource("5_u2472")
 [node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="Node2D" unique_id=552652965]
 stream = ExtResource("6_wt7er")
 
+[node name="InventoryUI" type="CanvasLayer" parent="Node2D" unique_id=1902873453 node_paths=PackedStringArray("player")]
+script = ExtResource("7_v5f2i")
+player = NodePath("../../Character")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Node2D/InventoryUI" unique_id=2053208774]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -304.0
+offset_top = -166.0
+offset_right = -304.0
+offset_bottom = -166.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_constants/separation = -170
+alignment = 1
+
 [node name="Character" parent="." unique_id=1749950208 instance=ExtResource("5_le33n")]
 position = Vector2(587, 370)
 
-[node name="InventoryUI" parent="." unique_id=1902873453 node_paths=PackedStringArray("player") instance=ExtResource("8_v5f2i")]
-player = NodePath("../Character")
+[node name="UntitledDesign14" type="Sprite2D" parent="." unique_id=422490908]
+z_index = -100
+position = Vector2(972.99994, 557.3)
+scale = Vector2(1.2837209, 1.2924349)
+texture = ExtResource("8_le33n")

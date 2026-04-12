@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://bvq6xit5xbnjq"]
 
-[ext_resource type="Script" path="res://main_menu.gd" id="1_06t4h"]
 [ext_resource type="Texture2D" uid="uid://dr4o2p5illt4i" path="res://scripts/icon.svg" id="2_7vrkn"]
 [ext_resource type="FontFile" uid="uid://cve5trq2v7jt4" path="res://assets/ChildWriting-Regular.ttf" id="3_fu7sn"]
 
@@ -177,7 +176,6 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
-script = ExtResource("1_06t4h")
 
 [node name="SettingsSprite" type="Sprite2D" parent="." unique_id=1211510219]
 visible = false

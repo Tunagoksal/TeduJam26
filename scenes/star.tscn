@@ -28,5 +28,7 @@ stream = ExtResource("4_8d8bx")
 [node name="YildizSari3" type="Sprite2D" parent="." unique_id=397213471]
 scale = Vector2(0.45, 0.45)
 texture = ExtResource("5_sxbdi")
+region_enabled = true
+region_rect = Rect2(246, 274.5, 256, 228)
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

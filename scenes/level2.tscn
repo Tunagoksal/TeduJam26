@@ -13,7 +13,7 @@ script = ExtResource("1_yqkch")
 [node name="Node2D" type="Node2D" parent="." unique_id=1918003504]
 scale = Vector2(0.8, 0.8)
 script = ExtResource("1_alqfr")
-next_level_path = "res://scenes/main_menu.tscn"
+next_level_path = "res://scenes/level3.tscn"
 
 [node name="BackLayer" type="TileMapLayer" parent="Node2D" unique_id=34805368]
 position = Vector2(4500, 0)
