@@ -3,12 +3,12 @@
 [ext_resource type="Script" uid="uid://bhgq6ddlrh5ur" path="res://scripts/item.gd" id="1_ef0hr"]
 [ext_resource type="Script" uid="uid://seo2lqc2vrpq" path="res://scripts/collectible_item.gd" id="2_8d8bx"]
 [ext_resource type="AudioStream" uid="uid://c1xgxy2bnrnv0" path="res://assets/audio/output2.mp3" id="4_8d8bx"]
-[ext_resource type="Texture2D" uid="uid://jf34s3whue07" path="res://assets/yildiz_sari.webp" id="5_8lrp4"]
+[ext_resource type="Texture2D" uid="uid://d1xswuv6pbpa6" path="res://assets/yildiz_sari_3.webp" id="5_sxbdi"]
 
 [sub_resource type="Resource" id="Resource_vljjh"]
 script = ExtResource("2_8d8bx")
 title = "Key"
-icon = ExtResource("5_8lrp4")
+icon = ExtResource("5_sxbdi")
 metadata/_custom_type_script = "uid://seo2lqc2vrpq"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_s8enn"]
@@ -25,9 +25,8 @@ shape = SubResource("CircleShape2D_s8enn")
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1490197903]
 stream = ExtResource("4_8d8bx")
 
-[node name="YildizSari" type="Sprite2D" parent="." unique_id=485508622]
-position = Vector2(5, -3)
-scale = Vector2(0.6, 0.6)
-texture = ExtResource("5_8lrp4")
+[node name="YildizSari3" type="Sprite2D" parent="." unique_id=397213471]
+scale = Vector2(0.45, 0.45)
+texture = ExtResource("5_sxbdi")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
