@@ -9,4 +9,5 @@ script = ExtResource("1_k4xj7")
 [node name="ThemePlayer" type="AudioStreamPlayer" parent="." unique_id=1485167199]
 stream = ExtResource("2_p3pav")
 autoplay = true
+mix_target = 1
 parameters/looping = true

@@ -20,7 +20,7 @@ config/icon="res://icon.svg"
 AchievementManager="*uid://b2k5kb2rb6esa"
 DialogManager="*uid://byalvv5jg0yey"
 SceneManager="*uid://ywyoeku18ms6"
-MusicPlayer="*uid://b7or5wx2r00ni"
+MusicPlayer="*uid://t5s3dq2lek84"
 
 [display]
 
