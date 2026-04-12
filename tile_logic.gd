@@ -10,6 +10,11 @@ extends Node2D
 @export var macro_cols: int = 4
 @export var macro_rows: int = 4
 
+var footstep_sounds := [
+	preload("uid://c0mvfg2dbc377"),
+	preload("uid://gnkpqibupiyg"),
+	preload("uid://by0vhiefqviqs")
+]
 
 var item_scenes = {
 	1: "res://flag.tscn",

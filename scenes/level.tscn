@@ -8,10 +8,6 @@
 
 [node name="Node2D" type="Node2D" parent="." unique_id=1918003504]
 script = ExtResource("1_w7c3h")
-chunk_size = null
-macro_cols = null
-macro_rows = null
-next_level_path = null
 
 [node name="BackLayer" type="TileMapLayer" parent="Node2D" unique_id=34805368]
 position = Vector2(0, 3000)
