@@ -9,12 +9,15 @@ class_name Character
 @export_group("Roll")
 @export var roll_force: float = 500.0
 @export var roll_cooldown: float = 1000.0
-
+@export var roll_speed:float = 100
 
 @onready var timer: Timer = $Timer
 @onready var anim_timer: Timer = $AnimationTimer
 @onready var sprite: AnimatedSprite2D = $Sprite
 @onready var smushed: Sprite2D = $Smushed
+
+
+var star_count:=0 
 
 signal inventory_changed(items: Array[CollectibleItem])
 var inventory: Array[CollectibleItem] = []
@@ -88,7 +91,7 @@ func handle_movement(delta: float):
 		sprite.rotation = 0
 	
 	if rolling:
-		sprite.rotation += PI/18 * delta * 100 * roll_spin_dir
+		sprite.rotation += PI/18 * delta * roll_speed * roll_spin_dir
 
 
 func handle_roll():

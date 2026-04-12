@@ -6,6 +6,12 @@ class_name Item
 @export var default_tile_atlas_coor:Vector2
 
 @onready var sprite: Sprite2D = $Icon
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
+
+func _ready() -> void:
+	sprite.texture = item_data.icon
+	audio_stream_player.play()
+
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is Character and item_data != null:

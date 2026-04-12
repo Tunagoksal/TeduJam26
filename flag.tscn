@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://wt12aokrcfdt"]
 
-[ext_resource type="Script" path="res://flag.gd" id="1_l1sgl"]
+[ext_resource type="Script" uid="uid://cwjjjwycbuh0s" path="res://flag.gd" id="1_l1sgl"]
+[ext_resource type="AudioStream" uid="uid://bd4h8p85stjt3" path="res://assets/audio/updatepelgo-success-221935.mp3" id="2_amn8n"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1gre2"]
 size = Vector2(31, 35)
@@ -10,5 +11,8 @@ script = ExtResource("1_l1sgl")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=259074908]
 shape = SubResource("RectangleShape2D_1gre2")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=508268311]
+stream = ExtResource("2_amn8n")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

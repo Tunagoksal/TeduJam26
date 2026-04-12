@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://b7or5wx2r00ni"]
+
+[ext_resource type="AudioStream" uid="uid://cldn51r0vgl2a" path="res://assets/audio/theme.mp3" id="2_p3pav"]
+
+[node name="MusicPlayer" type="Node2D" unique_id=1692012138]
+
+[node name="ThemePlayer" type="AudioStreamPlayer" parent="." unique_id=1485167199]
+stream = ExtResource("2_p3pav")
+autoplay = true
+parameters/looping = true

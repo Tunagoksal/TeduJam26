@@ -11,7 +11,7 @@ extends Node2D
 
 var item_scenes = {
 	1: "res://flag.tscn",
-	2: "res://scenes/key.tscn"
+	
 }
 
 @export var next_level_path:String
@@ -358,7 +358,6 @@ func generate_items() -> void:
 						instance.path = next_level_path
 					add_child(instance)
 					instance.position = world_pos
-					print("ZORT")
 				else:
 					print("ERROR: Could not load scene at path: ", item_path_id)
 

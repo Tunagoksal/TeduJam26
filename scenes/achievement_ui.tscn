@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://ccf66hxtqc1cs"]
 
 [ext_resource type="Script" uid="uid://oa7fmlck26t2" path="res://scripts/achievement_ui.gd" id="1_h7bd7"]
+[ext_resource type="FontFile" uid="uid://dgsln8tvsgk6y" path="res://assets/font/sketchy.ttf" id="2_aug3w"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h7bd7"]
 bg_color = Color(0.4745098, 0.62352943, 0.70980394, 0)
@@ -19,7 +20,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_h7bd7")
 [node name="TextureRect" type="ColorRect" parent="PanelContainer" unique_id=1503773241]
 material = SubResource("CanvasItemMaterial_h7bd7")
 layout_mode = 2
-color = Color(0.19430344, 0.19430344, 0.19430344, 1)
+color = Color(0.19607843, 0.19607843, 0.19607843, 0.21176471)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer" unique_id=659960821]
 layout_mode = 2
@@ -34,4 +35,7 @@ stretch_mode = 5
 
 [node name="Title" type="Label" parent="PanelContainer/HBoxContainer" unique_id=284916119]
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_aug3w")
 theme_override_font_sizes/font_size = 32
