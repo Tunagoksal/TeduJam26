@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="CollectibleItem" format=3 uid="uid://b32gl604t00po"]
+
+[ext_resource type="Texture2D" uid="uid://jf34s3whue07" path="res://assets/yildiz_sari.webp" id="1_kv4e7"]
+[ext_resource type="Script" uid="uid://seo2lqc2vrpq" path="res://scripts/collectible_item.gd" id="1_v5xnv"]
+
+[resource]
+script = ExtResource("1_v5xnv")
+icon = ExtResource("1_kv4e7")
+metadata/_custom_type_script = "uid://seo2lqc2vrpq"

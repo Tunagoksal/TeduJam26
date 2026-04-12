@@ -5,7 +5,7 @@ class_name Item
 @export var tilemap:TileMapLayer
 @export var default_tile_atlas_coor:Vector2
 
-@onready var sprite: Sprite2D = $Icon
+@onready var sprite: Sprite2D = $YildizSari3
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 
 func _ready() -> void:

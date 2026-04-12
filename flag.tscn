@@ -5,20 +5,21 @@
 [ext_resource type="Texture2D" uid="uid://d3pu8m8c2dns2" path="res://assets/bayrak.webp" id="3_ukulb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1gre2"]
-size = Vector2(31, 35)
+size = Vector2(110.25, 101.75)
 
 [node name="Flag" type="Area2D" unique_id=501126515]
 script = ExtResource("1_l1sgl")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=259074908]
+position = Vector2(2, 4)
 shape = SubResource("RectangleShape2D_1gre2")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=508268311]
 stream = ExtResource("2_amn8n")
 
 [node name="Bayrak" type="Sprite2D" parent="." unique_id=2135200992]
-position = Vector2(1, -1)
-scale = Vector2(0.18253969, 0.18253969)
+position = Vector2(6, -2)
+scale = Vector2(0.768, 0.7)
 texture = ExtResource("3_ukulb")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
