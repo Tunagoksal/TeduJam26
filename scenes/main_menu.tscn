@@ -33,6 +33,13 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rtw2f"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1ajci"]
+shader = ExtResource("4_tbmy8")
+shader_parameter/shaking = false
+shader_parameter/amplitude = 100.0
+shader_parameter/noise_scale = 10.0
+shader_parameter/noise_speed = 10.0
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lgwnu"]
 size = Vector2(1966, 20)
 
@@ -97,10 +104,9 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_oa1go")
 theme_override_styles/hover = SubResource("StyleBoxFlat_tbmy8")
 theme_override_styles/focus = SubResource("StyleBoxFlat_rtw2f")
 script = ExtResource("5_oa1go")
-animation_speed = 0.7
-shake_angle = 3.0
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/StartButton" unique_id=392764906]
+material = SubResource("ShaderMaterial_1ajci")
 layout_mode = 0
 offset_left = 0.00015258788
 offset_top = -232.99986
@@ -192,7 +198,7 @@ texture = ExtResource("13_1ajci")
 
 [node name="Bant3" type="Sprite2D" parent="." unique_id=1032336222]
 position = Vector2(1432, 61.99993)
-rotation = 0.5235988
+rotation = 1.3089969
 scale = Vector2(0.7478632, 0.775641)
 texture = ExtResource("13_1ajci")
 

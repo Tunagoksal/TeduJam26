@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://ccf66hxtqc1cs"]
 
 [ext_resource type="Script" uid="uid://oa7fmlck26t2" path="res://scripts/achievement_ui.gd" id="1_h7bd7"]
-[ext_resource type="FontFile" uid="uid://dgsln8tvsgk6y" path="res://assets/font/sketchy.ttf" id="2_aug3w"]
+[ext_resource type="Texture2D" uid="uid://ug4k7a7wlx27" path="res://achievement_ui.png" id="2_8fern"]
+[ext_resource type="FontFile" uid="uid://cve5trq2v7jt4" path="res://assets/ChildWriting-Regular.ttf" id="3_8fern"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h7bd7"]
 bg_color = Color(0.4745098, 0.62352943, 0.70980394, 0)
@@ -16,6 +17,12 @@ script = ExtResource("1_h7bd7")
 offset_right = 328.0
 offset_bottom = 128.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_h7bd7")
+
+[node name="TextureRect2" type="TextureRect" parent="PanelContainer" unique_id=1600718706]
+visible = false
+layout_mode = 2
+texture = ExtResource("2_8fern")
+stretch_mode = 6
 
 [node name="TextureRect" type="ColorRect" parent="PanelContainer" unique_id=1503773241]
 material = SubResource("CanvasItemMaterial_h7bd7")
@@ -37,5 +44,5 @@ stretch_mode = 5
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2_aug3w")
+theme_override_fonts/font = ExtResource("3_8fern")
 theme_override_font_sizes/font_size = 32
