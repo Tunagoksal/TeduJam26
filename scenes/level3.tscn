@@ -1,38 +1,38 @@
-[gd_scene format=4 uid="uid://k4bo0q8sah1n"]
+[gd_scene format=4 uid="uid://ckhm330nvna8v"]
 
-[ext_resource type="Script" uid="uid://dvdei14ffpg1" path="res://tile_logic.gd" id="1_alqfr"]
-[ext_resource type="Script" uid="uid://b8vffe7fik1nm" path="res://scripts/level.gd" id="1_yqkch"]
-[ext_resource type="TileSet" uid="uid://b2h2crx1fhmdu" path="res://test_tileset.tres" id="2_yqkch"]
-[ext_resource type="AudioStream" uid="uid://b6uxdeex7r6ft" path="res://assets/audio/freesound_community-turnpage-99756.mp3" id="3_2k3dv"]
-[ext_resource type="AudioStream" uid="uid://7k2f75avmpfc" path="res://assets/audio/freesound_community-pageturn-102978.mp3" id="4_alqfr"]
-[ext_resource type="PackedScene" uid="uid://dnoi8sf8ixw0s" path="res://scenes/character.tscn" id="5_xa7n4"]
+[ext_resource type="Script" uid="uid://b8vffe7fik1nm" path="res://scripts/level.gd" id="1_6lxtr"]
+[ext_resource type="Script" uid="uid://dvdei14ffpg1" path="res://tile_logic.gd" id="2_b72m1"]
+[ext_resource type="TileSet" uid="uid://b2h2crx1fhmdu" path="res://test_tileset.tres" id="3_5mhml"]
+[ext_resource type="AudioStream" uid="uid://b6uxdeex7r6ft" path="res://assets/audio/freesound_community-turnpage-99756.mp3" id="4_rupth"]
+[ext_resource type="AudioStream" uid="uid://7k2f75avmpfc" path="res://assets/audio/freesound_community-pageturn-102978.mp3" id="5_6qt4k"]
+[ext_resource type="PackedScene" uid="uid://dnoi8sf8ixw0s" path="res://scenes/character.tscn" id="6_fh4ka"]
 
 [node name="Level" type="Node2D" unique_id=620947927]
-script = ExtResource("1_yqkch")
+script = ExtResource("1_6lxtr")
 
 [node name="Node2D" type="Node2D" parent="." unique_id=1918003504]
 scale = Vector2(0.8, 0.8)
-script = ExtResource("1_alqfr")
+script = ExtResource("2_b72m1")
 next_level_path = "res://scenes/main_menu.tscn"
 
 [node name="BackLayer" type="TileMapLayer" parent="Node2D" unique_id=34805368]
 position = Vector2(4500, 0)
 tile_map_data = PackedByteArray("AAAAAAAABQACAAAAAAAAAAEABQABAAEAAAAAAAIABQABAAEAAAAAAAMABQABAAEAAAAAAAQABQABAAEAAAAAAAUABQABAAEAAAAAAAcAAgAAAAAAAAADAAAAAgAAAAEAAAAEAAAAAgACAAIAAAAFAAAAAgAAAAEAAAAHAAAABQAAAAAAAAABAAcAAgAAAAAAAAADAAcAAgAAAAEAAAAEAAcAAgADAAIAAAAFAAcAAgACAAIAAAAGAAcAAgAAAAAAAAAHAAcAAgAAAAAAAAAHAAUABQABAAEAAAAHAAQABQABAAEAAAAHAAMABQABAAEAAAAHAAIABQABAAEAAAAHAAEABQABAAEAAAACAAUAAgABAAAAAAACAAQAAgADAAMAAAACAAMAAgABAAAAAAACAAIAAgADAAEAAAACAAEAAgABAAAAAAADAAEAAgADAAIAAAADAAIAAgACAAMAAAADAAMAAgADAAAAAAADAAQAAgACAAMAAAADAAUAAgABAAAAAAAEAAUAAgADAAEAAAAEAAQAAgADAAMAAAAEAAMAAgADAAAAAAAEAAIAAgACAAEAAAAEAAEAAgACAAAAAAAFAAIAAgABAAAAAAAFAAMAAgACAAIAAAAFAAQAAgABAAAAAAAFAAUAAgABAAIAAAAFAAEAAgABAAEAAAABAAAAAgAAAAMAAAABAAEAAgAAAAMAAAABAAIAAgAAAAMAAAABAAMAAgAAAAMAAAABAAQAAgAAAAMAAAABAAUAAgAAAAMAAAAGAAAAAgAAAAMAAAAGAAEAAgAAAAMAAAAGAAIAAgAAAAMAAAAGAAMAAgAAAAMAAAAGAAQAAgAAAAMAAAAGAAUAAgAAAAMAAAACAAAAAgABAAIAAAAAAAYABQACAAIAAAAHAAYABQAAAAIAAAABAAYAAgAAAAAAAAACAAYAAgABAAEAAAADAAYAAgACAAEAAAAEAAYAAgACAAIAAAAFAAYAAgACAAEAAAAGAAYAAgAAAAAAAAACAAcAAgADAAIAAAA=")
-tile_set = ExtResource("2_yqkch")
+tile_set = ExtResource("3_5mhml")
 
 [node name="FrontLayer" type="TileMapLayer" parent="Node2D" unique_id=1894160799]
 position = Vector2(3000, 0)
 tile_map_data = PackedByteArray("AAAHAAAAAgAAAAEAAAAHAAEAAgAAAAEAAAAHAAIAAgAAAAEAAAAHAAQAAgAAAAEAAAAHAAUAAgAAAAEAAAAHAAYAAgAAAAMAAAAHAAcAAgABAAMAAAAGAAEABQACAAEAAAAGAAIABQACAAEAAAAGAAMABQACAAEAAAAGAAQABQACAAEAAAAGAAUABQABAAIAAAAGAAYAAgAAAAMAAAAGAAcABQACAAIAAAAFAAEABQABAAAAAAAFAAIABQABAAAAAAAFAAMABQABAAAAAAAFAAQABQABAAAAAAAFAAUABQABAAIAAAAFAAYAAgAAAAMAAAAFAAcABQABAAMAAAAEAAAAAgAAAAEAAAAEAAEABQABAAAAAAAEAAIABQABAAAAAAAEAAMABQABAAAAAAAEAAQABQABAAAAAAAEAAUABQABAAIAAAAEAAYAAgAAAAMAAAAEAAcABQABAAMAAAADAAAAAgAAAAEAAAADAAEABQABAAAAAAADAAIABQABAAAAAAADAAMABQABAAAAAAADAAQABQABAAAAAAADAAUABQABAAIAAAADAAYAAgAAAAMAAAADAAcABQABAAMAAAACAAAAAgAAAAEAAAACAAEABQABAAAAAAACAAIABQABAAAAAAACAAMABQABAAAAAAACAAQABQABAAAAAAACAAUABQABAAIAAAACAAYAAgAAAAMAAAACAAcABQABAAMAAAABAAAAAgAAAAEAAAABAAEABQAAAAEAAAABAAIABQAAAAEAAAABAAMABQAAAAEAAAABAAQABQAAAAEAAAABAAUABQABAAIAAAABAAYAAgAAAAMAAAABAAcABQABAAMAAAAAAAAAAgAAAAEAAAAAAAEAAgAAAAEAAAAAAAIAAgAAAAEAAAAAAAMAAgAAAAEAAAAAAAQAAgAAAAEAAAAAAAUAAgAAAAEAAAAAAAYAAgAAAAMAAAAAAAcAAgAAAAIAAAAHAAMAAgAAAAEAAAAFAP7/AgAAAAEAAAAFAAAAAgAAAAEAAAAGAAAAAgAAAAEAAAA=")
-tile_set = ExtResource("2_yqkch")
+tile_set = ExtResource("3_5mhml")
 
 [node name="DisplayLayer" type="TileMapLayer" parent="Node2D" unique_id=1091396286]
-tile_set = ExtResource("2_yqkch")
+tile_set = ExtResource("3_5mhml")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Node2D" unique_id=1955640413]
-stream = ExtResource("3_2k3dv")
+stream = ExtResource("4_rupth")
 
 [node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="Node2D" unique_id=853690581]
-stream = ExtResource("4_alqfr")
+stream = ExtResource("5_6qt4k")
 
-[node name="Character" parent="." unique_id=1749950208 instance=ExtResource("5_xa7n4")]
+[node name="Character" parent="." unique_id=1749950208 instance=ExtResource("6_fh4ka")]
 position = Vector2(835, 426)
