@@ -7,7 +7,14 @@ extends Node2D
 # --- GRID CONFIGURATION ---
 @export var chunk_size: int = 2
 @export var macro_cols: int = 4
-@export var macro_rows: int = 4 
+@export var macro_rows: int = 4
+
+var item_scenes = {
+	1: "res://flag.tscn",
+	2: "res://scenes/key.tscn"
+}
+
+@export var next_level_path:String
 
 var arrow_cursor_texture = load("res://assets/Light/Arrows/Arrow2.png")
 var point_cursor_texture = load("res://assets/Light/Hands/Hand2.png")
@@ -340,17 +347,20 @@ func generate_items() -> void:
 	for cell in display_layer.get_used_cells():
 		var tile_data = display_layer.get_cell_tile_data(cell)
 		if tile_data:
-			var item_path = tile_data.get_custom_data("item")
-			
-			if item_path is String and item_path.strip_edges() != "":
-				var scene = load(item_path)
+			var item_path_id = tile_data.get_custom_data("item")
+			print(item_path_id)
+			if item_path_id:
+				var scene = load(item_scenes[item_path_id])
 				if scene:
 					var instance = scene.instantiate()
 					var world_pos = display_layer.map_to_local(cell)
-					instance.position = world_pos
+					if instance is Flag:
+						instance.path = next_level_path
 					add_child(instance)
+					instance.position = world_pos
+					print("ZORT")
 				else:
-					print("ERROR: Could not load scene at path: ", item_path)
+					print("ERROR: Could not load scene at path: ", item_path_id)
 
 func destroy_items() -> void:
 	for child in get_children():
@@ -475,7 +485,8 @@ func _animate_chunk_transition(dir: FoldDir, is_folding: bool, pre: Dictionary, 
 	tween.tween_callback(func():
 		pivot.queue_free()
 		apply_grid_state(post.grid) 
-		
+		destroy_items()
+		generate_items()
 		if is_instance_valid(player):
 			var p_local = display_layer.to_local(player.global_position)
 			var p_cell = display_layer.local_to_map(p_local)
@@ -497,3 +508,5 @@ func _animate_chunk_transition(dir: FoldDir, is_folding: bool, pre: Dictionary, 
 		
 		is_animating = false
 	)
+
+	
