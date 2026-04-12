@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://bbm2vf5ketetx"]
+
+[ext_resource type="Script" uid="uid://dwignny7glak8" path="res://star_remaining_ui.gd" id="1_m2e3x"]
+[ext_resource type="Texture2D" uid="uid://jf34s3whue07" path="res://assets/yildiz_sari.webp" id="2_4r6fe"]
+[ext_resource type="FontFile" uid="uid://dgsln8tvsgk6y" path="res://assets/font/sketchy.ttf" id="3_i1vvd"]
+
+[node name="StarRemainingUI" type="Control" unique_id=982088802]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_m2e3x")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1832219846]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/separation = -40
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer" unique_id=1824906008]
+visible = false
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+texture = ExtResource("2_4r6fe")
+expand_mode = 4
+
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=2105128296]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_i1vvd")
+theme_override_font_sizes/font_size = 64
+text = "0/4"

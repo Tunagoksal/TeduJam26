@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dnoi8sf8ixw0s" path="res://scenes/character.tscn" id="5_xa7n4"]
 [ext_resource type="Texture2D" uid="uid://dywqxx58ht0ek" path="res://assets/Untitled_design14.webp" id="6_6ep0u"]
 [ext_resource type="Script" uid="uid://bfebn1uyoltd8" path="res://scripts/inventory_ui.gd" id="8_hrcei"]
+[ext_resource type="PackedScene" uid="uid://bbm2vf5ketetx" path="res://star_remaining_ui.tscn" id="9_xa7n4"]
 
 [node name="Level" type="Node2D" unique_id=620947927]
 script = ExtResource("1_yqkch")
@@ -63,3 +64,9 @@ grow_horizontal = 0
 grow_vertical = 2
 theme_override_constants/separation = -170
 alignment = 1
+
+[node name="StarRemainingUI" parent="." unique_id=982088802 instance=ExtResource("9_xa7n4")]
+offset_left = 1524.0
+offset_top = 163.0
+offset_right = 1524.0
+offset_bottom = 163.0
