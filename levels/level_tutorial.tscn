@@ -22,6 +22,7 @@ texture = ExtResource("2_le33n")
 [node name="Node2D" type="Node2D" parent="." unique_id=1918003504]
 scale = Vector2(0.8, 0.8)
 script = ExtResource("1_3eydx")
+next_level_path = "res://scenes/credits.tscn"
 
 [node name="BackLayer" type="TileMapLayer" parent="Node2D" unique_id=34805368]
 position = Vector2(5997.5, 0)

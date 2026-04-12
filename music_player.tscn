@@ -1,8 +1,10 @@
-[gd_scene format=3 uid="uid://b7or5wx2r00ni"]
+[gd_scene format=3 uid="uid://t5s3dq2lek84"]
 
+[ext_resource type="Script" uid="uid://dgdp30dqydaxq" path="res://music_player.gd" id="1_k4xj7"]
 [ext_resource type="AudioStream" uid="uid://cldn51r0vgl2a" path="res://assets/audio/theme.mp3" id="2_p3pav"]
 
 [node name="MusicPlayer" type="Node2D" unique_id=1692012138]
+script = ExtResource("1_k4xj7")
 
 [node name="ThemePlayer" type="AudioStreamPlayer" parent="." unique_id=1485167199]
 stream = ExtResource("2_p3pav")
