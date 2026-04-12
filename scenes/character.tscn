@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dnoi8sf8ixw0s"]
 
 [ext_resource type="Script" uid="uid://d21jfe6m1gb0m" path="res://scripts/character.gd" id="1_rkhd4"]
+[ext_resource type="Material" uid="uid://chmbw0x1pckee" path="res://assets/character.tres" id="2_dp8ca"]
 [ext_resource type="Texture2D" uid="uid://bukacx18x2khk" path="res://assets/real_character.webp" id="2_lrhn5"]
 [ext_resource type="Texture2D" uid="uid://c5kctwwlvq4gb" path="res://assets/real_character_walking_2.webp" id="2_my7n2"]
 [ext_resource type="Texture2D" uid="uid://b7stk774087bo" path="res://assets/character_smushed.webp" id="4_my7n2"]
@@ -29,6 +30,7 @@ script = ExtResource("1_rkhd4")
 shape = SubResource("CircleShape2D_my7n2")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=1692323104]
+material = ExtResource("2_dp8ca")
 scale = Vector2(0.8773333, 0.85729164)
 sprite_frames = SubResource("SpriteFrames_my7n2")
 

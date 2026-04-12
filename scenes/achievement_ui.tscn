@@ -5,8 +5,8 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h7bd7"]
 bg_color = Color(0.4745098, 0.62352943, 0.70980394, 0)
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_h7bd7"]
-load_path = "res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.s3tc.ctex"
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_h7bd7"]
+light_mode = 1
 
 [node name="AchivementUI" type="CanvasLayer" unique_id=18943597]
 script = ExtResource("1_h7bd7")
@@ -16,10 +16,10 @@ offset_right = 328.0
 offset_bottom = 128.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_h7bd7")
 
-[node name="TextureRect" type="TextureRect" parent="PanelContainer" unique_id=2100582874]
-modulate = Color(0, 0, 0, 0.40392157)
+[node name="TextureRect" type="ColorRect" parent="PanelContainer" unique_id=1503773241]
+material = SubResource("CanvasItemMaterial_h7bd7")
 layout_mode = 2
-texture = SubResource("CompressedTexture2D_h7bd7")
+color = Color(0.19430344, 0.19430344, 0.19430344, 1)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer" unique_id=659960821]
 layout_mode = 2
