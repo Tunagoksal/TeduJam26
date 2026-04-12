@@ -2,15 +2,18 @@
 
 [ext_resource type="Script" uid="uid://dn12u7ocbrg15" path="res://scripts/main_menu.gd" id="1_bqqt6"]
 [ext_resource type="AudioStream" uid="uid://b5jp1h7nwosfl" path="res://assets/talk.wav" id="2_wu84c"]
+[ext_resource type="Texture2D" uid="uid://ceetpru65msd1" path="res://assets/Untitled_design13.webp" id="3_lgwnu"]
 [ext_resource type="Texture2D" uid="uid://60wurv4k12du" path="res://assets/exit_text.webp" id="4_8ln24"]
 [ext_resource type="Shader" uid="uid://cgqgdmyly3xlt" path="res://scenes/main_menu.gdshader" id="4_tbmy8"]
-[ext_resource type="Texture2D" uid="uid://nt58k5gpa7cp" path="res://assets/paper_bg2.webp" id="5_8ln24"]
 [ext_resource type="Script" uid="uid://d86bod3hevdk" path="res://scenes/button.gd" id="5_oa1go"]
 [ext_resource type="Texture2D" uid="uid://doru61xagjhri" path="res://assets/game_logo.webp" id="5_rtw2f"]
 [ext_resource type="Texture2D" uid="uid://dewja7wipapdt" path="res://assets/start_text.webp" id="6_rtw2f"]
 [ext_resource type="AudioStream" uid="uid://dnehr7s65knxr" path="res://assets/audio/ui_pop.mp3" id="8_5dd4i"]
 [ext_resource type="AudioStream" uid="uid://b6uxdeex7r6ft" path="res://assets/audio/freesound_community-turnpage-99756.mp3" id="9_jk1qb"]
 [ext_resource type="PackedScene" uid="uid://dnoi8sf8ixw0s" path="res://scenes/character.tscn" id="11_lgwnu"]
+[ext_resource type="Texture2D" uid="uid://tb3o5q3it3i5" path="res://assets/castledragon.webp" id="12_flqon"]
+[ext_resource type="Texture2D" uid="uid://ca6afr7ism66" path="res://assets/bant.webp" id="13_1ajci"]
+[ext_resource type="Texture2D" uid="uid://byvycr08jnl84" path="res://map_items_transparent.webp" id="14_7b55j"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jk1qb"]
 shader = ExtResource("4_tbmy8")
@@ -36,6 +39,15 @@ size = Vector2(1966, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_flqon"]
 size = Vector2(182, 1218)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rcqid"]
+size = Vector2(292.83414, 685.88434)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1ajci"]
+size = Vector2(257.74854, 399.6694)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5pajh"]
+size = Vector2(77, 119)
+
 [node name="MainMenu" type="Control" unique_id=59457557]
 layout_mode = 3
 anchors_preset = 15
@@ -48,9 +60,9 @@ speech_sound = ExtResource("2_wu84c")
 next_level_path = "res://levels/level_tutorial.tscn"
 
 [node name="PaperBg2" type="Sprite2D" parent="." unique_id=1223476082]
-position = Vector2(969.00006, 533)
-scale = Vector2(2.5847914, 2.058095)
-texture = ExtResource("5_8ln24")
+position = Vector2(973.00006, 532)
+scale = Vector2(2.5847914, 2.363099)
+texture = ExtResource("3_lgwnu")
 
 [node name="TextureRect3" type="TextureRect" parent="." unique_id=1575971794]
 material = SubResource("ShaderMaterial_jk1qb")
@@ -60,19 +72,18 @@ anchor_left = 0.6234375
 anchor_top = 0.44444445
 anchor_right = 0.6234375
 anchor_bottom = 0.44444445
-offset_left = -952.0
-offset_top = -388.0
-offset_right = 8.0
-offset_bottom = 572.0
+offset_left = -960.0
+offset_top = -480.0
+offset_bottom = 480.0
 grow_horizontal = 2
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.675, 0.675)
 texture = ExtResource("5_rtw2f")
 
 [node name="VBoxContainer" type="HBoxContainer" parent="." unique_id=1175664709]
 layout_mode = 0
-offset_left = 158.00006
+offset_left = 403.0
 offset_top = 671.0
-offset_right = 1004.0001
+offset_right = 2203.0
 offset_bottom = 2367.0
 scale = Vector2(0.4, 0.4)
 theme_override_constants/separation = 0
@@ -130,7 +141,7 @@ z_index = 2
 position = Vector2(1561, 386)
 
 [node name="Marker" type="Node2D" parent="." unique_id=34382543]
-position = Vector2(1119, 386)
+position = Vector2(1168, 276)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1592770415]
 
@@ -150,6 +161,66 @@ shape = SubResource("RectangleShape2D_flqon")
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D" unique_id=29315144]
 position = Vector2(2018, 532)
 shape = SubResource("RectangleShape2D_flqon")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=1582210862]
+position = Vector2(1682, 818)
+scale = Vector2(0.74786323, 0.775641)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=1948773597]
+position = Vector2(88.920166, -60.59503)
+scale = Vector2(0.9999999, 1)
+shape = SubResource("RectangleShape2D_rcqid")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D2" unique_id=1784519364]
+position = Vector2(-155.93701, 86.38013)
+scale = Vector2(0.9999999, 1)
+shape = SubResource("RectangleShape2D_1ajci")
+
+[node name="Castledragon" type="Sprite2D" parent="StaticBody2D2" unique_id=217846068]
+scale = Vector2(0.99999994, 1)
+texture = ExtResource("12_flqon")
+
+[node name="Bant" type="Sprite2D" parent="." unique_id=1987732209]
+position = Vector2(141, 18)
+rotation = -0.7853982
+texture = ExtResource("13_1ajci")
+
+[node name="Bant2" type="Sprite2D" parent="." unique_id=1657983982]
+position = Vector2(1039, 1069)
+scale = Vector2(0.7478632, 0.775641)
+texture = ExtResource("13_1ajci")
+
+[node name="Bant3" type="Sprite2D" parent="." unique_id=1032336222]
+position = Vector2(1432, 61.99993)
+rotation = 0.5235988
+scale = Vector2(0.7478632, 0.775641)
+texture = ExtResource("13_1ajci")
+
+[node name="MapItemsTransparent" type="Sprite2D" parent="." unique_id=1766018225]
+position = Vector2(1457, 994)
+texture = ExtResource("14_7b55j")
+region_enabled = true
+region_rect = Rect2(16, 88, 152, 80)
+
+[node name="MapItemsTransparent2" type="Sprite2D" parent="." unique_id=1629182080]
+position = Vector2(1842, 1034)
+texture = ExtResource("14_7b55j")
+region_enabled = true
+region_rect = Rect2(16, 88, 152, 80)
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="." unique_id=1520869059]
+
+[node name="MapItemsTransparent3" type="Sprite2D" parent="StaticBody2D3" unique_id=422478836]
+z_index = 9
+position = Vector2(245.00018, 885)
+scale = Vector2(1.718, 1.718)
+texture = ExtResource("14_7b55j")
+region_enabled = true
+region_rect = Rect2(168, 464, 184, 208)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3" unique_id=632022799]
+position = Vector2(236.5, 1003.5)
+shape = SubResource("RectangleShape2D_5pajh")
 
 [connection signal="focus_entered" from="VBoxContainer/StartButton" to="VBoxContainer/StartButton" method="_on_focus_entered"]
 [connection signal="mouse_entered" from="VBoxContainer/StartButton" to="VBoxContainer/StartButton" method="_on_mouse_entered"]
