@@ -12,7 +12,7 @@
 
 [node name="Level2" type="Node2D" unique_id=620947927]
 script = ExtResource("1_u2472")
-star_count = 4
+star_count = 2
 
 [node name="UntitledDesign14" type="Sprite2D" parent="." unique_id=604570503]
 position = Vector2(960, 539.8)
