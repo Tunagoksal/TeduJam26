@@ -266,11 +266,21 @@ func get_tile_render_data(tile: Dictionary) -> Dictionary:
 	if tile.is_back:
 		var orig = tile.orig_pos
 		var b_pos = Vector2i((total_width - 1) - orig.x, (total_height - 1) - orig.y)
+		
+		# 1. Figure out which flips were applied during folding
+		var original_front_alt = front_data.get_cell_alternative_tile(orig)
+		var fold_flips = tile.alt ^ original_front_alt
+		
+		# 2. Apply those fold flips to the back layer's actual alternative ID
+		var native_back_alt = back_data.get_cell_alternative_tile(b_pos)
+		var final_alt = native_back_alt ^ fold_flips
+		
 		return {
 			"id": back_data.get_cell_source_id(b_pos),
 			"coords": back_data.get_cell_atlas_coords(b_pos),
-			"alt": tile.alt
+			"alt": final_alt
 		}
+		
 	return {
 		"id": front_data.get_cell_source_id(tile.orig_pos),
 		"coords": front_data.get_cell_atlas_coords(tile.orig_pos),
