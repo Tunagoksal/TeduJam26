@@ -134,7 +134,7 @@ func handle_roll():
 		set_to_rolling()
 
 		velocity = facing_direction * roll_force + velocity
-		AchievementManager.unlock_achivement("I <3 Rolling")
+		AchievementManager.unlock_achivement("They see me rollin")
 
 		if facing_direction.x < 0:
 			roll_spin_dir = -1.0
