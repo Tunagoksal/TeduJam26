@@ -35,6 +35,6 @@ autowrap_mode = 0
 one_shot = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=872464801]
-volume_db = -4.0
+volume_db = -7.0
 
 [connection signal="timeout" from="LetterDisplayTimer" to="." method="_on_letter_display_timer_timeout"]

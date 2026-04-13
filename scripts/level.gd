@@ -17,3 +17,9 @@ func _ready() -> void:
 	layers.position.y = (view_size.y / 2.0) - layer_scale*(total_length / 2.0)
 	print(star_count)
 	star_remaining_ui.update_max_star_count(star_count)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		if event.pressed and event.keycode == KEY_R:
+			get_tree().reload_current_scene()

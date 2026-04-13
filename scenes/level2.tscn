@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dywqxx58ht0ek" path="res://assets/Untitled_design14.webp" id="6_6ep0u"]
 [ext_resource type="Script" uid="uid://bfebn1uyoltd8" path="res://scripts/inventory_ui.gd" id="8_hrcei"]
 [ext_resource type="PackedScene" uid="uid://bbm2vf5ketetx" path="res://star_remaining_ui.tscn" id="9_xa7n4"]
+[ext_resource type="FontFile" uid="uid://cve5trq2v7jt4" path="res://assets/ChildWriting-Regular.ttf" id="10_bo4dx"]
 
 [node name="Level" type="Node2D" unique_id=620947927]
 script = ExtResource("1_yqkch")
@@ -46,7 +47,6 @@ stream = ExtResource("3_2k3dv")
 [node name="Character" parent="." unique_id=1749950208 instance=ExtResource("5_xa7n4")]
 position = Vector2(835, 426)
 
-
 [node name="InventoryUI" type="CanvasLayer" parent="." unique_id=1902873453 node_paths=PackedStringArray("player")]
 script = ExtResource("8_hrcei")
 player = NodePath("../Character")
@@ -71,3 +71,10 @@ offset_left = 1524.0
 offset_top = 163.0
 offset_right = 1524.0
 offset_bottom = 163.0
+
+[node name="Label" type="Label" parent="." unique_id=1814291802]
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_fonts/font = ExtResource("10_bo4dx")
+theme_override_font_sizes/font_size = 64
+text = "Press R to reset"

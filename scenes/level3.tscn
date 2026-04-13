@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dywqxx58ht0ek" path="res://assets/Untitled_design14.webp" id="7_b72m1"]
 [ext_resource type="Script" uid="uid://bfebn1uyoltd8" path="res://scripts/inventory_ui.gd" id="8_5mhml"]
 [ext_resource type="PackedScene" uid="uid://bbm2vf5ketetx" path="res://star_remaining_ui.tscn" id="9_rupth"]
+[ext_resource type="FontFile" uid="uid://cve5trq2v7jt4" path="res://assets/ChildWriting-Regular.ttf" id="10_6qt4k"]
 
 [node name="Level" type="Node2D" unique_id=620947927]
 script = ExtResource("1_6lxtr")
@@ -74,3 +75,10 @@ offset_left = 1538.0
 offset_top = 167.0
 offset_right = 1538.0
 offset_bottom = 167.0
+
+[node name="Label" type="Label" parent="." unique_id=559678232]
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_fonts/font = ExtResource("10_6qt4k")
+theme_override_font_sizes/font_size = 64
+text = "Press R to reset"

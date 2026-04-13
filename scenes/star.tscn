@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://dfq4hok1smhtc"]
+[gd_scene format=3 uid="uid://mmn7p417xj5m"]
 
 [ext_resource type="Script" uid="uid://bhgq6ddlrh5ur" path="res://scripts/item.gd" id="1_ef0hr"]
 [ext_resource type="Script" uid="uid://seo2lqc2vrpq" path="res://scripts/collectible_item.gd" id="2_8d8bx"]
@@ -24,6 +24,7 @@ shape = SubResource("CircleShape2D_s8enn")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1490197903]
 stream = ExtResource("4_8d8bx")
+volume_db = -15.0
 
 [node name="YildizSari3" type="Sprite2D" parent="." unique_id=397213471]
 scale = Vector2(0.45, 0.45)

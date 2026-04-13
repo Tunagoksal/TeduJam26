@@ -14,13 +14,26 @@ var is_showing: bool = false
 func _ready() -> void:
 	AchievementManager.achivement_unlocked.connect(_on_achievement_unlocked)
 	
-	var screen_size = get_window().size
+	# Wait one frame so the PanelContainer can calculate its real size
+	await get_tree().process_frame
 	
-	y_thing = screen_size.y + 50
-	x_thing = screen_size.x/2 - panel.size.y/2
-	y_appear = screen_size.y - panel.size.y * 1.5
+	_update_positions()
 	
-	panel.global_position = Vector2(x_thing,y_thing)
+	# Optional: Re-calculate if the window is resized
+	get_viewport().size_changed.connect(_update_positions)
+
+func _update_positions() -> void:
+	# Use viewport_rect for internal coordinate consistency
+	var screen_size = get_viewport().get_visible_rect().size
+	
+	# Logic fix: Use panel.size.x for horizontal centering, not size.y!
+	x_thing = (screen_size.x / 2.0) - (panel.size.x / 2.0)
+	y_thing = screen_size.y + 100
+	y_appear = screen_size.y - (panel.size.y * 1.5)
+	
+	# If not currently animating, snap to the hidden position
+	if not is_showing:
+		panel.global_position = Vector2(x_thing, y_thing)
 
 func _on_achievement_unlocked(ach:AchievementData):
 	
