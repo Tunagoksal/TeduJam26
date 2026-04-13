@@ -57,6 +57,9 @@ func _ready() -> void:
 	var initial_grid = simulate_paper_state(active_folds).grid
 	apply_grid_state(simulate_paper_state(active_folds).grid)
 	refresh_items_visibility(initial_grid)
+	
+func _process(_delta):
+	out_of_map()
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and !dragging:
@@ -557,4 +560,22 @@ func _animate_chunk_transition(dir: FoldDir, is_folding: bool, pre: Dictionary, 
 		is_animating = false
 	)
 
+var unlocked:bool = false
+
+func out_of_map():
+	if unlocked:
+		return
+		
+	var player = get_tree().get_first_node_in_group("player") as Character
+	if !is_instance_valid(player):
+		return
+
+	var player_pos = display_layer.to_local(player.global_position)
+	var map_pos = display_layer.local_to_map(player_pos)
+
+	var grid_state = simulate_paper_state(active_folds).grid
+
+	if !grid_state.has(map_pos) or grid_state[map_pos].size() == 0:
+		AchievementManager.unlock_achivement("It is not a bug it is a feature")
+		unlocked = true
 	

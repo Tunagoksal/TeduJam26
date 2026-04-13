@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AchievementData" format=3 uid="uid://b83mjjbknpyu2"]
+
+[ext_resource type="Texture2D" uid="uid://ds07rb3vc18fk" path="res://trophy.png" id="1_8nplb"]
+[ext_resource type="Script" uid="uid://8k0biy7tnl45" path="res://scripts/achievement_data.gd" id="1_w5rlu"]
+
+[resource]
+script = ExtResource("1_w5rlu")
+title = "It is not a bug it is a feature"
+icon = ExtResource("1_8nplb")
+metadata/_custom_type_script = "uid://8k0biy7tnl45"

@@ -8,10 +8,11 @@
 [ext_resource type="Resource" uid="uid://cvefv3v0ao38i" path="res://resources/unfold_achievement.tres" id="6_ajlxk"]
 [ext_resource type="Resource" uid="uid://bdkfcpyowxfks" path="res://Smashed.tres" id="7_dxkj8"]
 [ext_resource type="AudioStream" uid="uid://bvihxr0wgtioi" path="res://assets/audio/steam-achievement.mp3" id="7_whnpp"]
+[ext_resource type="Resource" uid="uid://b83mjjbknpyu2" path="res://resources/outside.tres" id="8_78yao"]
 
 [node name="AchievementManager" type="Node2D" unique_id=483014714]
 script = ExtResource("1_fihl3")
-achievement_list = Array[ExtResource("2_8m4y4")]([ExtResource("3_8m4y4"), ExtResource("3_6gf5i"), ExtResource("5_6gf5i"), ExtResource("6_ajlxk"), ExtResource("7_dxkj8")])
+achievement_list = Array[ExtResource("2_8m4y4")]([ExtResource("3_8m4y4"), ExtResource("3_6gf5i"), ExtResource("5_6gf5i"), ExtResource("6_ajlxk"), ExtResource("7_dxkj8"), ExtResource("8_78yao")])
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=732358919]
 stream = ExtResource("7_whnpp")
