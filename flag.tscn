@@ -16,6 +16,7 @@ shape = SubResource("RectangleShape2D_1gre2")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=508268311]
 stream = ExtResource("2_amn8n")
+volume_db = -10.0
 
 [node name="Bayrak" type="Sprite2D" parent="." unique_id=2135200992]
 position = Vector2(6, -2)
