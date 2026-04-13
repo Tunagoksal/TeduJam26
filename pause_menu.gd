@@ -10,10 +10,23 @@ var is_open := false
 func _ready():
 	hide()
 	
-	volume_slider.value_changed.connect(_on_volume_changed)
-	AchievementManager.achivement_unlocked.connect(_on_achievement_changed)
+	# 1. Initialize the slider value based on the actual current volume
+	var current_db = AudioServer.get_bus_volume_db(0) # 0 is the Master bus
+	volume_slider.value = db_to_linear(current_db)
 	
+	# 2. Connect the signal
+	volume_slider.value_changed.connect(_on_volume_changed)
+	
+	AchievementManager.achivement_unlocked.connect(_on_achievement_changed)
 	update_achievement_text()
+
+func _on_volume_changed(value: float):
+	# Set the volume. -80db is effectively silent in Godot.
+	if value <= 0.001:
+		AudioServer.set_bus_mute(0, true)
+	else:
+		AudioServer.set_bus_mute(0, false)
+		AudioServer.set_bus_volume_db(0, linear_to_db(value))
 
 func _input(event):
 	if event.is_action_pressed("ESC"):
@@ -37,11 +50,6 @@ func update_achievement_text():
 	
 	achievement_label.text = "%d / %d" % [unlocked, total]
 	
-func _on_volume_changed(value: float):
-	if value <= 0.01:
-		AudioServer.set_bus_volume_db(0, -80) 
-	else:
-		AudioServer.set_bus_volume_db(0, linear_to_db(value))
 
 
 func _on_volume_slider_value_changed(value: float) -> void:

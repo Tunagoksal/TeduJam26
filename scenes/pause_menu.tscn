@@ -67,6 +67,8 @@ offset_left = 115.0
 offset_top = 171.0
 offset_right = 309.0
 offset_bottom = 187.0
+max_value = 1.0
+step = 0.01
 
 [node name="Achievements" type="Label" parent="Panel" unique_id=1775239812]
 layout_mode = 0
